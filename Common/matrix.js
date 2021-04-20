@@ -1,4 +1,5 @@
 /* 
+ * Original code corresponds to the 
  * glMatrix.js - High performance matrix and vector operations for WebGL
  * version 0.9.5
  */
