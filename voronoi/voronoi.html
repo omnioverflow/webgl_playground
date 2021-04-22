@@ -2,16 +2,17 @@
 
 <html>
   <head>    
-    <title>WebGL Playground: Triangle</title>
+    <title>WebGL Playground: Voronoi</title>
     <link rel="stylesheet" href="../common/css/webgl.css" type="text/css">
-    <!-- Pass-through vertex shader -->
+
     <script id="vertex-shader" type="x-shader/x-vertex">
-      attribute vec4 vPosition;
+      attribute vec4 vPosition;      
       void main()
       {
         gl_Position = vPosition;
       }
     </script>
+
     <script id="fragment-shader" type="x-shader/x-fragment">
       precision mediump float;
       void main()
@@ -22,7 +23,7 @@
 
     <script type="text/javascript" src="../common/webgl_utils.js"></script>
     <script type="text/javascript" src="../common/init_shaders.js"></script>
-    <script type="text/javascript" src="triangle.js"></script>
+    <script type="text/javascript" src="voronoi.js"></script>
   </head>
   <body>
     <canvas id="gl-canvas" width="512" height="512">
