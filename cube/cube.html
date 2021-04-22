@@ -6,6 +6,8 @@
     <!-- WebGL 1? -->
     <!-- Pass-through vertex shader -->
     <script id="vertex-shader" type="x-shader/x-vertex">
+      #version 100
+
       attribute vec4 vPosition;
       attribute vec4 vColor;
       varying vec4 color;
@@ -47,6 +49,8 @@
       }
     </script>
     <script id="fragment-shader" type="x-shader/x-fragment">
+      #version 100
+
       #ifdef GL_ES
         precision highp float;
       #endif
