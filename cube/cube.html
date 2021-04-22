@@ -6,6 +6,7 @@
     <!-- WebGL 1? -->
     <!-- Pass-through vertex shader -->
     <script id="vertex-shader" type="x-shader/x-vertex">
+      // Support WebGL 1
       #version 100
 
       attribute vec4 vPosition;
@@ -49,6 +50,7 @@
       }
     </script>
     <script id="fragment-shader" type="x-shader/x-fragment">
+      // Support WebGL 1
       #version 100
 
       #ifdef GL_ES

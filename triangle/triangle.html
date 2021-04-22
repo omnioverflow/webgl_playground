@@ -6,16 +6,22 @@
     <link rel="stylesheet" href="../common/css/webgl.css" type="text/css">
     <!-- Pass-through vertex shader -->
     <script id="vertex-shader" type="x-shader/x-vertex">
+      // Support WebGL 1
       #version 100
+
       attribute vec4 vPosition;
+
       void main()
       {
         gl_Position = vPosition;
       }
     </script>
     <script id="fragment-shader" type="x-shader/x-fragment">
+      // Support WebGL 1
       #version 100
+
       precision mediump float;
+      
       void main()
       {
         gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
