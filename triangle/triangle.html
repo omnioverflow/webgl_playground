@@ -18,7 +18,9 @@
     <script id="fragment-shader" type="x-shader/x-fragment">      
       #version 100
 
-      precision mediump float;
+      #ifdef GL_ES
+        precision mediump float;
+      #endif
 
       void main()
       {

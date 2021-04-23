@@ -8,7 +8,10 @@
     <script id="vertex-shader" type="x-shader/x-vertex">      
       #version 100
 
-      attribute vec4 vPosition;      
+      #ifdef GL_ES
+        precision mediump float;
+      #endif
+
 
       void main()
       {
