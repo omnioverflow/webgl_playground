@@ -13,10 +13,15 @@
       #endif
 
       attribute vec4 iPosition;
+      // value assigned at link time
+      attribute vec4 uColor;
+
+      varying vec4 vColor;
 
       void main()
       {
         gl_Position = iPosition;
+        vColor = uColor;
       }
     </script>
 
@@ -25,9 +30,11 @@
 
       precision mediump float;
 
+      varying vec4 vColor;
+
       void main()
       {
-        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        gl_FragColor = vColor;
       }
     </script>
 

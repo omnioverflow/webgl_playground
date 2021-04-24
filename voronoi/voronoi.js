@@ -11,6 +11,7 @@ window.onload = function init()
     }
 
     var vertices = new Float32Array([-1, -1, 0, 1, 1, -1]);
+    const colors = new Float32Array([1.0, 0.0, 0.0, 1.0, 1.0, 1.0]);
 
     // Configure WebGL
     gl.viewport(0, 0, canvas.width, canvas.height);
