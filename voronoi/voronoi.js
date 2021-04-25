@@ -23,14 +23,20 @@ window.onload = function init()
     gl.useProgram(program);
 
     // Load the data into the GPU
-    var bufferId = gl.createBuffer();
+    const bufferId = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
     gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
     // Associate out shader variables with our data buffer
-    var iPosition = gl.getAttribLocation(program, "iPosition");
+    const iPosition = gl.getAttribLocation(program, "iPosition");
     gl.vertexAttribPointer(iPosition, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(iPosition);
+
+    const iColor = gl.getAttribLocation(program, "iColor");
+    gl.vertexAttribPointer(iColor, 2 /* size */, gl.FLOAT /* type */, 
+        false /*normalized*/, 0 /* stride */, 0 /* pointer */);
+    gl.enableVertexAttribArray(iColor);
+
     render();
 };
 
