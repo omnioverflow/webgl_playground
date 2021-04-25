@@ -10,7 +10,7 @@ window.onload = function init()
         alert("WebGL isn't available");
     }
 
-    const vertices = new Float32Array([-1, -1, 0, 1, 1, -1]);
+    const vertexData = new Float32Array([-1, -1, 0, 1, 1, -1]);
     const colors = new Float32Array([1.0, 0.0, 0.0, 1.0, 1.0, 1.0]);
 
     // Configure WebGL
@@ -24,7 +24,7 @@ window.onload = function init()
     // Load the data into the GPU
     const bufferId = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
 
     // Associate out shader variables with our data buffer
     const iPosition = gl.getAttribLocation(program, "iPosition");
