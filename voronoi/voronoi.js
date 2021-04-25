@@ -3,14 +3,14 @@ var points;
 
 window.onload = function init()
 {
-    var canvas = document.getElementById("gl-canvas");
+    const canvas = document.getElementById("gl-canvas");
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) 
     {
         alert("WebGL isn't available");
     }
 
-    var vertices = new Float32Array([-1, -1, 0, 1, 1, -1]);
+    const vertices = new Float32Array([-1, -1, 0, 1, 1, -1]);
     const colors = new Float32Array([1.0, 0.0, 0.0, 1.0, 1.0, 1.0]);
 
     // Configure WebGL
