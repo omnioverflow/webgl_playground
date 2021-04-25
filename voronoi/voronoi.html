@@ -13,14 +13,14 @@
       #endif
 
       attribute vec4 iPosition;      
-      attribute vec4 uColor;
+      attribute vec4 iColor;
 
       varying vec4 vColor;
 
       void main()
       {
         gl_Position = iPosition;
-        vColor = uColor;
+        vColor = iColor;
       }
     </script>
 
