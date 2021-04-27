@@ -6,6 +6,7 @@ var vao;
 window.onload = function init()
 {
     const canvas = document.getElementById("gl-canvas");
+    // Configure WebGL
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) 
     {
@@ -14,7 +15,6 @@ window.onload = function init()
 
     const vertexData = new Float32Array([-1, -1, 0, 1, 1, -1]);
 
-    // Configure WebGL
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
