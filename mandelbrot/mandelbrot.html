@@ -24,16 +24,29 @@
       }
     </script>
 
-    <script id="fragment-shader" type="x-shader/x-fragment">      
+    <script id="fragment-shader" type="x-shader/x-fragment">
       #version 100
+
+      // number of iterations
+      #define N 8 
 
       precision mediump float;
 
+      uniform vec2 uScreenRes;
+
       varying vec4 vColor;
+
+      vec4 color(vec2 res)
+      {
+          return vec4(
+              gl_FragCoord.x / res.x,
+              gl_FragCoord.y / res.y,
+              0.1, 1.0);
+      }
 
       void main()
       {
-        gl_FragColor = vColor;
+        gl_FragColor = color(uScreenRes);
       }
     </script>
 

@@ -78,6 +78,15 @@ function initBuffers()
         gl.enableVertexAttribArray(1);
     }
 
+    {
+        // need to activate the program, before ant gl.uniform...
+        gl.useProgram(program);
+        const res = [canvas.width, canvas.height];
+        const location = gl.getUniformLocation(program, "uScreenRes");
+        gl.uniform2fv(location, res);
+        gl.useProgram(null);
+    }
+
     gl.bindVertexArray(null);
 }
 
