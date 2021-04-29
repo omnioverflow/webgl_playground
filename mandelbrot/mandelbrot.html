@@ -28,7 +28,7 @@
       #version 100
 
       // number of iterations
-      #define N 8 
+      #define N 16
 
       precision mediump float;
 
@@ -44,9 +44,31 @@
               0.1, 1.0);
       }
 
+      float modulus_squared(vec2 v)
+      {
+          return 0.0;
+      }
+
+      vec4 mandelbrot()
+      {
+          vec2 z = vec2(0.0, 0.0);
+          vec2 c = vec2(gl_FragCoord.x / uScreenRes.x, 
+                        gl_FragCoord.y / uScreenRes.y);
+          for (int i = 0; i < N; ++i)
+          {
+              float a = z.x * z.x - z.y * z.y;
+              float b = 2.0 * z.x * z.y;
+              z = vec2(a, b) + c;
+              if (dot(z, z) >= 4.0)
+                  return vec4(0.0, 0.0, 0.0, 0.0);
+          }
+
+          return vec4(1.0, 1.0, 1.0, 1.0);
+      }
+
       void main()
       {
-        gl_FragColor = color(uScreenRes);
+        gl_FragColor = color(uScreenRes) * mandelbrot();
       }
     </script>
 
