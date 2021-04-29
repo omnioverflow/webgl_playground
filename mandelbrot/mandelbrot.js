@@ -1,3 +1,4 @@
+var canvas;
 var gl;
 var points;
 var program;
@@ -5,7 +6,7 @@ var vao;
 
 window.onload = function init()
 {
-    const canvas = document.getElementById("gl-canvas");
+    canvas = document.getElementById("gl-canvas");
     // Configure WebGL
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) 
@@ -13,6 +14,13 @@ window.onload = function init()
         alert("WebGL isn't available");
     }
 
+    initBuffers();
+
+    render();
+};
+
+function initBuffers()
+{
     const vertexData = new Float32Array([
         // positions
         -1.0, -1.0, /* bottom left */ 0.0, 0.0, 0.1,
@@ -71,9 +79,7 @@ window.onload = function init()
     }
 
     gl.bindVertexArray(null);
-
-    render();
-};
+}
 
 function render()
 {
