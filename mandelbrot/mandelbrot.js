@@ -35,9 +35,11 @@ window.onload = function init()
     vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
 
+    // vbo
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
     gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
 
+    // ebo (element buffer object)
     {
         const indicesBufferId = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBufferId);
