@@ -1,6 +1,5 @@
 var canvas;
 var gl;
-var points;
 var program;
 var vao;
 
