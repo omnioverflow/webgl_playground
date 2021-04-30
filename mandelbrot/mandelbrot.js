@@ -4,10 +4,24 @@ var program;
 var vao;
 
 var scale;
+var fromPos = [0.0, 0.0];
+var toPos = [0.0, 0.0];
+var isMouseMoved = false;
 
 window.onload = function init()
 {
     canvas = document.getElementById("gl-canvas");
+    // register mouse event listeners for the canvas
+    canvas.addEventListener("mousedown", e => {
+        fromPos[0] = event.pageX;
+        fromPos[1] = event.pageY; 
+    });
+    canvas.addEventListener("mousemove", e => { isMouseMoved = true; });
+    canvas.addEventListener("mouseup", e => {
+        toPos[0] = event.pageX;
+        toPos[1] = event.pageY;
+        alert("Mouse from " + fromPos + " mouseTo " + toPos + " moved " + isMouseMoved);
+    });
     canvas.addEventListener("wheel", onMouseWheel);
 
     scale = 1.0;
@@ -109,6 +123,11 @@ function render()
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
     }
+}
+
+function onMouseDown()
+{
+    alert("Mouse down!");
 }
 
 function onMouseWheel()
