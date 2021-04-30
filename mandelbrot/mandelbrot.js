@@ -3,10 +3,14 @@ var gl;
 var program;
 var vao;
 
+var scale;
+
 window.onload = function init()
 {
     canvas = document.getElementById("gl-canvas");
     canvas.addEventListener("wheel", onMouseWheel);
+
+    scale = 1.0;
 
     // Configure WebGL
     gl = WebGLUtils.setupWebGL(canvas);
@@ -79,13 +83,16 @@ function initBuffers()
         gl.enableVertexAttribArray(1);
     }
 
+    // need to activate the program, before ant gl.uniform...
+    gl.useProgram(program);
     {
-        // need to activate the program, before ant gl.uniform...
-        gl.useProgram(program);
+        const location = gl.getUniformLocation(program, "uScale");
+        gl.uniform1f(location, scale);
+    }
+    {
         const res = [canvas.width, canvas.height];
         const location = gl.getUniformLocation(program, "uScreenRes");
         gl.uniform2fv(location, res);
-        gl.useProgram(null);
     }
 
     gl.bindVertexArray(null);
@@ -106,12 +113,23 @@ function render()
 
 function onMouseWheel()
 {
+    const scaleChange = 1.0;
     if (event.deltaY > 0)
     {
         console.log("scrolling down!");
+        scale -= scaleChange;
     }
     else if (event.deltaY < 0)
     {
         console.log("scrolling up!");
+        scale += scaleChange;
     }
+
+    {
+        const location = gl.getUniformLocation(program, "uScale");
+        gl.uniform1f(location, scale);
+    }
+
+    // re-render
+    render();
 }
