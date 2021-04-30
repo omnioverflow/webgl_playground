@@ -6,6 +6,8 @@ var vao;
 window.onload = function init()
 {
     canvas = document.getElementById("gl-canvas");
+    canvas.addEventListener("wheel", onMouseWheel);
+
     // Configure WebGL
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) 
@@ -99,5 +101,17 @@ function render()
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+    }
+}
+
+function onMouseWheel()
+{
+    if (event.deltaY > 0)
+    {
+        console.log("scrolling down!");
+    }
+    else if (event.deltaY < 0)
+    {
+        console.log("scrolling up!");
     }
 }
