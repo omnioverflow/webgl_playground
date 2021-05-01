@@ -117,6 +117,7 @@ var setupWebGL = function(canvas, opt_attribs) {
   var context = create3DContext(canvas, opt_attribs);
   if (!context) {
     showLink(OTHER_PROBLEM);
+    alert("WebGL setup failed.");
   }
   return context;
 };
