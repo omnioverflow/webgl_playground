@@ -85,18 +85,6 @@ function initBuffers()
         gl.enableVertexAttribArray(0);
     }
 
-    {
-        const pos = gl.getAttribLocation(program, "iColor");
-        const size = 3;
-        const type = gl.FLOAT;
-        const normalize = false;
-        
-        const stride = 5 * sizeOfFloat;
-        const offset = 3 * sizeOfFloat;
-        gl.vertexAttribPointer(pos, size, type, normalize, stride, offset);
-        gl.enableVertexAttribArray(1);
-    }
-
     // need to activate the program, before ant gl.uniform...
     gl.useProgram(program);
     {

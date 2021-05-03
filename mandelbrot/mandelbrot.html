@@ -13,14 +13,10 @@
       #endif
 
       attribute vec4 iPosition;      
-      attribute vec4 iColor;
-
-      varying vec4 vColor;
 
       void main()
       {
         gl_Position = iPosition;
-        vColor = iColor;
       }
     </script>
 
@@ -34,8 +30,6 @@
 
       uniform float uScale;
       uniform vec2 uScreenRes;
-
-      varying vec4 vColor;
 
       vec4 color(vec2 res)
       {
