@@ -16,7 +16,7 @@ window.onload = function init()
         fromPos[0] = event.pageX;
         fromPos[1] = event.pageY; 
     });
-    canvas.addEventListener("mousemove", e => { isMouseMoved = true; });
+    
     canvas.addEventListener("mouseup", e => {
         toPos[0] = event.pageX;
         toPos[1] = event.pageY;
