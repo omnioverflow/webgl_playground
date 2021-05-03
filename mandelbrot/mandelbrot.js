@@ -82,7 +82,7 @@ function initBuffers()
         const stride = 5 * sizeOfFloat; // == 0 -- move forward size * sizeof(type) to get the next position
         const offset = 0; // start at the beginning of the buffer 
         gl.vertexAttribPointer(pos, size, type, normalize, stride, offset);
-        gl.enableVertexAttribArray(0);
+        gl.enableVertexAttribArray(pos);
     }
 
     // need to activate the program, before ant gl.uniform...
