@@ -48,10 +48,12 @@
       vec4 mandelbrot()
       {
           vec2 z = vec2(0.0, 0.0);
-          float centerX = 0.5 - uTranslation.x;
+          float centerX = 0.5- uTranslation.x;
           float centerY = 0.5 - uTranslation.y;
-          vec2 c = vec2( uScale * (gl_FragCoord.x / uScreenRes.x - centerX), 
-                         uScale * (gl_FragCoord.y / uScreenRes.y - centerY));
+          vec2 c = vec2(
+            uScale * (gl_FragCoord.x / uScreenRes.x) - centerX, 
+            uScale * (gl_FragCoord.y / uScreenRes.y) - centerY
+            );
           for (int i = 0; i < N; ++i)
           {
               float a = z.x * z.x - z.y * z.y;
