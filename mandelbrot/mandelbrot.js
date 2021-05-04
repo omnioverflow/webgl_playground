@@ -120,7 +120,7 @@ function onMouseDown()
 
 function onMouseWheel()
 {
-    const scaleChange = 1.0;
+    const scaleChange = 0.5;
     if (event.deltaY > 0)
     {
         console.log("scrolling down!");
