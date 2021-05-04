@@ -21,11 +21,11 @@ window.onload = function init()
     canvas.addEventListener("mouseup", e => {
         toPos[0] = event.pageX;
         toPos[1] = event.pageY;
-        const t = new Float32Array([
-            -toPos[0] + fromPos[0], 
-            toPos[1] - fromPos[1]
-        ]);
-        initTranslation(t);
+        const deltaX = (toPos[0] - fromPos[0]) / canvas.width;
+        const deltaY = (toPos[1] - fromPos[1]) / canvas.height;
+        translation[0] = translation[0] - deltaX;
+        translation[1] = translation[1] + deltaY;
+        initTranslation(translation);
     });
     canvas.addEventListener("wheel", onMouseWheel);
 
@@ -45,8 +45,6 @@ function initTranslation(t)
 {
     gl.useProgram(program);
     const location = gl.getUniformLocation(program, "uTranslation");
-    t[0] /= canvas.width;
-    t[1] /= canvas.height;
     gl.uniform2fv(location, t);
 
     render();
