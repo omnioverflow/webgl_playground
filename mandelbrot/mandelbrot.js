@@ -3,9 +3,10 @@ var gl;
 var program;
 var vao;
 
-var scale;
-var fromPos = [0.0, 0.0];
-var toPos = [0.0, 0.0];
+var scale = 1.0;
+var translation = new Float32Array([0.0, 0.0]);
+var fromPos = new Float32Array([0.0, 0.0]);
+var toPos = new Float32Array([0.0, 0.0]);
 var isMouseMoved = false;
 
 window.onload = function init()
@@ -20,11 +21,13 @@ window.onload = function init()
     canvas.addEventListener("mouseup", e => {
         toPos[0] = event.pageX;
         toPos[1] = event.pageY;
-        alert("Mouse from " + fromPos + " mouseTo " + toPos + " moved " + isMouseMoved);
+        const t = new Float32Array([
+            -toPos[0] + fromPos[0], 
+            toPos[1] - fromPos[1]
+        ]);
+        initTranslation(t);
     });
     canvas.addEventListener("wheel", onMouseWheel);
-
-    scale = 1.0;
 
     // Configure WebGL
     gl = WebGLUtils.setupWebGL(canvas);
@@ -37,6 +40,17 @@ window.onload = function init()
 
     render();
 };
+
+function initTranslation(t)
+{
+    gl.useProgram(program);
+    const location = gl.getUniformLocation(program, "uTranslation");
+    t[0] /= canvas.width;
+    t[1] /= canvas.height;
+    gl.uniform2fv(location, t);
+
+    render();
+}
 
 function initBuffers()
 {
@@ -91,6 +105,7 @@ function initBuffers()
         const location = gl.getUniformLocation(program, "uScale");
         gl.uniform1f(location, scale);
     }
+    initTranslation(translation);
     {
         const res = [canvas.width, canvas.height];
         const location = gl.getUniformLocation(program, "uScreenRes");
