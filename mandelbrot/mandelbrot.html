@@ -60,10 +60,10 @@
               float b = 2.0 * z.x * z.y;
               z = vec2(a, b) + c;
               if (dot(z, z) >= 4.0)
-                  return vec4(0.0, 0.0, 0.0, 0.0);
+                  return vec4(0.0, 0.0, float(i) / float(N), 1.0);
           }
 
-          return vec4(1.0, 1.0, 1.0, 1.0);
+          return vec4(0.0, 0.0, 0.0, 1.0);
       }
 
       void main()
