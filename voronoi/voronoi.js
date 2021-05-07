@@ -13,8 +13,10 @@ window.onload = function init()
         alert("WebGL isn't available");
     }
 
+    const x0 = Math.random();
+    const y0 = Math.random();
     const vertexData = new Float32Array([
-        -1, -1, 0, 1, 1, -1, // positions
+        x0, y0, 0, 1, 1, -1, // positions
         0.0, 0.0, 0.1, 0.0, 1.0, 0.2, 0.0, 0.5, 0.5 // colors
         ]);
 
