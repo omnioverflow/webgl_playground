@@ -1,0 +1,2 @@
+Jump-Flooding Algorithm (JFA), 2006
+https://www.comp.nus.edu.sg/~tants/jfa/i3d06.pdf
