@@ -1,1 +1,40 @@
-# textured triangle
+<!DOCTYPE html>
+
+<html>
+  <head>    
+    <title>WebGL Playground: Triangle</title>
+    <link rel="stylesheet" href="../common/css/webgl.css" type="text/css">
+    <!-- Pass-through vertex shader -->
+    <script id="vertex-shader" type="x-shader/x-vertex">      
+      #version 100
+
+      attribute vec4 vPosition;
+
+      void main()
+      {
+        gl_Position = vPosition;
+      }
+    </script>
+    <script id="fragment-shader" type="x-shader/x-fragment">      
+      #version 100
+
+      #ifdef GL_ES
+        precision mediump float;
+      #endif
+
+      void main()
+      {
+        gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+      }
+    </script>
+
+    <script type="text/javascript" src="../common/webgl_utils.js"></script>
+    <script type="text/javascript" src="../common/init_shaders.js"></script>
+    <script type="text/javascript" src="tri.js"></script>
+  </head>
+  <body>
+    <canvas id="gl-canvas" width="512" height="512">
+      Oops
+    </canvas>  
+  </body>
+</html>
