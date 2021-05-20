@@ -20,7 +20,7 @@ window.onload = function init()
 
     initBuffers(gl, program);
 
-    render();
+    drawScene();
 };
 
 function initBuffers(gl, program)
@@ -37,7 +37,7 @@ function initBuffers(gl, program)
     gl.enableVertexAttribArray(vPosition);
 }
 
-function render()
+function drawScene()
 {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
