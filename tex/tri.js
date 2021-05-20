@@ -1,6 +1,9 @@
 var gl;
 var points;
 
+// look at:
+// https://github.com/mdn/webgl-examples/blob/gh-pages/tutorial/sample6/webgl-demo.js
+
 window.onload = function init()
 {
     var canvas = document.getElementById("gl-canvas");
