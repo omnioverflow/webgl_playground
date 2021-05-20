@@ -32,9 +32,9 @@ function initBuffers(gl, program)
     gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
     // Associate out shader variables with our data buffer
-    var vPosition = gl.getAttribLocation(program, "vPosition");
-    gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vPosition);
+    const aPosition = gl.getAttribLocation(program, "aPosition");
+    gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(aPosition);
 }
 
 function drawScene()
