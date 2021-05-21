@@ -43,6 +43,21 @@ function initBuffers(gl, program)
     const aPosition = gl.getAttribLocation(program, "aPosition");
     gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(aPosition);
+
+    // Init texture coordinate buffer
+    const textureCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+    textureCoordinates = [
+        // v0
+        0.0, 0.0,
+        // v1
+        1.0, 0.0,
+        // v2
+        1.0, 1.0
+    ];
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates),
+                  gl.STATIC_DRAW);
 }
 
 function drawScene(gl)
