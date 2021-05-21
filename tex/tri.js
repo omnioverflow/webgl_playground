@@ -69,5 +69,10 @@ function drawScene(gl)
 {
     // Clear color and depth buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    
+    // Execute the actual draw
+    {
+        const vertexCount = 3;
+        gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
+    }
 }
