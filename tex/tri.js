@@ -58,6 +58,11 @@ function initBuffers(gl, program)
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates),
                   gl.STATIC_DRAW);
+
+    return {
+        position: positionBuffer,
+        textureCoord: textureCoordBuffer
+    }
 }
 
 function drawScene(gl)
