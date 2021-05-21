@@ -22,6 +22,7 @@ window.onload = function init()
     gl.useProgram(program);
 
     initBuffers(gl, program);
+    const texture = loadTexture(gl, 'block.jpg');
 
     drawScene();
 };
