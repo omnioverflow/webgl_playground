@@ -26,7 +26,7 @@ window.onload = function init()
 
 function initBuffers(gl, program)
 {
-    var vertices = new Float32Array([-1, -1, 0, 1, 1, -1]);
+    const vertices = new Float32Array([-1, -1, 0, 1, 1, -1]);
     // Load the vertex position data into the GPU
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
