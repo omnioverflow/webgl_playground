@@ -27,7 +27,8 @@ function loadTexture(gl, url) {
                 width, height, border, srcFormat, srcType,
                 pixel);
 
-  const image = new Image();
+  let image = new Image();
+  image.crossOrigin = "Anonymous";
   image.onload = function() {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
