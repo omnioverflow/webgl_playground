@@ -18,8 +18,8 @@ window.onload = function init()
     var program = initShaders(gl, "vertex-shader", "fragment-shader")
     gl.useProgram(program);
 
-    initBuffers(gl, program);
-    const texture = loadTexture(gl, 'block.jpg');
+    const buffers = initBuffers(gl, program);
+    //const texture = loadTexture(gl, 'block.jpg');
 
     drawScene(gl);
 };
