@@ -1,5 +1,3 @@
-var points;
-
 // look at:
 // https://github.com/mdn/webgl-examples/blob/gh-pages/tutorial/sample6/webgl-demo.js
 
