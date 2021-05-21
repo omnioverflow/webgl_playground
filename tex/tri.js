@@ -1,4 +1,3 @@
-var gl;
 var points;
 
 // look at:
@@ -7,7 +6,7 @@ var points;
 window.onload = function init()
 {
     var canvas = document.getElementById("gl-canvas");
-    gl = WebGLUtils.setupWebGL(canvas);
+    const gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) 
     {
         alert("WebGL isn't available");
@@ -24,7 +23,7 @@ window.onload = function init()
     initBuffers(gl, program);
     const texture = loadTexture(gl, 'block.jpg');
 
-    drawScene();
+    drawScene(gl);
 };
 
 function initBuffers(gl, program)
@@ -41,7 +40,7 @@ function initBuffers(gl, program)
     gl.enableVertexAttribArray(aPosition);
 }
 
-function drawScene()
+function drawScene(gl)
 {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
