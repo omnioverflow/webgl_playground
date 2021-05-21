@@ -26,11 +26,18 @@ window.onload = function init()
 
 function initBuffers(gl, program)
 {
-    const vertices = new Float32Array([-1, -1, 0, 1, 1, -1]);
+    const vertices = [
+        // v0
+        -1, -1,
+        // v1
+         0, 1,
+        // v2
+         1, -1
+        ];
     // Load the vertex position data into the GPU
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
     // Enable an attribute associated with the vertex positions
     const aPosition = gl.getAttribLocation(program, "aPosition");
