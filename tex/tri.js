@@ -67,6 +67,7 @@ function initBuffers(gl, program)
 
 function drawScene(gl)
 {
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    // Clear color and depth buffers
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
