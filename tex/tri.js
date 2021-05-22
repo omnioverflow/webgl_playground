@@ -63,6 +63,20 @@ function initBuffers(gl, program)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates),
                   gl.STATIC_DRAW);
 
+    // Tell GPU how to pull out texture coordinates
+    // from the data in the buffer
+    {
+        const aTextureCoord = gl.getAttribLocation(program, 
+                                                   "aTextureCoord");
+        const numComponents = 2;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.vertexAttribPointer(aTextureCoord, numComponents, type, 
+            normalize, stride, offset);
+    }
+
     return {
         position: positionBuffer,
         textureCoord: textureCoordBuffer
