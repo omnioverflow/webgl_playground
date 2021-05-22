@@ -19,8 +19,10 @@ window.onload = function init()
     gl.useProgram(program);
 
     const buffers = initBuffers(gl, program);
+    // FIXME: leave only the url which is in use
     const texUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
-    const texture = loadTexture(gl, texUrl);
+    const texUrl2 = 'https://www.babylonjs-playground.com/textures/floor_bump.PNG';
+    const texture = loadTexture(gl, texUrl2);
 
     drawScene(gl);
 };
