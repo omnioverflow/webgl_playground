@@ -19,7 +19,8 @@ window.onload = function init()
     gl.useProgram(program);
 
     const buffers = initBuffers(gl, program);
-    //const texture = loadTexture(gl, 'block.jpg');
+    const texUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
+    const texture = loadTexture(gl, texUrl);
 
     drawScene(gl);
 };
