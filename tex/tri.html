@@ -35,7 +35,8 @@
       {
         // FIXME: use texture to get the pixel color
         // gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
-        gl_FragColor = texture2D(uSampler, vTextureCoord);
+        gl_FragColor = vec4(vTextureCoord.xy, 0.0, 1.0);
+        //gl_FragColor = texture2D(uSampler, vTextureCoord);
       }
     </script>
 
