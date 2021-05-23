@@ -87,6 +87,7 @@ function initBuffers(gl, program)
         gl.vertexAttribPointer(aTextureCoord, numComponents,
                                type, normalize,
                                stride, offset);
+        gl.enableVertexAttribArray(aTextureCoord);
     }
 
     return {
