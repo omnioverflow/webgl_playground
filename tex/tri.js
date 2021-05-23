@@ -40,13 +40,23 @@ function initBuffers(gl, program)
     // Load the vertex position data into the GPU
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, 
+                  new Float32Array(vertices),
+                  gl.STATIC_DRAW);
 
     // Tell GPU how to pull out vertex coordinates
     // from the data associated to vertex attributes
-    const aPosition = gl.getAttribLocation(program, "aPosition");
-    gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(aPosition);
+    {
+        const numComponents = 2;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        const aPosition = gl.getAttribLocation(program, "aPosition");
+        gl.vertexAttribPointer(aPosition, numComponents,
+                               type, normalize, stride, offset);
+        gl.enableVertexAttribArray(aPosition);
+    }
 
     // Init texture coordinate buffer
     const textureCoordBuffer = gl.createBuffer();
@@ -60,7 +70,8 @@ function initBuffers(gl, program)
         1.0, 1.0
     ];
 
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates),
+    gl.bufferData(gl.ARRAY_BUFFER, 
+                  new Float32Array(textureCoordinates),
                   gl.STATIC_DRAW);
 
     // Tell GPU how to pull out texture coordinates
@@ -73,8 +84,9 @@ function initBuffers(gl, program)
         const normalize = false;
         const stride = 0;
         const offset = 0;
-        gl.vertexAttribPointer(aTextureCoord, numComponents, type, 
-            normalize, stride, offset);
+        gl.vertexAttribPointer(aTextureCoord, numComponents,
+                               type, normalize,
+                               stride, offset);
     }
 
     return {
