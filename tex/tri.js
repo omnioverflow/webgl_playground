@@ -39,11 +39,11 @@ window.onload = function init()
 function initBuffers(gl, programInfo)
 {
     const vertices = [
-        // v0
-        -1.0, -1.0,
-        // v1
+        // v0 (left-bottom)
+        -1.0, -1.0, 
+        // v1 (center-top)
          0.0, 1.0,
-        // v2
+        // v2 (right-bottom)
          1.0, -1.0
         ];
     // Load the vertex position data into the GPU
@@ -57,12 +57,12 @@ function initBuffers(gl, programInfo)
     const textureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
     textureCoordinates = [
-        // v0
+        // v0 (left-bottom)
         0.0, 0.0,
-        // v1
-        1.0, 0.0,
-        // v2
-        1.0, 1.0
+        // v1 (center-top)
+        0.5, 1.0,
+        // v2 (right-bottom)
+        1.0, 0.0        
     ];
 
     gl.bufferData(gl.ARRAY_BUFFER, 
