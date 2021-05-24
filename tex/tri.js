@@ -114,6 +114,13 @@ function drawScene(gl, programInfo, buffers, texture)
 
     gl.useProgram(programInfo.program);
 
+    // Specify texture to WebGL
+    // Use texture unit 0
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    // Associate shader sampler to texture unit 0
+    gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+
     // Execute the actual draw
     {        
         const vertexCount = 3;
