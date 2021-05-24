@@ -33,7 +33,7 @@ window.onload = function init()
     const texUrl2 = 'https://www.babylonjs-playground.com/textures/floor_bump.PNG';
     const texture = loadTexture(gl, texUrl2);
 
-    drawScene(gl, programInfo, buffers);
+    drawScene(gl, programInfo, buffers, texture);
 };
 
 function initBuffers(gl, programInfo)
@@ -75,7 +75,7 @@ function initBuffers(gl, programInfo)
     }
 }
 
-function drawScene(gl, programInfo, buffers)
+function drawScene(gl, programInfo, buffers, texture)
 {
     // Clear color and depth buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
