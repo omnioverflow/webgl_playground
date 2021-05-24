@@ -40,11 +40,11 @@ function initBuffers(gl, programInfo)
 {
     const vertices = [
         // v0
-        -1, -1,
+        -1.0, -1.0,
         // v1
-         0, 1,
+         0.0, 1.0,
         // v2
-         1, -1
+         1.0, -1.0
         ];
     // Load the vertex position data into the GPU
     const positionBuffer = gl.createBuffer();
@@ -113,7 +113,7 @@ function drawScene(gl, programInfo, buffers)
     }
 
     gl.useProgram(programInfo.program);
-    
+
     // Execute the actual draw
     {        
         const vertexCount = 3;
