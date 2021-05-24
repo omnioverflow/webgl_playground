@@ -15,19 +15,28 @@ window.onload = function init()
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
     // Load shaders and initialize attribute buffers
-    const program = initShaders(gl, "vertex-shader", "fragment-shader");
-    gl.useProgram(program);
+    const shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
+    const programInfo = {
+        program: shaderProgram,
+        attribLocations: {
+            vertexPosition: gl.getAttribLocation(shaderProgram, 'aPosition'),
+            textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord')
+        },
+        uniformLocations: {
+            uSampler: gl.getUniformLocation(shaderProgram, 'uSampler')
+        }
+    };
 
-    const buffers = initBuffers(gl, program);
+    const buffers = initBuffers(gl, programInfo);
     // FIXME: leave only the url which is in use
     const texUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
     const texUrl2 = 'https://www.babylonjs-playground.com/textures/floor_bump.PNG';
     const texture = loadTexture(gl, texUrl2);
 
-    drawScene(gl);
+    drawScene(gl, programInfo, buffers);
 };
 
-function initBuffers(gl, program)
+function initBuffers(gl, programInfo)
 {
     const vertices = [
         // v0
@@ -43,20 +52,6 @@ function initBuffers(gl, program)
     gl.bufferData(gl.ARRAY_BUFFER, 
                   new Float32Array(vertices),
                   gl.STATIC_DRAW);
-
-    // Tell GPU how to pull out vertex coordinates
-    // from the data associated to vertex attributes
-    {
-        const numComponents = 2;
-        const type = gl.FLOAT;
-        const normalize = false;
-        const stride = 0;
-        const offset = 0;
-        const aPosition = gl.getAttribLocation(program, "aPosition");
-        gl.vertexAttribPointer(aPosition, numComponents,
-                               type, normalize, stride, offset);
-        gl.enableVertexAttribArray(aPosition);
-    }
 
     // Init texture coordinate buffer
     const textureCoordBuffer = gl.createBuffer();
@@ -74,35 +69,53 @@ function initBuffers(gl, program)
                   new Float32Array(textureCoordinates),
                   gl.STATIC_DRAW);
 
-    // Tell GPU how to pull out texture coordinates
-    // from the data in the buffer
-    {
-        const aTextureCoord = gl.getAttribLocation(program, 
-                                                   "aTextureCoord");
-        const numComponents = 2;
-        const type = gl.FLOAT;
-        const normalize = false;
-        const stride = 0;
-        const offset = 0;
-        gl.vertexAttribPointer(aTextureCoord, numComponents,
-                               type, normalize,
-                               stride, offset);
-        gl.enableVertexAttribArray(aTextureCoord);
-    }
-
     return {
         position: positionBuffer,
         textureCoord: textureCoordBuffer
     }
 }
 
-function drawScene(gl)
+function drawScene(gl, programInfo, buffers)
 {
     // Clear color and depth buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    // Execute the actual draw
+    // Tell GPU how to pull out vertex coordinates
+    // from the data associated to vertex attributes
     {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+
+        const numComponents = 2;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 
+                               numComponents, type, normalize,
+                               stride, offset);
+        gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+    }
+
+    // Tell GPU how to pull out texture coordinates
+    // from the data in the buffer
+    {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+
+        const numComponents = 2;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.vertexAttribPointer(programInfo.attribLocations.textureCoord, 
+                               numComponents, type, normalize,
+                               stride, offset);
+        gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+    }
+
+    gl.useProgram(programInfo.program);
+    
+    // Execute the actual draw
+    {        
         const vertexCount = 3;
         gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
     }
