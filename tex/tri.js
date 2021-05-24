@@ -3,7 +3,7 @@
 
 window.onload = function init()
 {
-    var canvas = document.getElementById("gl-canvas");
+    const canvas = document.getElementById("gl-canvas");
     const gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) 
     {
@@ -15,7 +15,7 @@ window.onload = function init()
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
     // Load shaders and initialize attribute buffers
-    var program = initShaders(gl, "vertex-shader", "fragment-shader")
+    const program = initShaders(gl, "vertex-shader", "fragment-shader")
     gl.useProgram(program);
 
     const buffers = initBuffers(gl, program);
@@ -100,7 +100,7 @@ function drawScene(gl)
 {
     // Clear color and depth buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    
+
     // Execute the actual draw
     {
         const vertexCount = 3;
