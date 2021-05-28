@@ -13,7 +13,7 @@ function procedural_cube(center, size) {
         for (let j = -1; j <= 1; j += 2)
             for (let k = -1; k <= 1; k += 2) {
                 vertices[3 * vertIndex] = i * halfEdge + center[0];
-                vermtices[3 * vertIndex + 1] = j * halfEdge + center[1];
+                vertices[3 * vertIndex + 1] = j * halfEdge + center[1];
                 vertices[3 * vertIndex + 2] = k * halfEdge + center[2];
                 vertIndex++;
             }
