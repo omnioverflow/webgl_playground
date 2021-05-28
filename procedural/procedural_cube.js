@@ -1,4 +1,90 @@
-window.onload = procedural_cube([0.0, 0.0, 0.0], 1.0);
+window.onload = init();
+
+function init() {
+    let dict = {};
+    dict[1] = "trololo";
+    let x = 0;
+    procedural_cube([0.0, 0.0, 0.0], 1.0);
+}
+
+function match_tex_coords(curr_vert,
+                          curr_tex_coord,
+                          tex_coords,
+                          vert_cache) {
+    // No vertices with the same coordinates
+    if (vert_cache == null)
+    // Return itself
+        return curr_vert;
+
+    for (let i = 0; i < vert_cache.length; i++) {
+        const vert = vert_cache[i];
+        const vert_tex_coord = [
+            tex_coords[2 * curr_vert],
+            tex_coords[2 * curr_vert + 1]
+        ];
+        if (curr_tex_coord == vert_tex_coord)
+            return vert;
+    }
+
+    return null;
+}
+
+function reindex_vertex_indices(vertices, 
+                                indices,
+                                tex_coordinates) {
+    let tex_coord_cache = {};
+    let vert_cache = {};
+    for (let i = 0; i < indices.length; i++) {
+        const curr_vert = indices[i];
+        const curr_tex = [tex_coordinates[2 * i], 
+                          tex_coordinates[2 * i + 1]];
+
+        // Current vertex has texture coordinates which
+        // are different from the texture coordinates 
+        // seen so far for the same vertex
+        const correspond_vert = 
+            match_tex_coords(curr_vert,                                                
+                             curr_tex,
+                             tex_coordinates,
+                             vert_cache[curr_vert]);
+        // Found a corresponding vertex which 
+        // differs by having different texture cooridnates
+        if (correspond_vert == null) {
+            // Compute a new vertex index
+            // (vertices hold x, y, z coordinates)
+            // therefore we need to divide by 3
+            const new_vert = vertices.length / 3;
+            // Substitute the current with the
+            // new vertex index
+            indices[i] = new_vert;
+
+            // Add the new vertex coordinates to the vertices
+            // x-coord
+            vertices.push(vertices[3 * curr_vert]);
+            // y-coord
+            vertices.push(vertices[3 * curr_vert + 1]);
+            // z-coord
+            vertices.push(vertices[3 * curr_vert + 2]);
+
+            // Append the new vertex index to the list 
+            // of the vertices that shared the same 
+            // geometric position (i.e. coordinates)
+            let vert_shared = vert_cache[curr_vert];
+            if (vert_shared == null)
+                vert_shared = [new_vert];
+            else
+                vert_shared.push(new_vert);
+
+            vert_cache[curr_vert] = vert_shared;
+        } else 
+            vert_cache[curr_vert] = [curr_vert];
+    }
+
+    return {
+        "vertices": vertices,
+        "indices": indices
+    }
+}
 
 function procedural_cube(center, size) {
     const halfEdge = size / 2;
@@ -6,7 +92,7 @@ function procedural_cube(center, size) {
     const numCoordinates = 3 * numVertices; 
     const numFaces = 6;
 
-    let vertices = new Float32Array(3 * numVertices);
+    let vertices = [];
     
     let vertIndex = 0;
     for (let i = -1; i <= 1; i +=2)
@@ -85,10 +171,13 @@ function procedural_cube(center, size) {
         0.0, 1.0
         ]);
 
+    const reindexed = reindex_vertex_indices(vertices,
+                                             indices,
+                                             textureCoords);
 
     return {
-        vertexCoordinates: vertices,
+        vertexCoordinates: new Float32Array(reindexed["vertices"]),
         textureCoordinates: textureCoords,
-        faces: indices
+        faces: reindexed["indices"]
     }
 }
