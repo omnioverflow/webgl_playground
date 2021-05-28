@@ -9,21 +9,17 @@ function init() {
 
 function match_tex_coords(curr_vert,
                           curr_tex_coord,
-                          tex_coords,
+                          tex_coord_cache,
                           vert_cache) {
     // No vertices with the same coordinates
-    if (vert_cache == null)
+    if (vert_cache == null || !vert_cache.length)
     // Return itself
         return curr_vert;
 
-    for (let i = 0; i < vert_cache.length; i++) {
-        const vert = vert_cache[i];
-        const vert_tex_coord = [
-            tex_coords[2 * curr_vert],
-            tex_coords[2 * curr_vert + 1]
-        ];
-        if (curr_tex_coord == vert_tex_coord)
-            return vert;
+    for (let i = 0; i < tex_coord_cache.length; i++) {
+        if (curr_tex_coord[0] == tex_coord_cache[i][0]
+            && curr_tex_coord[1] == tex_coord_cache[i][1])
+            return vert_cache[i];
     }
 
     return null;
@@ -32,8 +28,8 @@ function match_tex_coords(curr_vert,
 function reindex_vertex_indices(vertices, 
                                 indices,
                                 tex_coordinates) {
-    let tex_coord_cache = {};
-    let vert_cache = {};
+    let tex_coord_cache = [];
+    let vert_cache = [];
 
     for (let i = 0; i < indices.length; i++) {
         const curr_vert = indices[i];
@@ -46,7 +42,7 @@ function reindex_vertex_indices(vertices,
         const correspond_vert = 
             match_tex_coords(curr_vert,                                                
                              curr_tex,
-                             tex_coordinates,
+                             tex_coord_cache[curr_vert],
                              vert_cache[curr_vert]);
         // Found a corresponding vertex which 
         // differs by having different texture cooridnates
@@ -77,11 +73,15 @@ function reindex_vertex_indices(vertices,
                 vert_shared.push(new_vert);
 
             vert_cache[curr_vert] = vert_shared;
+
+            let tex_shared = tex_coord_cache[curr_vert];
+            tex_shared.push(curr_tex);
+            // tex_coord_cache[curr_vert] = tex_shared; 
         } else {
             vert_cache[curr_vert] = [curr_vert];
+            tex_coord_cache[curr_vert] = [curr_tex];
         }
     }
-}
 
     return {
         "vertices": vertices,
