@@ -34,6 +34,7 @@ function reindex_vertex_indices(vertices,
                                 tex_coordinates) {
     let tex_coord_cache = {};
     let vert_cache = {};
+
     for (let i = 0; i < indices.length; i++) {
         const curr_vert = indices[i];
         const curr_tex = [tex_coordinates[2 * i], 
@@ -76,9 +77,11 @@ function reindex_vertex_indices(vertices,
                 vert_shared.push(new_vert);
 
             vert_cache[curr_vert] = vert_shared;
-        } else 
+        } else {
             vert_cache[curr_vert] = [curr_vert];
+        }
     }
+}
 
     return {
         "vertices": vertices,
