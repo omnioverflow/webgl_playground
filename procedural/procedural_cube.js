@@ -1,9 +1,6 @@
 window.onload = init();
 
 function init() {
-    let dict = {};
-    dict[1] = "trololo";
-    let x = 0;
     procedural_cube([0.0, 0.0, 0.0], 1.0);
 }
 
