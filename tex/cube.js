@@ -30,7 +30,6 @@ window.onload = function init()
     const buffers = initBuffers(gl, programInfo);
     // FIXME: leave only the url which is in use
     const texUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
-    const texUrl2 = 'https://www.babylonjs-playground.com/textures/floor_bump.PNG';
     const texture = loadTexture(gl, texUrl, drawScene, programInfo, buffers);
 
     drawScene(gl, programInfo, buffers, texture);
