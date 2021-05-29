@@ -1,8 +1,8 @@
 window.onload = init();
 
-function init() {
-    procedural_cube([0.0, 0.0, 0.0], 1.0);
-}
+// function init() {
+//     procedural_cube([0.0, 0.0, 0.0], 1.0);
+// }
 
 function match_tex_coords(curr_vert,
                           curr_tex_coord,
