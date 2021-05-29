@@ -1,4 +1,4 @@
-window.onload = init();
+// window.onload = init();
 
 // function init() {
 //     procedural_cube([0.0, 0.0, 0.0], 1.0);
