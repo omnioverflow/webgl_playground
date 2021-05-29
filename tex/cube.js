@@ -38,57 +38,39 @@ window.onload = function init()
 
 function initBuffers(gl, programInfo)
 {
-    const vertices = [
-        // v0 (left-bottom)
-        -1.0, -1.0, 
-        // v1 (left-top)
-         -1.0, 1.0,
-        // v2 (right-top)
-         1.0, 1.0,
-        // v3(right-bottom)
-         1.0, -1.0
-        ];
+    const cube = procedural_cube([0.0, 0.0, 0.0], 1.0);
+
     // Load the vertex position data into the GPU
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, 
-                  new Float32Array(vertices),
+                  cube.vertexCoordinates,
                   gl.STATIC_DRAW);
 
     // Init texture coordinate buffer
     const textureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
-    textureCoordinates = [
-        // v0 (left-bottom)
-        0.0, 0.0,
-        // v1 (left-top)
-        0.0, 1.0,
-        // v2 (right-top)
-        1.0, 1.0,        
-        // v3 (right-bottom)
-        1.0, 0.0
-    ];
 
     gl.bufferData(gl.ARRAY_BUFFER, 
-                  new Float32Array(textureCoordinates),
+                  cube.textureCoordinates,
                   gl.STATIC_DRAW);
 
     // Set up an element array buffer to hold indices into
     // vertex array that form triangles
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    const indices = [
-        0, 1, 2,
-        1, 2, 3
-    ];
+
     // send the element array to the GPU
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, 
-                  new Uint16Array(indices), gl.STATIC_DRAW);
+                  cube.faces,
+                  gl.STATIC_DRAW);
 
     return {
         position: positionBuffer,
         textureCoord: textureCoordBuffer,
-        indices: indexBuffer
+        indices: indexBuffer,
+        // vertexCoordinates consist of 3d points, so divide by 3
+        vertexCount: cube.vertexCoordinates.length / 3
     }
 }
 
@@ -107,7 +89,7 @@ function drawScene(gl, programInfo, buffers, texture)
     {
         gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
 
-        const numComponents = 2;
+        const numComponents = 3;
         const type = gl.FLOAT;
         const normalize = false;
         const stride = 0;
@@ -148,7 +130,7 @@ function drawScene(gl, programInfo, buffers, texture)
 
     // Execute the actual draw
     {        
-        const vertexCount = 6;
+        const vertexCount = buffers.vertexCount;
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
