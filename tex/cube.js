@@ -23,7 +23,9 @@ window.onload = function init()
             textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord')
         },
         uniformLocations: {
-            uSampler: gl.getUniformLocation(shaderProgram, 'uSampler')
+            uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
+            uModelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+            uProjectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix')
         }
     };
 
@@ -82,6 +84,21 @@ function drawScene(gl, programInfo, buffers, texture)
 
     // Clear color and depth buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    // Create a perspective matrix, a special matrix that is
+    // used to simulate the distortion of perspective in a camera.
+    // Our field of view is 45 degrees, with a width/height
+    // ratio that matches the display size of the canvas
+    // and we only want to see objects between 0.1 units
+    // and 100 units away from the camera.
+
+    // vertical field-of-view
+    const fovy = 45 * Math.PI / 180;   // in radians
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const z_near = 0.1;
+    const z_far = 100.0;
+
+    const projection_mat = mat4.perspective(fovy, aspect, z_near, z_far);
 
     // Tell GPU how to pull out vertex coordinates
     // from the data associated to vertex attributes
