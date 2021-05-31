@@ -48,7 +48,6 @@ window.onload = function init()
         requestAnimationFrame(render);
     }
 
-    // FIXME: leave only the url which is in use
     const texUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
     const texture = loadTexture(gl, texUrl, render, programInfo,
                                 buffers, model_view);
