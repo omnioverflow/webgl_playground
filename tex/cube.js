@@ -63,6 +63,89 @@ function update(model_view, delta_time) {
 function initBuffers(gl, programInfo)
 {
     const cube = procedural_cube([0.0, 0.0, 0.0], 1.0);
+    // cube.vertexCoordinates = new Float32Array([
+    //     // Front face
+    //     -1.0, -1.0,  1.0,
+    //     1.0, -1.0,  1.0,
+    //     1.0,  1.0,  1.0,
+    //     -1.0,  1.0,  1.0,
+
+    //     // Back face
+    //     -1.0, -1.0, -1.0,
+    //     -1.0,  1.0, -1.0,
+    //     1.0,  1.0, -1.0,
+    //     1.0, -1.0, -1.0,
+
+    //     // Top face
+    //     -1.0,  1.0, -1.0,
+    //     -1.0,  1.0,  1.0,
+    //     1.0,  1.0,  1.0,
+    //     1.0,  1.0, -1.0,
+
+    //     // Bottom face
+    //     -1.0, -1.0, -1.0,
+    //     1.0, -1.0, -1.0,
+    //     1.0, -1.0,  1.0,
+    //     -1.0, -1.0,  1.0,
+
+    //     // Right face
+    //     1.0, -1.0, -1.0,
+    //     1.0,  1.0, -1.0,
+    //     1.0,  1.0,  1.0,
+    //     1.0, -1.0,  1.0,
+
+    //     // Left face
+    //     -1.0, -1.0, -1.0,
+    //     -1.0, -1.0,  1.0,
+    //     -1.0,  1.0,  1.0,
+    //     -1.0,  1.0, -1.0,
+    // ]);
+
+    // cube.textureCoordinates = new Float32Array([
+    //      // Front
+    //     0.0,  0.0,
+    //     1.0,  0.0,
+    //     1.0,  1.0,
+    //     0.0,  1.0,
+    //     // Back
+    //     0.0,  0.0,
+    //     1.0,  0.0,
+    //     1.0,  1.0,
+    //     0.0,  1.0,
+    //     // Top
+    //     0.0,  0.0,
+    //     1.0,  0.0,
+    //     1.0,  1.0,
+    //     0.0,  1.0,
+    //     // Bottom
+    //     0.0,  0.0,
+    //     1.0,  0.0,
+    //     1.0,  1.0,
+    //     0.0,  1.0,
+    //     // Right
+    //     0.0,  0.0,
+    //     1.0,  0.0,
+    //     1.0,  1.0,
+    //     0.0,  1.0,
+    //     // Left
+    //     0.0,  0.0,
+    //     1.0,  0.0,
+    //     1.0,  1.0,
+    //     0.0,  1.0,
+    // ]);
+
+    // cube.faces = new Int16Array([
+    //     0,  1,  2,      0,  2,  3,    // front
+    //     4,  5,  6,      4,  6,  7,    // back
+    //     8,  9,  10,     8,  10, 11,   // top
+    //     12, 13, 14,     12, 14, 15,   // bottom
+    //     16, 17, 18,     16, 18, 19,   // right
+    //     20, 21, 22,     20, 22, 23,   // left
+    // ]);
+
+    // const nbVert = cube.vertexCoordinates.length / 3;
+    // for (let i = 0; i < nbVert; ++i)
+    //     cube.vertexCoordinates[i * 3 + 2] = +2.0;
 
     // Load the vertex position data into the GPU
     const positionBuffer = gl.createBuffer();
@@ -109,52 +192,43 @@ function drawScene(gl, programInfo, buffers,
     // Clear color and depth buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+    // Create a perspective matrix, a special matrix that is
+    // used to simulate the distortion of perspective in a camera.
+    // Our field of view is 45 degrees, with a width/height
+    // ratio that matches the display size of the canvas
+    // and we only want to see objects between 0.1 units
+    // and 100 units away from the camera.
+
+    // vertical field-of-view
+    const fovy = 60 * Math.PI / 180;   // in radians
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const z_near = 0.01;
+    const z_far = 100.0;
+
+    // let projection_mat = mat4.perspective(fovy, aspect, z_near, z_far);
+    let projection_mat = new Float32Array(
+        [1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 
+        0, 0, 0, 0, -1.0020020008087158,
+         -1, 0, 0, -0.20020020008087158, 0]
+        );
+    // let projection_mat = mat4.identity();
+    let modelview_mat = mat4.identity();
+
     {
-        // Create a perspective matrix, a special matrix that is
-        // used to simulate the distortion of perspective in a camera.
-        // Our field of view is 45 degrees, with a width/height
-        // ratio that matches the display size of the canvas
-        // and we only want to see objects between 0.1 units
-        // and 100 units away from the camera.
-
-        // vertical field-of-view
-        const fovy = 45 * Math.PI / 180;   // in radians
-        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-        const z_near = 0.1;
-        const z_far = 100.0;
-
-        const projection_mat = mat4.perspective(fovy, aspect,
-                                                z_near, z_far);
-
-        // Create a model-view matrix
-        let modelview_mat = mat4.create();
-        mat4.translate(modelview_mat, 
-                       [-0.0, 0.0, -6.0],
-                       modelview_mat);
-        // Specify rotation around z-axis
+        modelview_mat = mat4.translate(modelview_mat, 
+                       [-0.0, 0.0, -7.0]);
+        
         const rot_z_radian = model_view.cube_rotation;
         mat4.rotate(modelview_mat,
                     rot_z_radian,
                     [0, 0, 1],
                     modelview_mat);
-        // Rotation around x-axis
+        
         const rot_x_radian = .7 * model_view.cube_rotation;
         mat4.rotate(modelview_mat,
                     rot_x_radian,
                     [1, 0, 0],
                     modelview_mat);
-                    
-        gl.uniformMatrix4fv(
-            programInfo.uniformLocations.projectionMatrix,
-            false,
-            projection_mat);
-
-        gl.uniformMatrix4fv(
-            programInfo.uniformLocations.modelViewMatrix,
-            false,
-            modelview_mat);
-
-        model_view.cube_rotation += delta_time;
     }
 
     // Tell GPU how to pull out vertex coordinates
