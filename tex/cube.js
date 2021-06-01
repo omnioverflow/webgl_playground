@@ -55,6 +55,10 @@ window.onload = function init()
     requestAnimationFrame(render);
 };
 
+function update(model_view, delta_time) {
+    model_view.cube_rotation += delta_time;
+}
+
 function initBuffers(gl, programInfo)
 {
     const cube = procedural_cube([0.0, 0.0, 0.0], 1.0);
