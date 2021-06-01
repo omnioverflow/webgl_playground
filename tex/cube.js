@@ -24,8 +24,8 @@ window.onload = function init()
         },
         uniformLocations: {
             uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-            uModelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-            uProjectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix')
+            modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+            projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix')
         }
     };
 
