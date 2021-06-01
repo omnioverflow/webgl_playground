@@ -1231,22 +1231,30 @@ mat4.set = function(mat, dest) {
  * dest
  */
 mat4.identity = function(dest) {
-	dest[0] = 1;
-	dest[1] = 0;
-	dest[2] = 0;
-	dest[3] = 0;
-	dest[4] = 0;
-	dest[5] = 1;
-	dest[6] = 0;
-	dest[7] = 0;
-	dest[8] = 0;
-	dest[9] = 0;
-	dest[10] = 1;
-	dest[11] = 0;
-	dest[12] = 0;
-	dest[13] = 0;
-	dest[14] = 0;
-	dest[15] = 1;
+    if (typeof dest != 'undefined') {
+	   dest[0] = 1;
+	   dest[1] = 0;
+	   dest[2] = 0;
+	   dest[3] = 0;
+	   dest[4] = 0;
+	   dest[5] = 1;
+	   dest[6] = 0;
+	   dest[7] = 0;
+	   dest[8] = 0;
+	   dest[9] = 0;
+	   dest[10] = 1;
+	   dest[11] = 0;
+	   dest[12] = 0;
+	   dest[13] = 0;
+	   dest[14] = 0;
+	   dest[15] = 1;
+    } else {
+        dest = mat4.create();
+        dest[0] = 1;
+        dest[5] = 1;
+        dest[10] = 1;
+        dest[15] = 1;
+    }
 	return dest;
 };
 
