@@ -39,7 +39,8 @@ window.onload = function init()
     function render(now) {
         // convert millis to seconds
         now *= 0.001;
-        const delta_time = 0.005; //now - then;
+        // FIXME: delta_time = now - then;
+        const delta_time = 0.005;
         then = now;
 
         drawScene(gl, programInfo, buffers, 
