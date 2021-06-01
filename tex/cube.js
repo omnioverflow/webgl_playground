@@ -214,4 +214,7 @@ function drawScene(gl, programInfo, buffers,
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
     }
+
+    // update rendering state
+    update(model_view, delta_time);
 }
