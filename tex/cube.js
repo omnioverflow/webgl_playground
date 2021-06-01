@@ -196,6 +196,17 @@ function drawScene(gl, programInfo, buffers,
     // Associate shader sampler to texture unit 0
     gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
+    // Configure matrix uniforms
+    gl.uniformMatrix4fv(
+            programInfo.uniformLocations.projectionMatrix,
+            false,
+            projection_mat);
+
+    gl.uniformMatrix4fv(
+            programInfo.uniformLocations.modelViewMatrix,
+            false,
+            modelview_mat);
+
     // Execute the actual draw
     {        
         const vertexCount = buffers.vertexCount;
