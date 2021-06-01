@@ -21,7 +21,7 @@
       {
         // FIXME: make working the projection and model-view matrix
         uProjectionMatrix * uModelViewMatrix;
-        gl_Position = aPosition;
+        gl_Position = uProjectionMatrix * uModelViewMatrix * aPosition;
         vTextureCoord = aTextureCoord;
       }
     </script>
