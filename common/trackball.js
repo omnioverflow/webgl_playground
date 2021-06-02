@@ -3,10 +3,13 @@ class Trackball {
     currPos = vec2(NaN, NaN);
     screenWidth = -1;
     screenHeight = -1;
+    objectCenterX vec2(NaN, NaN);
 
-    constructor(screenWidth, screenHeight) {
+    constructor(screenWidth, screenHeight,
+                objectCenter) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.objectCenter = objectCenter;
     }
 
     onMouseDown(event) {
