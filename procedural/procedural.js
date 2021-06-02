@@ -26,6 +26,28 @@ class ProceduralQuad {
     }
 }
 
+class FullScreenQuad {
+    vertexCoordinates = new Float32Array([]);
+    textureCoordinates = new Float32Array([]);
+    faces = new Int16Array([]);
+
+    constructor() {
+        vertexCoordinates = new Float32Array([
+                -1.0, 0.0, 0.0, // left vertex
+                0.0, 1.0, 0.0, // top vertex
+                1.0, 0.0, 0.0, // right vertex
+                0.0, -1.0, 0.0  // bottom vertex
+            ]);
+        textureCoordinates = new Float32Array([
+                0.0, 0.0,
+                0.0, 1.0,
+                1.0, 1.0,
+                1.0, 0.0
+            ]);
+        faces = new Int16Array([0, 1, 2, 2, 3, 0]);
+    }
+}
+
 class ProceduralCube {
 
     vertexCoordinates = new Float32Array([]);
