@@ -10,19 +10,19 @@ class ProceduralQuad {
     faces = new Int16Array([]);
 
     constructor() {
-        vertexCoordinates = new Float32Array([
+        this.vertexCoordinates = new Float32Array([
                 -0.5, 0.0, 0.0, // left vertex
                 0.0, 1.0, 0.0, // top vertex
                 0.5, 0.0, 0.0, // right vertex
                 0.0, -1.0, 0.0  // bottom vertex
             ]);
-        textureCoordinates = new Float32Array([
+        this.textureCoordinates = new Float32Array([
                 0.0, 0.0,
                 0.0, 1.0,
                 1.0, 1.0,
                 1.0, 0.0
             ]);
-        faces = new Int16Array([0, 1, 2, 2, 3, 0]);
+        this.faces = new Int16Array([0, 1, 2, 2, 3, 0]);
     }
 }
 
@@ -32,24 +32,23 @@ class FullScreenQuad {
     faces = new Int16Array([]);
 
     constructor() {
-        vertexCoordinates = new Float32Array([
+        this.vertexCoordinates = new Float32Array([
                 -1.0, 0.0, 0.0, // left vertex
                 0.0, 1.0, 0.0, // top vertex
                 1.0, 0.0, 0.0, // right vertex
                 0.0, -1.0, 0.0  // bottom vertex
             ]);
-        textureCoordinates = new Float32Array([
+        this.textureCoordinates = new Float32Array([
                 0.0, 0.0,
                 0.0, 1.0,
                 1.0, 1.0,
                 1.0, 0.0
             ]);
-        faces = new Int16Array([0, 1, 2, 2, 3, 0]);
+        this.faces = new Int16Array([0, 1, 2, 2, 3, 0]);
     }
 }
 
 class ProceduralCube {
-
     vertexCoordinates = new Float32Array([]);
     textureCoordinates = new Float32Array([]);
     faces = new Int16Array([]);
@@ -142,9 +141,9 @@ class ProceduralCube {
                                                  indices,
                                                  textureCoords);
 
-        vertexCoordinates = new Float32Array(reindexed["vertices"]);
-        textureCoordinates = textureCoords;
-        faces = reindexed["indices"];
+        this.vertexCoordinates = new Float32Array(reindexed["vertices"]);
+        this.textureCoordinates = textureCoords;
+        this.faces = reindexed["indices"];
     }
 
     match_tex_coords(curr_vert, curr_tex_coord,
