@@ -15,21 +15,21 @@ window.onload = function init()
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
     // Load shaders and initialize attribute buffers
-    const shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
+    const shaderProgramCube = initShaders(gl, "vertex-shader", "fragment-shader");
     const programInfo = {
-        program: shaderProgram,
+        program: shaderProgramCube,
         attribLocations: {
-            vertexPosition: gl.getAttribLocation(shaderProgram, 'aPosition'),
-            textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord')
+            vertexPosition: gl.getAttribLocation(shaderProgramCube, 'aPosition'),
+            textureCoord: gl.getAttribLocation(shaderProgramCube, 'aTextureCoord')
         },
         uniformLocations: {
-            uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-            modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-            projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix')
+            uSampler: gl.getUniformLocation(shaderProgramCube, 'uSampler'),
+            modelViewMatrix: gl.getUniformLocation(shaderProgramCube, 'uModelViewMatrix'),
+            projectionMatrix: gl.getUniformLocation(shaderProgramCube, 'uProjectionMatrix')
         }
     };
 
-    const buffers = initBuffers(gl, programInfo);    
+    const buffersCube = initBuffers(gl, programInfo);    
 
     const model_view = {
         cube_rotation : 0.0
@@ -43,7 +43,7 @@ window.onload = function init()
         const delta_time = 0.005;
         then = now;
 
-        drawScene(gl, programInfo, buffers, 
+        drawScene(gl, programInfo, buffersCube, 
             texture, model_view, delta_time);
 
         requestAnimationFrame(render);
@@ -51,7 +51,7 @@ window.onload = function init()
 
     const texUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
     const texture = loadTexture(gl, texUrl, render, programInfo,
-                                buffers, model_view);
+                                buffersCube, model_view);
     
     requestAnimationFrame(render);
 };
