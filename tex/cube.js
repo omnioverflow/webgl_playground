@@ -16,7 +16,7 @@ window.onload = function init()
 
     // Load shaders and initialize attribute buffers
     const shaderProgramCube = initShaders(gl, "vertex-shader", "fragment-shader");
-    const programInfo = {
+    const programInfoCube = {
         program: shaderProgramCube,
         attribLocations: {
             vertexPosition: gl.getAttribLocation(shaderProgramCube, 'aPosition'),
@@ -29,11 +29,18 @@ window.onload = function init()
         }
     };
 
-    const buffersCube = initBuffers(gl, programInfo);    
+    const buffersCube = initBuffers(gl, programInfoCube);    
 
     const model_view = {
         cube_rotation : 0.0
     };
+
+    const buffers = { "cube": buffersCube };
+    const shaders = { "cube": programInfoCube };
+    let renderData = {
+        "buffers": buffers,
+        "shaders": shaders
+    }
 
     let then = 0;
     function render(now) {
@@ -43,15 +50,17 @@ window.onload = function init()
         const delta_time = 0.005;
         then = now;
 
-        drawScene(gl, programInfo, buffersCube, 
-            texture, model_view, delta_time);
+        drawScene(gl, renderData, model_view, delta_time);
 
         requestAnimationFrame(render);
     }
 
-    const texUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
-    const texture = loadTexture(gl, texUrl, render, programInfo,
-                                buffersCube, model_view);
+    const textureUrlCube = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
+    const textureCube = loadTexture(gl, textureUrlCube, render,
+                                    programInfoCube, buffersCube, model_view);
+
+    const textures = { "cube" : textureCube };
+    renderData["textures"] = textures;
     
     requestAnimationFrame(render);
 };
@@ -181,8 +190,7 @@ function initBuffers(gl, programInfo)
     }
 }
 
-function drawScene(gl, programInfo, buffers,
-                   texture, model_view, delta_time)
+function drawScene(gl, renderData, model_view, delta_time)
 {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
@@ -192,107 +200,113 @@ function drawScene(gl, programInfo, buffers,
     // Clear color and depth buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    // Create a perspective matrix, a special matrix that is
-    // used to simulate the distortion of perspective in a camera.
-    // Our field of view is 45 degrees, with a width/height
-    // ratio that matches the display size of the canvas
-    // and we only want to see objects between 0.1 units
-    // and 100 units away from the camera.
+    { // render cube scope
+        const programInfo = renderData.shaders.cube;
+        const buffers = renderData.buffers.cube;
+        const texture = renderData.textures.cube;
 
-    // vertical field-of-view
-    const fovy = 60 * Math.PI / 180;   // in radians
-    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-    const z_near = 0.01;
-    const z_far = 100.0;
+        // Create a perspective matrix, a special matrix that is
+        // used to simulate the distortion of perspective in a camera.
+        // Our field of view is 45 degrees, with a width/height
+        // ratio that matches the display size of the canvas
+        // and we only want to see objects between 0.1 units
+        // and 100 units away from the camera.
 
-    // let projection_mat = mat4.perspective(fovy, aspect, z_near, z_far);
-    let projection_mat = new Float32Array(
-        [1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 
-        0, 0, 0, 0, -1.0020020008087158,
-         -1, 0, 0, -0.20020020008087158, 0]
-        );
-    // let projection_mat = mat4.identity();
-    let modelview_mat = mat4.identity();
+        // vertical field-of-view
+        const fovy = 60 * Math.PI / 180;   // in radians
+        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        const z_near = 0.01;
+        const z_far = 100.0;
 
-    {
-        modelview_mat = mat4.translate(modelview_mat, 
-                       [-0.0, 0.0, -7.0]);
-        
-        const rot_z_radian = model_view.cube_rotation;
-        mat4.rotate(modelview_mat,
-                    rot_z_radian,
-                    [0, 0, 1],
-                    modelview_mat);
-        
-        const rot_x_radian = .7 * model_view.cube_rotation;
-        mat4.rotate(modelview_mat,
-                    rot_x_radian,
-                    [1, 0, 0],
-                    modelview_mat);
-    }
+        // let projection_mat = mat4.perspective(fovy, aspect, z_near, z_far);
+        let projection_mat = new Float32Array(
+            [1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 
+            0, 0, 0, 0, -1.0020020008087158,
+             -1, 0, 0, -0.20020020008087158, 0]
+            );
+        // let projection_mat = mat4.identity();
+        let modelview_mat = mat4.identity();
 
-    // Tell GPU how to pull out vertex coordinates
-    // from the data associated to vertex attributes
-    {
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+        {
+            modelview_mat = mat4.translate(modelview_mat, 
+                           [-0.0, 0.0, -7.0]);
+            
+            const rot_z_radian = model_view.cube_rotation;
+            mat4.rotate(modelview_mat,
+                        rot_z_radian,
+                        [0, 0, 1],
+                        modelview_mat);
+            
+            const rot_x_radian = .7 * model_view.cube_rotation;
+            mat4.rotate(modelview_mat,
+                        rot_x_radian,
+                        [1, 0, 0],
+                        modelview_mat);
+        }
 
-        const numComponents = 3;
-        const type = gl.FLOAT;
-        const normalize = false;
-        const stride = 0;
-        const offset = 0;
-        gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 
-                               numComponents, type, normalize,
-                               stride, offset);
-        gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-    }
+        gl.useProgram(programInfo.program);
 
-    // Tell GPU how to pull out texture coordinates
-    // from the data in the buffer
-    {
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+        // Tell GPU how to pull out vertex coordinates
+        // from the data associated to vertex attributes
+        {
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
 
-        const numComponents = 2;
-        const type = gl.FLOAT;
-        const normalize = false;
-        const stride = 0;
-        const offset = 0;
-        gl.vertexAttribPointer(programInfo.attribLocations.textureCoord, 
-                               numComponents, type, normalize,
-                               stride, offset);
-        gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
-    }
+            const numComponents = 3;
+            const type = gl.FLOAT;
+            const normalize = false;
+            const stride = 0;
+            const offset = 0;
+            gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 
+                                   numComponents, type, normalize,
+                                   stride, offset);
+            gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+        }
 
-    gl.useProgram(programInfo.program);
+        // Tell GPU how to pull out texture coordinates
+        // from the data in the buffer
+        {
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
 
-    // Bind element array buffer
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+            const numComponents = 2;
+            const type = gl.FLOAT;
+            const normalize = false;
+            const stride = 0;
+            const offset = 0;
+            gl.vertexAttribPointer(programInfo.attribLocations.textureCoord, 
+                                   numComponents, type, normalize,
+                                   stride, offset);
+            gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+        }
 
-    // Specify texture to WebGL
-    // Use texture unit 0
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    // Associate shader sampler to texture unit 0
-    gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+        // Bind element array buffer
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
-    // Configure matrix uniforms
-    gl.uniformMatrix4fv(
-            programInfo.uniformLocations.projectionMatrix,
-            false,
-            projection_mat);
+        // Specify texture to WebGL
+        // Use texture unit 0
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        // Associate shader sampler to texture unit 0
+        gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
-    gl.uniformMatrix4fv(
-            programInfo.uniformLocations.modelViewMatrix,
-            false,
-            modelview_mat);
+        // Configure matrix uniforms
+        gl.uniformMatrix4fv(
+                programInfo.uniformLocations.projectionMatrix,
+                false,
+                projection_mat);
 
-    // Execute the actual draw
-    {        
-        const vertexCount = buffers.vertexCount;
-        const type = gl.UNSIGNED_SHORT;
-        const offset = 0;
-        gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
-    }
+        gl.uniformMatrix4fv(
+                programInfo.uniformLocations.modelViewMatrix,
+                false,
+                modelview_mat);
+
+        // Execute the actual draw
+        {        
+            const vertexCount = buffers.vertexCount;
+            const type = gl.UNSIGNED_SHORT;
+            const offset = 0;
+            gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+        }
+    } // render cube
 
     // update rendering state
     update(model_view, delta_time);
