@@ -6,6 +6,7 @@
     <title>WebGL Playground: Triangle</title>
     <link rel="stylesheet" href="../common/css/webgl.css" type="text/css">
 
+    <!-- =================================================================== -->
     <!-- Shaders for cube rendering -->    
     <script id="vertex-shader" type="x-shader/x-vertex">      
       #version 100
@@ -38,6 +39,28 @@
       void main()
       {
         gl_FragColor = texture2D(uSampler, vTextureCoord);
+      }
+    </script>
+    <!-- =================================================================== -->
+    <!-- Shaders for the trackball -->
+    <script id="vertex-shader-trackball" type="x-shader/x-vertex">      
+      #version 100
+
+      attribute vec4 aPosition;
+      
+      void main()
+      {
+        gl_Position = aPosition;
+      }
+    </script>
+    <script id="fragment-shader-trackball" type="x-shader/x-fragment">      
+      #version 100
+
+      precision mediump float;
+
+      void main()
+      {
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
       }
     </script>
 
