@@ -62,7 +62,7 @@ function update(model_view, delta_time) {
 
 function initBuffers(gl, programInfo)
 {
-    const cube = procedural_cube([0.0, 0.0, 0.0], 1.0);
+    const cube = new ProceduralCube([0.0, 0.0, 0.0], 1.0);
     // cube.vertexCoordinates = new Float32Array([
     //     // Front face
     //     -1.0, -1.0,  1.0,
