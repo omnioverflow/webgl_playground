@@ -10,9 +10,6 @@ window.onload = function init()
         alert("WebGL isn't available");
     }
 
-    // Configure WebGL
-    gl.viewport(0, 0, canvas.width, canvas.height);
-
     // Load shaders and initialize attribute buffers
     const shaderProgramCube = initShaders(gl, "vertex-shader", "fragment-shader");
     const programInfoCube = {
