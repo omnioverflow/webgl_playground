@@ -3,12 +3,7 @@
 
 window.onload = function init()
 {
-    const canvas = document.getElementById("gl-canvas");
-    const gl = WebGLUtils.setupWebGL(canvas);
-    if (!gl) 
-    {
-        alert("WebGL isn't available");
-    }
+    const gl = setupWebGL();
 
     // Load shaders and initialize attribute buffers
     const shaderProgramCube = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -60,6 +55,16 @@ window.onload = function init()
     
     requestAnimationFrame(render);
 };
+
+function setupWebGL() {
+    const canvas = document.getElementById("gl-canvas");
+    const gl = WebGLUtils.setupWebGL(canvas);
+    if (!gl) 
+    {
+        alert("WebGL isn't available");
+    }
+    return gl;
+}
 
 function update(model_view, delta_time) {
     model_view.cube_rotation += delta_time;
