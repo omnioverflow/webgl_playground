@@ -5,27 +5,8 @@ window.onload = function init()
 {
     const gl = setupWebGL();
 
-    // Compile shaders and set up buffers
-    // For the fullscreen overlay and cube object
-    const overlayData = setupOverlay();
-    const cubeData = setupCube();
-
-    const model_view = {
-        cube_rotation : 0.0
-    };
-
-    const buffers = { "overlay" : overlay.buffers
-                      "cube": cube.buffers,};
-    const shaders = { "overlay" : overlay.programInfo,
-                      "cube" : programInfo };
-    const textures = { "overlay" : overlay.texture,
-                       "cube" : cube.texture }
-    let renderData = {
-        "buffers": buffers,
-        "shaders": shaders,
-        "textures": textures
-    }
-
+    const modelView = { cube_rotation : 0.0 };
+    // "Forward declare" render function
     let then = 0;
     function render(now) {
         // convert millis to seconds
@@ -34,9 +15,26 @@ window.onload = function init()
         const delta_time = 0.005;
         then = now;
 
-        drawScene(gl, renderData, model_view, delta_time);
+        drawScene(gl, renderData, modelView, delta_time);
 
         requestAnimationFrame(render);
+    }
+
+    // Compile shaders and set up buffers
+    // For the fullscreen overlay and cube object
+    const overlayData = setupOverlay(gl);
+    const cubeData = setupCube(gl, render);
+
+    const buffers = { "overlay" : overlayData.buffers,
+                      "cube": cubeData.buffers };
+    const shaders = { "overlay" : overlayData.programInfo,
+                      "cube" : cubeData.programInfo };
+    const textures = { "overlay" : overlayData.texture,
+                       "cube" : cubeData.texture }
+    let renderData = {
+        "buffers": buffers,
+        "shaders": shaders,
+        "textures": textures
     }
     
     requestAnimationFrame(render);
@@ -52,35 +50,39 @@ function setupWebGL() {
     return gl;
 }
 
-function setupOverlay() {
+function setupOverlay(gl) {
     // FIXME: provide impl
+    return { "buffers" : [], "programInfo" : {}, "texture" : 0}
 }
 
-function setupCube() {
+function setupCube(gl, render, modelView) {
     // FIXME: provide impl
     // Load shaders and initialize attribute buffers
-    const shaderProgramCube = initShaders(gl, "vertex-shader", "fragment-shader");
-    const programInfoCube = {
-        program: shaderProgramCube,
+    const shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
+    const programInfo = {
+        program: shaderProgram,
         attribLocations: {
-            vertexPosition: gl.getAttribLocation(shaderProgramCube, 'aPosition'),
-            textureCoord: gl.getAttribLocation(shaderProgramCube, 'aTextureCoord')
+            vertexPosition: gl.getAttribLocation(shaderProgram, 'aPosition'),
+            textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord')
         },
         uniformLocations: {
-            uSampler: gl.getUniformLocation(shaderProgramCube, 'uSampler'),
-            modelViewMatrix: gl.getUniformLocation(shaderProgramCube, 'uModelViewMatrix'),
-            projectionMatrix: gl.getUniformLocation(shaderProgramCube, 'uProjectionMatrix')
+            uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
+            modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+            projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix')
         }
     };
 
-    const buffersCube = initBuffers(gl, programInfoCube);
+    const buffers = initBuffers(gl, shaderProgram);
 
-    const textureUrlCube = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
-    const textureCube = loadTexture(gl, textureUrlCube, render,
-                                    programInfoCube, buffersCube, model_view);
+    const textureUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
+    const texture = loadTexture(gl, textureUrl, render,
+                                    shaderProgram, buffers, modelView);
 
-    const textures = { "cube" : textureCube };
-    renderData["textures"] = textures;
+    return { 
+        "buffers" : buffers,
+        "programInfo" : programInfo,
+        "texture" : texture
+        };
 }
 
 function update(model_view, delta_time) {
