@@ -5,6 +5,59 @@ window.onload = function init()
 {
     const gl = setupWebGL();
 
+    // Compile shaders and set up buffers
+    // For the fullscreen overlay and cube object
+    const overlayData = setupOverlay();
+    const cubeData = setupCube();
+
+    const model_view = {
+        cube_rotation : 0.0
+    };
+
+    const buffers = { "overlay" : overlay.buffers
+                      "cube": cube.buffers,};
+    const shaders = { "overlay" : overlay.programInfo,
+                      "cube" : programInfo };
+    const textures = { "overlay" : overlay.texture,
+                       "cube" : cube.texture }
+    let renderData = {
+        "buffers": buffers,
+        "shaders": shaders,
+        "textures": textures
+    }
+
+    let then = 0;
+    function render(now) {
+        // convert millis to seconds
+        now *= 0.001;
+        // FIXME: delta_time = now - then;
+        const delta_time = 0.005;
+        then = now;
+
+        drawScene(gl, renderData, model_view, delta_time);
+
+        requestAnimationFrame(render);
+    }
+    
+    requestAnimationFrame(render);
+};
+
+function setupWebGL() {
+    const canvas = document.getElementById("gl-canvas");
+    const gl = WebGLUtils.setupWebGL(canvas);
+    if (!gl) 
+    {
+        alert("WebGL isn't available");
+    }
+    return gl;
+}
+
+function setupOverlay() {
+    // FIXME: provide impl
+}
+
+function setupCube() {
+    // FIXME: provide impl
     // Load shaders and initialize attribute buffers
     const shaderProgramCube = initShaders(gl, "vertex-shader", "fragment-shader");
     const programInfoCube = {
@@ -20,31 +73,7 @@ window.onload = function init()
         }
     };
 
-    const buffersCube = initBuffers(gl, programInfoCube);    
-
-    const model_view = {
-        cube_rotation : 0.0
-    };
-
-    const buffers = { "cube": buffersCube };
-    const shaders = { "cube": programInfoCube };
-    let renderData = {
-        "buffers": buffers,
-        "shaders": shaders
-    }
-
-    let then = 0;
-    function render(now) {
-        // convert millis to seconds
-        now *= 0.001;
-        // FIXME: delta_time = now - then;
-        const delta_time = 0.005;
-        then = now;
-
-        drawScene(gl, renderData, model_view, delta_time);
-
-        requestAnimationFrame(render);
-    }
+    const buffersCube = initBuffers(gl, programInfoCube);
 
     const textureUrlCube = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
     const textureCube = loadTexture(gl, textureUrlCube, render,
@@ -52,18 +81,6 @@ window.onload = function init()
 
     const textures = { "cube" : textureCube };
     renderData["textures"] = textures;
-    
-    requestAnimationFrame(render);
-};
-
-function setupWebGL() {
-    const canvas = document.getElementById("gl-canvas");
-    const gl = WebGLUtils.setupWebGL(canvas);
-    if (!gl) 
-    {
-        alert("WebGL isn't available");
-    }
-    return gl;
 }
 
 function update(model_view, delta_time) {
