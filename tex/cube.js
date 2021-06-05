@@ -72,7 +72,7 @@ function setupCube(gl, render, modelView) {
         }
     };
 
-    const buffers = initBuffers(gl, shaderProgram);
+    const buffers = initCubeBuffers(gl, shaderProgram);
 
     const textureUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
     const texture = loadTexture(gl, textureUrl, render,
@@ -89,7 +89,7 @@ function update(model_view, delta_time) {
     model_view.cube_rotation += delta_time;
 }
 
-function initBuffers(gl, programInfo)
+function initCubeBuffers(gl, programInfo)
 {
     const cube = new ProceduralCube([0.0, 0.0, 0.0], 1.0);
     // cube.vertexCoordinates = new Float32Array([
@@ -208,7 +208,7 @@ function initBuffers(gl, programInfo)
         // vertexCoordinates consist of 3d points, so divide by 3
         vertexCount: cube.vertexCoordinates.length / 3
     }
-}
+} // initCubeBuffers
 
 function drawScene(gl, renderData, model_view, delta_time)
 {
