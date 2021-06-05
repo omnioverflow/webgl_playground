@@ -53,7 +53,7 @@ function setupWebGL() {
 function setupOverlay(gl) {
     // FIXME: provide impl
     return { "buffers" : [], "programInfo" : {}, "texture" : 0}
-}
+} // setupOverlay
 
 function setupCube(gl, render, modelView) {
     // FIXME: provide impl
@@ -83,7 +83,7 @@ function setupCube(gl, render, modelView) {
         "programInfo" : programInfo,
         "texture" : texture
         };
-}
+} // setupCode
 
 function update(model_view, delta_time) {
     model_view.cube_rotation += delta_time;
@@ -330,4 +330,4 @@ function drawScene(gl, renderData, model_view, delta_time)
 
     // update rendering state
     update(model_view, delta_time);
-}
+} // drawScene
