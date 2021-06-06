@@ -11,18 +11,18 @@ window.onload = function init()
     function render(now) {
         // convert millis to seconds
         now *= 0.001;
-        // FIXME: delta_time = now - then;
-        const delta_time = 0.005;
+        // FIXME: deltaTime = now - then;
+        const deltaTime = 0.005;
         then = now;
 
-        drawScene(gl, renderData, modelView, delta_time);
+        drawScene(gl, renderData, modelView, deltaTime);
 
         requestAnimationFrame(render);
     }
 
     // Compile shaders and set up buffers
     // For the fullscreen overlay and cube object
-    const overlayData = setupOverlay(gl);
+    //const overlayData = setupOverlay(gl);
     const cubeData = setupCube(gl, render);
 
     const buffers = { "overlay" : overlayData.buffers,
@@ -97,8 +97,8 @@ function setupCube(gl, render, modelView) {
         };
 } // setupCode
 
-function update(model_view, delta_time) {
-    model_view.cube_rotation += delta_time;
+function update(modelView, deltaTime) {
+    modelView.cube_rotation += deltaTime;
 }
 
 function initOverlayBuffers(gl, programInfo)
@@ -157,7 +157,7 @@ function initCubeBuffers(gl, programInfo)
     }
 } // initCubeBuffers
 
-function drawScene(gl, renderData, model_view, delta_time)
+function drawScene(gl, renderData, modelView, deltaTime)
 {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
@@ -198,13 +198,13 @@ function drawScene(gl, renderData, model_view, delta_time)
             modelview_mat = mat4.translate(modelview_mat, 
                            [-0.0, 0.0, -7.0]);
             
-            const rot_z_radian = model_view.cube_rotation;
+            const rot_z_radian = modelView.cube_rotation;
             mat4.rotate(modelview_mat,
                         rot_z_radian,
                         [0, 0, 1],
                         modelview_mat);
             
-            const rot_x_radian = .7 * model_view.cube_rotation;
+            const rot_x_radian = .7 * modelView.cube_rotation;
             mat4.rotate(modelview_mat,
                         rot_x_radian,
                         [1, 0, 0],
@@ -276,5 +276,5 @@ function drawScene(gl, renderData, model_view, delta_time)
     } // render cube
 
     // update rendering state
-    update(model_view, delta_time);
+    update(modelView, deltaTime);
 } // drawScene
