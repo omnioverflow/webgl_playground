@@ -22,7 +22,7 @@ window.onload = function init()
 
     // Compile shaders and set up buffers
     // For the fullscreen overlay and cube object
-    //const overlayData = setupOverlay(gl);
+    const overlayData = setupOverlay(gl);
     const cubeData = setupCube(gl, render);
 
     const buffers = { "overlay" : overlayData.buffers,
