@@ -144,7 +144,89 @@ class ProceduralCube {
         this.vertexCoordinates = new Float32Array(reindexed["vertices"]);
         this.textureCoordinates = textureCoords;
         this.faces = reindexed["indices"];
-    }
+    } // ctor 1
+
+    // Ctor with the hardcoded values
+    constructor(center, size, flag) {
+        // argument flag is a workaround to differentiate from another ctor
+        cube.vertexCoordinates = new Float32Array([
+            // Front face
+            -1.0, -1.0,  1.0,
+            1.0, -1.0,  1.0,
+            1.0,  1.0,  1.0,
+            -1.0,  1.0,  1.0,
+
+            // Back face
+            -1.0, -1.0, -1.0,
+            -1.0,  1.0, -1.0,
+            1.0,  1.0, -1.0,
+            1.0, -1.0, -1.0,
+
+            // Top face
+            -1.0,  1.0, -1.0,
+            -1.0,  1.0,  1.0,
+            1.0,  1.0,  1.0,
+            1.0,  1.0, -1.0,
+
+            // Bottom face
+            -1.0, -1.0, -1.0,
+            1.0, -1.0, -1.0,
+            1.0, -1.0,  1.0,
+            -1.0, -1.0,  1.0,
+
+            // Right face
+            1.0, -1.0, -1.0,
+            1.0,  1.0, -1.0,
+            1.0,  1.0,  1.0,
+            1.0, -1.0,  1.0,
+
+            // Left face
+            -1.0, -1.0, -1.0,
+            -1.0, -1.0,  1.0,
+            -1.0,  1.0,  1.0,
+            -1.0,  1.0, -1.0,
+        ]);
+        cube.textureCoordinates = new Float32Array([
+             // Front
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Back
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Top
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Bottom
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Right
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Left
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+        ]);
+        cube.faces = new Int16Array([
+            0,  1,  2,      0,  2,  3,    // front
+            4,  5,  6,      4,  6,  7,    // back
+            8,  9,  10,     8,  10, 11,   // top
+            12, 13, 14,     12, 14, 15,   // bottom
+            16, 17, 18,     16, 18, 19,   // right
+            20, 21, 22,     20, 22, 23,   // left
+        ]);
+    } // ctor 2
 
     match_tex_coords(curr_vert, curr_tex_coord,
                      tex_coord_cache, vert_cache) {

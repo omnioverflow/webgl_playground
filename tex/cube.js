@@ -89,88 +89,27 @@ function update(model_view, delta_time) {
     model_view.cube_rotation += delta_time;
 }
 
+function initOverlayBuffers(gl, programInfo)
+{
+    const overlay = new ProceduralQuad();
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, overlay.vertexCoordinates, gl.STATIC_DRAW);
+
+    const indexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, overlay.faces. gl.STATIC_DRAW);
+
+    return {
+        position : positionBuffer,
+        indices : indexBufer,
+        vertexCount : overlay.vertexCoordinates.length / 3
+    }
+}
+
 function initCubeBuffers(gl, programInfo)
 {
     const cube = new ProceduralCube([0.0, 0.0, 0.0], 1.0);
-    // cube.vertexCoordinates = new Float32Array([
-    //     // Front face
-    //     -1.0, -1.0,  1.0,
-    //     1.0, -1.0,  1.0,
-    //     1.0,  1.0,  1.0,
-    //     -1.0,  1.0,  1.0,
-
-    //     // Back face
-    //     -1.0, -1.0, -1.0,
-    //     -1.0,  1.0, -1.0,
-    //     1.0,  1.0, -1.0,
-    //     1.0, -1.0, -1.0,
-
-    //     // Top face
-    //     -1.0,  1.0, -1.0,
-    //     -1.0,  1.0,  1.0,
-    //     1.0,  1.0,  1.0,
-    //     1.0,  1.0, -1.0,
-
-    //     // Bottom face
-    //     -1.0, -1.0, -1.0,
-    //     1.0, -1.0, -1.0,
-    //     1.0, -1.0,  1.0,
-    //     -1.0, -1.0,  1.0,
-
-    //     // Right face
-    //     1.0, -1.0, -1.0,
-    //     1.0,  1.0, -1.0,
-    //     1.0,  1.0,  1.0,
-    //     1.0, -1.0,  1.0,
-
-    //     // Left face
-    //     -1.0, -1.0, -1.0,
-    //     -1.0, -1.0,  1.0,
-    //     -1.0,  1.0,  1.0,
-    //     -1.0,  1.0, -1.0,
-    // ]);
-
-    // cube.textureCoordinates = new Float32Array([
-    //      // Front
-    //     0.0,  0.0,
-    //     1.0,  0.0,
-    //     1.0,  1.0,
-    //     0.0,  1.0,
-    //     // Back
-    //     0.0,  0.0,
-    //     1.0,  0.0,
-    //     1.0,  1.0,
-    //     0.0,  1.0,
-    //     // Top
-    //     0.0,  0.0,
-    //     1.0,  0.0,
-    //     1.0,  1.0,
-    //     0.0,  1.0,
-    //     // Bottom
-    //     0.0,  0.0,
-    //     1.0,  0.0,
-    //     1.0,  1.0,
-    //     0.0,  1.0,
-    //     // Right
-    //     0.0,  0.0,
-    //     1.0,  0.0,
-    //     1.0,  1.0,
-    //     0.0,  1.0,
-    //     // Left
-    //     0.0,  0.0,
-    //     1.0,  0.0,
-    //     1.0,  1.0,
-    //     0.0,  1.0,
-    // ]);
-
-    // cube.faces = new Int16Array([
-    //     0,  1,  2,      0,  2,  3,    // front
-    //     4,  5,  6,      4,  6,  7,    // back
-    //     8,  9,  10,     8,  10, 11,   // top
-    //     12, 13, 14,     12, 14, 15,   // bottom
-    //     16, 17, 18,     16, 18, 19,   // right
-    //     20, 21, 22,     20, 22, 23,   // left
-    // ]);
 
     // Load the vertex position data into the GPU
     const positionBuffer = gl.createBuffer();
