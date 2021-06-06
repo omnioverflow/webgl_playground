@@ -146,9 +146,9 @@ class ProceduralCube {
         this.faces = reindexed["indices"];
     } // ctor 1
 
-    // Ctor with the hardcoded values
-    constructor(center, size, flag) {
-        // argument flag is a workaround to differentiate from another ctor
+    // Factory method for the hardcoded cube
+    static hardCodedCube(center, size) {
+        let cube = new ProceduralCube(center, size);
         cube.vertexCoordinates = new Float32Array([
             // Front face
             -1.0, -1.0,  1.0,
@@ -226,7 +226,7 @@ class ProceduralCube {
             16, 17, 18,     16, 18, 19,   // right
             20, 21, 22,     20, 22, 23,   // left
         ]);
-    } // ctor 2
+    }
 
     match_tex_coords(curr_vert, curr_tex_coord,
                      tex_coord_cache, vert_cache) {
