@@ -43,7 +43,7 @@
     </script>
     <!-- =================================================================== -->
     <!-- Shaders for the trackball -->
-    <script id="vertex-shader-trackball" type="x-shader/x-vertex">      
+    <script id="vertex-shader-overlay" type="x-shader/x-vertex">      
       #version 100
 
       attribute vec4 aPosition;
@@ -53,7 +53,7 @@
         gl_Position = aPosition;
       }
     </script>
-    <script id="fragment-shader-trackball" type="x-shader/x-fragment">      
+    <script id="fragment-shader-overlay" type="x-shader/x-fragment">      
       #version 100
 
       precision mediump float;

@@ -52,7 +52,19 @@ function setupWebGL() {
 
 function setupOverlay(gl) {
     // FIXME: provide impl
-    return { "buffers" : [], "programInfo" : {}, "texture" : 0}
+    const shaderProgram = initShaders(gl, "vertex-shader-overlay",
+                                      "fragment-shader-overlay");
+    const programInfo = {
+        program: shaderProgram,
+        attribLocations: {
+                vertexPosition: gl.getAttribLocation(shaderProgram, "aPosition"),
+            },
+        uniformLocations: {}
+    };
+
+    const buffers = initOverlayBuffers(gl, shaderProgram);
+
+    return { "buffers" : buffers, "programInfo" : programInfo }
 } // setupOverlay
 
 function setupCube(gl, render, modelView) {
