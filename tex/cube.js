@@ -5,7 +5,7 @@ window.onload = function init()
 {
     const gl = setupWebGL();
 
-    const modelView = { cube_rotation : 0.0 };
+    const modelView = { cubeRotation : 0.0 };
     // "Forward declare" render function
     let then = 0;
     function render(now) {
@@ -98,7 +98,7 @@ function setupCube(gl, render, modelView) {
 } // setupCode
 
 function update(modelView, deltaTime) {
-    modelView.cube_rotation += deltaTime;
+    modelView.cubeRotation += deltaTime;
 }
 
 function initOverlayBuffers(gl, programInfo)
@@ -199,13 +199,13 @@ function drawScene(gl, renderData, modelView, deltaTime)
             modelview_mat = mat4.translate(modelview_mat, 
                            [-0.0, 0.0, -7.0]);
             
-            const rot_z_radian = modelView.cube_rotation;
+            const rot_z_radian = modelView.cubeRotation;
             mat4.rotate(modelview_mat,
                         rot_z_radian,
                         [0, 0, 1],
                         modelview_mat);
             
-            const rot_x_radian = .7 * modelView.cube_rotation;
+            const rot_x_radian = .7 * modelView.cubeRotation;
             mat4.rotate(modelview_mat,
                         rot_x_radian,
                         [1, 0, 0],
