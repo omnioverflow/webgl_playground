@@ -104,17 +104,18 @@ function update(modelView, deltaTime) {
 function initOverlayBuffers(gl, programInfo)
 {
     const overlay = new ProceduralQuad();
-    const positionBuffer = gl.createBuffer();
+
+    const positionBuffer = gl.createBuffer(); 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, overlay.vertexCoordinates, gl.STATIC_DRAW);
 
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, overlay.faces. gl.STATIC_DRAW);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, overlay.faces, gl.STATIC_DRAW);
 
     return {
         position : positionBuffer,
-        indices : indexBufer,
+        indices : indexBuffer,
         vertexCount : overlay.vertexCoordinates.length / 3
     }
 }
