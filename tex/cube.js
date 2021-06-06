@@ -172,10 +172,6 @@ function initCubeBuffers(gl, programInfo)
     //     20, 21, 22,     20, 22, 23,   // left
     // ]);
 
-    // const nbVert = cube.vertexCoordinates.length / 3;
-    // for (let i = 0; i < nbVert; ++i)
-    //     cube.vertexCoordinates[i * 3 + 2] = +2.0;
-
     // Load the vertex position data into the GPU
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
