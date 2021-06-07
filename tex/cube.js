@@ -1,6 +1,8 @@
 // look at:
 // https://github.com/mdn/webgl-examples/blob/gh-pages/tutorial/sample6/webgl-demo.js
 
+// FIXME: resolve remaining FIXMEs ;-)
+
 window.onload = function init()
 {
     const gl = setupWebGL();
