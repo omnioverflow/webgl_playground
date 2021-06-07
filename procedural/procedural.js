@@ -33,10 +33,10 @@ class FullScreenQuad {
 
     constructor() {
         this.vertexCoordinates = new Float32Array([
-                -1.0, 0.0, 0.0, // left vertex
-                0.0, 1.0, 0.0, // top vertex
-                1.0, 0.0, 0.0, // right vertex
-                0.0, -1.0, 0.0  // bottom vertex
+                -1.0, -1.0, 0.0, // bottom left vertex
+                -1.0, 1.0, 0.0, // top left vertex
+                1.0, 1.0, 0.0, // top right vertex
+                1.0, -1.0, 0.0  // bottom right vertex
             ]);
         this.textureCoordinates = new Float32Array([
                 0.0, 0.0,
