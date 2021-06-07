@@ -170,114 +170,155 @@ function drawScene(gl, renderData, modelView, deltaTime)
     // Clear color and depth buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    { // render cube scope
-        const programInfo = renderData.shaders.cube;
-        const buffers = renderData.buffers.cube;
-        const texture = renderData.textures.cube;
+    // Draw rotating cube
+    drawCube(gl, renderData, modelView, deltaTime);
 
-        // Create a perspective matrix, a special matrix that is
-        // used to simulate the distortion of perspective in a camera.
-        // Our field of view is 45 degrees, with a width/height
-        // ratio that matches the display size of the canvas
-        // and we only want to see objects between 0.1 units
-        // and 100 units away from the camera.
+    // Draw the overlay quad
+    drawOverlay(gl, renderData, modelView, deltaTime);
 
-        // vertical field-of-view
-        const fovy = 60 * Math.PI / 180;   // in radians
-        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-        const z_near = 0.01;
-        const z_far = 100.0;
-
-        // let projection_mat = mat4.perspective(fovy, aspect, z_near, z_far);
-        let projection_mat = new Float32Array(
-            [1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 
-            0, 0, 0, 0, -1.0020020008087158,
-             -1, 0, 0, -0.20020020008087158, 0]
-            );
-        // let projection_mat = mat4.identity();
-        let modelview_mat = mat4.identity();
-
-        {
-            modelview_mat = mat4.translate(modelview_mat, 
-                           [-0.0, 0.0, -7.0]);
-            
-            const rot_z_radian = modelView.cubeRotation;
-            mat4.rotate(modelview_mat,
-                        rot_z_radian,
-                        [0, 0, 1],
-                        modelview_mat);
-            
-            const rot_x_radian = .7 * modelView.cubeRotation;
-            mat4.rotate(modelview_mat,
-                        rot_x_radian,
-                        [1, 0, 0],
-                        modelview_mat);
-        }
-
-        gl.useProgram(programInfo.program);
-
-        // Tell GPU how to pull out vertex coordinates
-        // from the data associated to vertex attributes
-        {
-            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-
-            const numComponents = 3;
-            const type = gl.FLOAT;
-            const normalize = false;
-            const stride = 0;
-            const offset = 0;
-            gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 
-                                   numComponents, type, normalize,
-                                   stride, offset);
-            gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-        }
-
-        // Tell GPU how to pull out texture coordinates
-        // from the data in the buffer
-        {
-            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
-
-            const numComponents = 2;
-            const type = gl.FLOAT;
-            const normalize = false;
-            const stride = 0;
-            const offset = 0;
-            gl.vertexAttribPointer(programInfo.attribLocations.textureCoord, 
-                                   numComponents, type, normalize,
-                                   stride, offset);
-            gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
-        }
-
-        // Bind element array buffer
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
-
-        // Specify texture to WebGL
-        // Use texture unit 0
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        // Associate shader sampler to texture unit 0
-        gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
-
-        // Configure matrix uniforms
-        gl.uniformMatrix4fv(
-                programInfo.uniformLocations.projectionMatrix,
-                false,
-                projection_mat);
-
-        gl.uniformMatrix4fv(
-                programInfo.uniformLocations.modelViewMatrix,
-                false,
-                modelview_mat);
-
-        // Execute the actual draw
-        {        
-            const vertexCount = buffers.vertexCount;
-            const type = gl.UNSIGNED_SHORT;
-            const offset = 0;
-            gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
-        }
-    } // render cube
-
-    // update rendering state
+    // Update view frustrum
     update(modelView, deltaTime);
 } // drawScene
+
+function drawCube(gl, renderData, modelView, deltaTime) {
+    const programInfo = renderData.shaders.cube;
+    const buffers = renderData.buffers.cube;
+    const texture = renderData.textures.cube;
+
+    // Create a perspective matrix, a special matrix that is
+    // used to simulate the distortion of perspective in a camera.
+    // Our field of view is 45 degrees, with a width/height
+    // ratio that matches the display size of the canvas
+    // and we only want to see objects between 0.1 units
+    // and 100 units away from the camera.
+
+    // vertical field-of-view
+    const fovy = 60 * Math.PI / 180;   // in radians
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const z_near = 0.01;
+    const z_far = 100.0;
+
+    // let projection_mat = mat4.perspective(fovy, aspect, z_near, z_far);
+    let projection_mat = new Float32Array(
+        [1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 
+        0, 0, 0, 0, -1.0020020008087158,
+         -1, 0, 0, -0.20020020008087158, 0]
+        );
+    // let projection_mat = mat4.identity();
+    let modelview_mat = mat4.identity();
+
+    {
+        modelview_mat = mat4.translate(modelview_mat, 
+                       [-0.0, 0.0, -7.0]);
+        
+        const rot_z_radian = modelView.cubeRotation;
+        mat4.rotate(modelview_mat,
+                    rot_z_radian,
+                    [0, 0, 1],
+                    modelview_mat);
+        
+        const rot_x_radian = .7 * modelView.cubeRotation;
+        mat4.rotate(modelview_mat,
+                    rot_x_radian,
+                    [1, 0, 0],
+                    modelview_mat);
+    }
+
+    gl.useProgram(programInfo.program);
+
+    // Tell GPU how to pull out vertex coordinates
+    // from the data associated to vertex attributes
+    {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+
+        const numComponents = 3;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 
+                               numComponents, type, normalize,
+                               stride, offset);
+        gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+    }
+
+    // Tell GPU how to pull out texture coordinates
+    // from the data in the buffer
+    {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+
+        const numComponents = 2;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.vertexAttribPointer(programInfo.attribLocations.textureCoord, 
+                               numComponents, type, normalize,
+                               stride, offset);
+        gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+    }
+
+    // Bind element array buffer
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+
+    // Specify texture to WebGL
+    // Use texture unit 0
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    // Associate shader sampler to texture unit 0
+    gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+
+    // Configure matrix uniforms
+    gl.uniformMatrix4fv(
+            programInfo.uniformLocations.projectionMatrix,
+            false,
+            projection_mat);
+
+    gl.uniformMatrix4fv(
+            programInfo.uniformLocations.modelViewMatrix,
+            false,
+            modelview_mat);
+
+    // Execute the actual draw
+    {        
+        const vertexCount = buffers.vertexCount;
+        const type = gl.UNSIGNED_SHORT;
+        const offset = 0;
+        gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+    }
+}
+
+function drawOverlay(gl, renderData, modelView, deltaTime) {
+    // FIXME: provide impl
+    const programInfo = renderData.shaders.overlay;
+    const buffers = renderData.buffers.overlay;
+    const texture = renderData.textures.overlay;
+
+     gl.useProgram(programInfo.program);
+
+    // Tell GPU how to pull out vertex coordinates
+    {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+
+        const numComponents = 3;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 
+                               numComponents, type, normalize,
+                               stride, offset);
+        gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+    }
+
+    // Bind element array buffer
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+
+    // Execute the actual draw
+    {        
+        const vertexCount = buffers.vertexCount;
+        const type = gl.UNSIGNED_SHORT;
+        const offset = 0;
+        gl.drawElements(gl.TRIANGLES, 6, type, offset);
+    }
+}
