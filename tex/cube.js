@@ -118,7 +118,7 @@ function initOverlayBuffers(gl, programInfo)
     return {
         position : positionBuffer,
         indices : indexBuffer,
-        vertexCount : overlay.vertexCoordinates.length / 3
+        nbIndices : overlay.faces.length
     }
 }
 
@@ -155,8 +155,7 @@ function initCubeBuffers(gl, programInfo)
         position: positionBuffer,
         textureCoord: textureCoordBuffer,
         indices: indexBuffer,
-        // vertexCoordinates consist of 3d points, so divide by 3
-        vertexCount: cube.vertexCoordinates.length / 3
+        nbIndices: cube.faces.length
     }
 } // initCubeBuffers
 
@@ -281,10 +280,10 @@ function drawCube(gl, renderData, modelView, deltaTime) {
 
     // Execute the actual draw
     {        
-        const vertexCount = buffers.vertexCount;
+        const nbIndices = buffers.nbIndices;
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
-        gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+        gl.drawElements(gl.TRIANGLES, nbIndices, type, offset);
     }
 }
 
@@ -322,9 +321,9 @@ function drawOverlay(gl, renderData, modelView, deltaTime) {
 
     // Execute the actual draw
     {        
-        const vertexCount = buffers.vertexCount;
+        const nbIndices = buffers.nbIndices;
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
-        gl.drawElements(gl.TRIANGLES, 6, type, offset);
+        gl.drawElements(gl.TRIANGLES, nbIndices, type, offset);
     }
 }
