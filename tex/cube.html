@@ -45,10 +45,15 @@
       #version 100
 
       attribute vec4 aPosition;
+      // vCurrPosition will be interpolated inside 
+      // the fragment shader giving us a workaround
+      // for a pixel position in the scree-space NDC
+      varying vec2 vCurrPosition;
       
       void main()
       {
         gl_Position = aPosition;
+        vCurrPosition = vec2(aPosition.xy);
       }
     </script>
     <script id="fragment-shader-overlay" type="x-shader/x-fragment">      
@@ -56,9 +61,17 @@
 
       precision mediump float;
 
+      varying vec2 vCurrPosition;
+
       void main()
       {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.3);
+        float x = vCurrPosition.x;
+        float y = vCurrPosition.y;
+        float distFromCenter = sqrt(x * x + y * y);
+        if (distFromCenter < 1.0)
+          gl_FragColor = vec4(1.0, 1.0, 1.0, 0.1 + 0.2 * distFromCenter * distFromCenter);
+        else
+          gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
       }
     </script>
 
