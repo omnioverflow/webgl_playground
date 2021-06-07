@@ -22,7 +22,7 @@ class ProceduralQuad {
                 1.0, 1.0,
                 1.0, 0.0
             ]);
-        this.faces = new Int16Array([0, 1, 2, 2, 3, 0]);
+        this.faces = new Int16Array([2, 1, 0, 0, 3, 2]);
     }
 }
 
@@ -44,7 +44,7 @@ class FullScreenQuad {
                 1.0, 1.0,
                 1.0, 0.0
             ]);
-        this.faces = new Int16Array([0, 1, 2, 2, 3, 0]);
+        this.faces = new Int16Array([2, 1, 0, 0, 3, 2]);
     }
 }
 
