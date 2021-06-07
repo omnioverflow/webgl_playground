@@ -105,7 +105,7 @@ function update(modelView, deltaTime) {
 
 function initOverlayBuffers(gl, programInfo)
 {
-    const overlay = new ProceduralQuad();
+    const overlay = new FullScreenQuad();
 
     const positionBuffer = gl.createBuffer(); 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
