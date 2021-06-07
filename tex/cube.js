@@ -311,6 +311,12 @@ function drawOverlay(gl, renderData, modelView, deltaTime) {
         gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
     }
 
+    // Enable color blending for the transparency effect
+    gl.enable(gl.BLEND);
+    // Specify blending percentages
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+
     // Bind element array buffer
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
