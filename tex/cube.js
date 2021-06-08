@@ -33,7 +33,11 @@ class WebGLController {
             attribLocations: {
                     vertexPosition: gl.getAttribLocation(shaderProgram, "aPosition"),
                 },
-            uniformLocations: {}
+            uniformLocations: {
+                drawEffectFlag: gl.getUniformLocation(shaderProgram, "uDrawEffectFlag"),
+                prevMousePos: gl.getUniformLocation(shaderProgram, "uPrevMousePos"),
+                currMousePos: gl.getUniformLocation(shaderProgram, "uCurrMousePos")
+            }
         };
 
         const buffers = this.initOverlayBuffers(gl, shaderProgram);
