@@ -305,7 +305,10 @@ class WebGLController {
         // render function which takes only one argument (current time millis)
         // from requestAnimationFrame. Check if it does not create some retain 
         // cycle (as it has a memory leak code smell)
+        // Check if WeakRef could be used instead? 
+        // (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef)
         const self = this;
+
         const renderFn = function render(now) {
             // convert millis to seconds
             now *= 0.001;
