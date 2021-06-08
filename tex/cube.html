@@ -63,6 +63,10 @@
 
       varying vec2 vCurrPosition;
 
+      uniform bool uDrawEffectFlag;
+      uniform vec2 uPrevMousePos;
+      uniform vec2 uCurrMousePos;
+
       void main()
       {
         float x = vCurrPosition.x;
@@ -72,6 +76,31 @@
           gl_FragColor = vec4(1.0, 1.0, 1.0, 0.1 + 0.2 * distFromCenter * distFromCenter);
         else
           gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
+
+
+        float x0 = uPrevMousePos.x;
+        float y0 = uPrevMousePos.y;
+        float x1 = uCurrMousePos.x;
+        float y1 = uCurrMousePos.y;
+        x0 = 0.5;
+        y0 = 0.5;
+        x1 = 0.7;
+        y1 = 0.88;
+        float x_min = min(x0, x1);
+        float x_max = max(x0, x1);
+        float y_min = min(y0, y1);
+        float y_max = max(y0, y1);
+
+        // Compute slope and intersect coeffs for y = a * x + b
+        // line passing through uPrevMousePos and uCurrMousePos
+        // FIXME: corner case is division by zero
+        float a = (y1 - y0) / (x1 - x0); // slope
+        float b = y0 - a * x0; // intersect
+
+        float eps = 0.01;
+        if (uDrawEffectFlag || true)
+          if (x >= x_min && x <= x_max && abs(y - (a * x + b)) < eps)
+            gl_FragColor = vec4(0.0, 0.1, 0.9, 1.0);
       }
     </script>    
   </head>
