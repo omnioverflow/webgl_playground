@@ -10,7 +10,9 @@
 // =============================================================================
 class WebGLController {
     // noop ctor
-    constructor() {}
+    constructor() {
+        this.virtualTrackball = new VirtualTrackball(100, 100);
+    }
 
     setupWebGL() {
         const canvas = document.getElementById("gl-canvas");
@@ -295,8 +297,24 @@ class WebGLController {
         }
     } // drawOverlay
 
+    registerListeners(gl) {
+        gl.canvas.addEventListener("mousedown", event => {            
+            this.virtualTrackball.onMouseDown(
+                    new vec2(event.pageX, event.pageY)
+                );
+        });
+
+        gl.canvas.addEventListener("mouseup", e => {
+            this.virtualTrackball.onMouseUp(
+                    new vec2(event.pageX, event.pageY)
+                );
+        });
+    }
+
     init() {
         const gl = this.setupWebGL();
+
+        this.registerListeners(gl);
 
         const modelView = { cubeRotation : 0.0 };
         // "Forward declare" render function
