@@ -10,11 +10,11 @@ class VirtualTrackball {
         this.currPos = vec2.create(new Float32Array([NaN, NaN]));
     }
 
-    onMouseDown(event) {
+    onMouseDown(pos) {
         // FIXME: missing impl
     }
 
-    onMouseUp(event) {
+    onMouseUp(pos) {
         // FIXME: missing impl
     }
 } // class Trackball
