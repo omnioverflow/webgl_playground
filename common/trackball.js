@@ -3,10 +3,8 @@ class Trackball {
     currPos = vec2(NaN, NaN);
     screenWidth = -1;
     screenHeight = -1;
-    objectCenterX vec2(NaN, NaN);
 
-    constructor(screenWidth, screenHeight,
-                objectCenter) {
+    constructor(screenWidth, screenHeight) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.objectCenter = objectCenter;
