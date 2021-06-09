@@ -67,6 +67,10 @@
       uniform vec2 uPrevMousePos;
       uniform vec2 uCurrMousePos;
 
+      bool isZero(float x) {
+        return abs(x) < 0.0000001;
+      }
+
       void main()
       {
         float x = vCurrPosition.x;
@@ -76,7 +80,6 @@
           gl_FragColor = vec4(1.0, 1.0, 1.0, 0.1 + 0.2 * distFromCenter * distFromCenter);
         else
           gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
-
 
         float x0 = uPrevMousePos.x;
         float y0 = uPrevMousePos.y;
@@ -94,10 +97,24 @@
         float a = (y1 - y0) / (x1 - x0); // slope
         float b = y0 - a * x0; // intersect
 
-        float eps = 0.01;
+        float thickness = 0.05;
+        // Color associated to (x0, y0)
+        vec4 c0 = vec4(1.0, 0.0, 0.0, 1.0);
+        // Color associated to (x1, y1)
+        vec4 c1 = vec4(0.0, 0.0, 1.0, 1.0);
         if (uDrawEffectFlag || true)
-          if (x >= x_min && x <= x_max && abs(y - (a * x + b)) < eps)
-            gl_FragColor = vec4(0.0, 0.1, 0.9, 1.0);
+          if (x >= x_min && x <= x_max && abs(y - (a * x + b)) < thickness) {
+            float d0 = distance(vec2(x, y), vec2(x0, y0));
+            float d1 = distance(vec2(x, y), vec2(x1, y1));
+            if (isZero(d0))
+              gl_FragColor = c0;
+            else if (isZero(d1))
+              gl_FragColor = c1;
+            else {
+              float alpha = d0 / d1;
+              gl_FragColor = alpha * c0 + (1.0 - alpha) * c1;
+            }
+          }
       }
     </script>    
   </head>
