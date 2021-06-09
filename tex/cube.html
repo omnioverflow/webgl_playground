@@ -102,7 +102,7 @@
         vec4 c0 = vec4(1.0, 0.0, 0.0, 1.0);
         // Color associated to (x1, y1)
         vec4 c1 = vec4(0.0, 0.0, 1.0, 1.0);
-        if (uDrawEffectFlag || true) {
+        if (uDrawEffectFlag) {
           if (x >= x_min && x <= x_max && abs(y - (a * x + b)) < thickness) {
             float d0 = distance(vec2(x, y), vec2(x0, y0));
             float d1 = distance(vec2(x, y), vec2(x1, y1));
