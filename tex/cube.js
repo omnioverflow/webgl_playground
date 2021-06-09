@@ -301,21 +301,24 @@ class WebGLController {
         }
     } // drawOverlay
 
+    setupVirtualTrackball(canvasWidth, canvasHeight) {
+        this.virtualTrackball.canvasWidth = canvasWidth;
+        this.virtualTrackball.canvasHeight = canvasHeight;
+    }
+
     registerListeners(gl) {
         const canvasHeight = gl.canvas.clientHeight;
         const canvsWidth = gl.canvas.clientWidth;
 
         gl.canvas.addEventListener("mousedown", event => {            
             this.virtualTrackball.onMouseDown(
-                    new vec2(event.pageX / canvasWidth, 
-                             event.pageY / canvasHeight)
+                    new vec2(event.pageX, event.pageY)
                 );
         });
 
         gl.canvas.addEventListener("mouseup", e => {
             this.virtualTrackball.onMouseUp(
-                    new vec2(event.pageX / canvasWidth, 
-                             event.pageY / canvasHeight)
+                    new vec2(event.pageX, event.pageY)
                 );
         });
     } // registerListeners
@@ -323,6 +326,7 @@ class WebGLController {
     init() {
         const gl = this.setupWebGL();
 
+        this.setupVirtualTrackball(gl.canvas.clientWidth, gl.canvas.clientHeight);
         this.registerListeners(gl);
 
         const modelView = { cubeRotation : 0.0 };
