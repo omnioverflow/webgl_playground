@@ -11,7 +11,7 @@
 class WebGLController {
     // noop ctor
     constructor() {
-        this.virtualTrackball = new VirtualTrackball(100, 100);
+        this.virtualTrackball = new VirtualTrackball();
     }
 
     setupWebGL() {
@@ -302,18 +302,23 @@ class WebGLController {
     } // drawOverlay
 
     registerListeners(gl) {
+        const canvasHeight = gl.canvas.clientHeight;
+        const canvsWidth = gl.canvas.clientWidth;
+
         gl.canvas.addEventListener("mousedown", event => {            
             this.virtualTrackball.onMouseDown(
-                    new vec2(event.pageX, event.pageY)
+                    new vec2(event.pageX / canvasWidth, 
+                             event.pageY / canvasHeight)
                 );
         });
 
         gl.canvas.addEventListener("mouseup", e => {
             this.virtualTrackball.onMouseUp(
-                    new vec2(event.pageX, event.pageY)
+                    new vec2(event.pageX / canvasWidth, 
+                             event.pageY / canvasHeight)
                 );
         });
-    }
+    } // registerListeners
 
     init() {
         const gl = this.setupWebGL();

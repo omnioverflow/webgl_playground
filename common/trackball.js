@@ -1,11 +1,5 @@
 class VirtualTrackball {
-    screenWidth = -1;
-    screenHeight = -1;
-
-    constructor(screenWidth, screenHeight) {
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-        
+    constructor() {
         this.prevPos = vec2.create(new Float32Array([NaN, NaN]));
         this.currPos = vec2.create(new Float32Array([NaN, NaN]));
     }
