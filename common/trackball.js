@@ -46,10 +46,18 @@ class VirtualTrackball {
 
     convertToNDC(vector) {
         // Translate to NDC origin
-        vector[0] -= this.#canvasWidth / 2;
-        vector[1] -= this.#canvasHeight / 2;
-        vector[0] /= this.#canvasWidth;
-        vector[1] /= this.#canvasHeight;
+        const halfWidth = this.#canvasWidth / 2;
+        const halfHeight = this.#canvasHeight / 2;
+
+        // 1. Convert vector to fit range [0, 2] x [0, 2]
+        vector[0] /= halfWidth;
+        vector[1] /= halfHeight;
+        // 2. Translate origin from top-left to NDC center
+        //    and flip the y-axis
+        // such that x' = x - 1; and y' = 1 - y; 
+        vector[0] = vector[0] - 1;
+        vector[1] = 1 - vector[1];      
+
         return vector;
     } // convertToNDC
 
