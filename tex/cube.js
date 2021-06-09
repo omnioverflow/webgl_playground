@@ -288,9 +288,21 @@ class WebGLController {
         // Specify blending percentages
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-
         // Bind element array buffer
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+
+        {
+            const uniformLoc = programInfo.uniformLocations;
+            const drawEffectFlag = this.virtualTrackball.drawEffectFlag;
+            gl.uniform1i(uniformLoc.drawEffectFlag, drawEffectFlag);
+            if (drawEffectFlag) {
+                gl.uniform2fv(uniformLoc.prevMousePos, 
+                    this.virtualTrackball.prevMousePos);
+                gl.uniform2fv(uniformLoc.currMousePos,
+                    this.virtualTrackball.currMousePos);
+            }
+
+        }
 
         // Execute the actual draw
         {        
@@ -306,19 +318,16 @@ class WebGLController {
         this.virtualTrackball.canvasHeight = canvasHeight;
     }
 
-    registerListeners(gl) {
-        const canvasHeight = gl.canvas.clientHeight;
-        const canvsWidth = gl.canvas.clientWidth;
-
+    registerListeners(gl) {        
         gl.canvas.addEventListener("mousedown", event => {            
             this.virtualTrackball.onMouseDown(
-                    new vec2(event.pageX, event.pageY)
+                    vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );
         });
 
         gl.canvas.addEventListener("mouseup", e => {
             this.virtualTrackball.onMouseUp(
-                    new vec2(event.pageX, event.pageY)
+                    vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );
         });
     } // registerListeners
