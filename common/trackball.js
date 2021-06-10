@@ -62,8 +62,8 @@ class VirtualTrackball {
     } // convertToNDC
 
     onMouseDown(pos) {
-
         this.prevMousePos = this.convertToNDC(pos);
+        this.#drawEffectFlag = false;
     } // onMouseDown
 
     onMouseUp(pos) {
