@@ -62,14 +62,38 @@ class VirtualTrackball {
     } // convertToNDC
 
     computeRotation() {
-        // Given p1 and p2 as previous and current mouse positions
-        // in NDC space, the outline of the algorithmis as follows:
-        // 1. Project p1 and p2 onto the virtual trackball sphere
-        // 2. Find the axis of rotation (n = cross(p1, p2))
-        // 3. Compute the angle between p1 and p2
+        // 1. Project previous and current positions
+        //  onto the virtual trackball sphere
+        const x0 = this.prevMousePos[0];
+        const y0 = this.prevMousePos[1];
+        const z0 = Math.sqrt(1.0 - x0 * x0 - y0 * y0);
+        const p0 = vec3.create([x0, y0, z0]);
+
+        const x1 = this.currMousePos[0];
+        const y1 = this.currMousePos[1];
+        const z1 = Math.sqrt(1.0 - x1 * x1 - y1 * y1);
+        const p1 = vec3.create([x1, y1, z1]);
+
+        // 2. Find the axis of rotation (n = cross(p0, p1))
+        const n = vec3.cross(p0, p1);
+
+        // 3. Compute the angle between p0 and p1
+        const length0 = vec3.length(p0);
+        const length1 = vec3.length(p1);
+        if (length0 == 0 || legnth1 == 0)
+            // FIXME: early exit
+            return mat4.create();
+
+        const theta = Math.asin(vec3.length(n) / (length0 * length1));
+
         // 4. Construct a quaternion corresponding to the rotation around
         //    the aforementioned axis
+        const q = quat4.create([n[0], n[1], n[2], theta]);
+
         // 5. Convert the quaternion to the corresponding rotation matrix
+        const R = quat4.toMat4(q);
+
+        return R;
     }
 
     onMouseDown(pos) {
