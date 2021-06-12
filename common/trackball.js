@@ -88,6 +88,8 @@ class VirtualTrackball {
             return mat4.create();
 
         const theta = Math.asin(vec3.length(n) / (length0 * length1));
+        // FIXME: verify the correctness of computation
+        // of the angle between p0 and p1
 
         // 4. Construct a quaternion corresponding to the rotation around
         //    the aforementioned axis
