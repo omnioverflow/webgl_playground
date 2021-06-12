@@ -105,5 +105,7 @@ class VirtualTrackball {
         this.currMousePos = this.convertToNDC(pos);
         this.#drawEffectFlag = true;
         this.timestamp = Date.now();
+
+        this.computeRotation();
     } // onMouseUp
 } // class Trackball
