@@ -80,7 +80,7 @@ class VirtualTrackball {
         // 3. Compute the angle between p0 and p1
         const length0 = vec3.length(p0);
         const length1 = vec3.length(p1);
-        if (length0 == 0 || legnth1 == 0)
+        if (length0 == 0 || length1 == 0)
             // FIXME: early exit
             return mat4.create();
 
