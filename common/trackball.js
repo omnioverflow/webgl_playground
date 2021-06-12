@@ -75,6 +75,9 @@ class VirtualTrackball {
         const p1 = vec3.create([x1, y1, z1]);
 
         // 2. Find the axis of rotation (n = cross(p0, p1))
+        //    after the normalization of p0 and p1
+        vec3.normalize(p0);
+        vec3.normalize(p1);
         const n = vec3.cross(p0, p1);
 
         // 3. Compute the angle between p0 and p1
