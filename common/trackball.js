@@ -116,6 +116,6 @@ class VirtualTrackball {
         this.#drawEffectFlag = true;
         this.timestamp = Date.now();
 
-        this.computeRotation();
+        return this.computeRotation();
     } // onMouseUp
 } // class Trackball
