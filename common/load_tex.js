@@ -7,7 +7,7 @@
 // When the image finished loading copy it into the texture.
 //
 function loadTexture(gl, url, drawCallback, programInfo, 
-                     buffers, modelView) {
+                     buffers, params = {}) {
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
@@ -50,7 +50,7 @@ function loadTexture(gl, url, drawCallback, programInfo,
     }
 
     if (drawCallback != null)
-      drawCallback(gl, programInfo, buffers, texture, modelView);
+      drawCallback(gl, programInfo, buffers, texture, params);
   };
   image.src = url;
 

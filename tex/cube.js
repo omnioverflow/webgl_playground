@@ -45,7 +45,7 @@ class WebGLController {
         return { "buffers" : buffers, "programInfo" : programInfo }
     } // setupOverlay
 
-    setupCube(gl, render, modelView) {
+    setupCube(gl, render) {
         // FIXME: provide impl
         // Load shaders and initialize attribute buffers
         const shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -65,8 +65,9 @@ class WebGLController {
         const buffers = this.initCubeBuffers(gl, shaderProgram);
 
         const textureUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
+
         const texture = loadTexture(gl, textureUrl, render,
-                                        shaderProgram, buffers, modelView);
+                                    shaderProgram, buffers);
 
         return { 
             "buffers" : buffers,
@@ -75,8 +76,8 @@ class WebGLController {
             };
     } // setupCube
 
-    update(modelView, deltaTime) {
-        modelView.cubeRotation += deltaTime;
+    update(deltaTime) {
+        this.modelView.cubeRotation += deltaTime;
     } // update
 
     initOverlayBuffers(gl, progarmInfo) {
@@ -133,7 +134,7 @@ class WebGLController {
         }
     } // initCubeBuffers
 
-    drawScene(gl, renderData, modelView, deltaTime) {
+    drawScene(gl, renderData, deltaTime) {
         gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
         gl.clearDepth(1.0);                 // Clear everything
         gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -143,16 +144,16 @@ class WebGLController {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         // Draw rotating cube
-        this.drawCube(gl, renderData, modelView, deltaTime);
+        this.drawCube(gl, renderData, deltaTime);
 
         // Draw the overlay quad
-        this.drawOverlay(gl, renderData, modelView, deltaTime);
+        this.drawOverlay(gl, renderData, deltaTime);
 
         // Update view frustrum
-        this.update(modelView, deltaTime);
+        this.update(deltaTime);
     } // drawScene
 
-    drawCube(gl, renderData, modelView, deltaTime) {
+    drawCube(gl, renderData, deltaTime) {
         const programInfo = renderData.shaders.cube;
         const buffers = renderData.buffers.cube;
         const texture = renderData.textures.cube;
@@ -183,13 +184,13 @@ class WebGLController {
             modelview_mat = mat4.translate(modelview_mat, 
                            [-0.0, 0.0, -7.0]);
             
-            const rot_z_radian = modelView.cubeRotation;
+            const rot_z_radian = this.modelView.cubeRotation;
             mat4.rotate(modelview_mat,
                         rot_z_radian,
                         [0, 0, 1],
                         modelview_mat);
             
-            const rot_x_radian = .7 * modelView.cubeRotation;
+            const rot_x_radian = .7 * this.modelView.cubeRotation;
             mat4.rotate(modelview_mat,
                         rot_x_radian,
                         [1, 0, 0],
@@ -260,7 +261,7 @@ class WebGLController {
         }
     } // drawCube
 
-    drawOverlay(gl, renderData, modelView, deltaTime) {
+    drawOverlay(gl, renderData, deltaTime) {
         // FIXME: provide impl
         const programInfo = renderData.shaders.overlay;
         const buffers = renderData.buffers.overlay;
@@ -338,7 +339,7 @@ class WebGLController {
         this.setupVirtualTrackball(gl.canvas.clientWidth, gl.canvas.clientHeight);
         this.registerListeners(gl);
 
-        const modelView = { cubeRotation : 0.0 };
+        this.modelView = { cubeRotation : 0.0 };
         // "Forward declare" render function
         let then = 0;
         // /!\ A disgraceful alias for this, as a workaround to pass this to the 
@@ -356,7 +357,7 @@ class WebGLController {
             const deltaTime = 0.005;
             then = now;
 
-            self.drawScene(gl, renderData, modelView, deltaTime);
+            self.drawScene(gl, renderData, deltaTime);
 
             requestAnimationFrame(renderFn);
         }
