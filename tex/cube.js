@@ -55,7 +55,8 @@ class WebGLController {
             },
             uniformLocations: {
                 uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-                modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+                modelMatrix: gl.getUniformLocation(shaderProgram, 'uModelMatrix'),
+                viewMatrix: gl.getUniformLocation(shaderProgram, 'uViewMatrix'),
                 projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix')
             }
         };
@@ -75,7 +76,7 @@ class WebGLController {
     } // setupCube
 
     update(deltaTime) {
-        this.modelView.cubeRotation += deltaTime;
+        this.model.cubeRotation += deltaTime;
     } // update
 
     initOverlayBuffers(gl, progarmInfo) {
@@ -170,29 +171,30 @@ class WebGLController {
         const z_far = 100.0;
 
         // let projection_mat = mat4.perspective(fovy, aspect, z_near, z_far);
-        let projection_mat = new Float32Array(
+        let projectionMatrix = new Float32Array(
             [1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 
             0, 0, 0, 0, -1.0020020008087158,
              -1, 0, 0, -0.20020020008087158, 0]
             );
         // let projection_mat = mat4.identity();
-        let modelview_mat = mat4.identity();
+        let modelMatrix = mat4.identity();
+        let viewMatrix = mat4.identity();
 
         {
-            modelview_mat = mat4.translate(modelview_mat, 
+            modelMatrix = mat4.translate(modelMatrix, 
                            [-0.0, 0.0, -7.0]);
             
-            const rot_z_radian = this.modelView.cubeRotation;
-            mat4.rotate(modelview_mat,
+            const rot_z_radian = this.model.cubeRotation;
+            mat4.rotate(modelMatrix,
                         rot_z_radian,
                         [0, 0, 1],
-                        modelview_mat);
+                        modelMatrix);
             
-            const rot_x_radian = .7 * this.modelView.cubeRotation;
-            mat4.rotate(modelview_mat,
+            const rot_x_radian = .7 * this.model.cubeRotation;
+            mat4.rotate(modelMatrix,
                         rot_x_radian,
                         [1, 0, 0],
-                        modelview_mat);
+                        modelMatrix);
         }
 
         gl.useProgram(programInfo.program);
@@ -239,16 +241,22 @@ class WebGLController {
         // Associate shader sampler to texture unit 0
         gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
-        // Configure matrix uniforms
+        // Configure MVP uniforms
+        // Model
+        gl.uniformMatrix4fv(
+            programInfo.uniformLocations.modelMatrix,
+            false,
+            modelMatrix);
+        // View
+        gl.uniformMatrix4fv(
+            programInfo.uniformLocations.viewMatrix,
+            false,
+            viewMatrix);
+        // Projection
         gl.uniformMatrix4fv(
                 programInfo.uniformLocations.projectionMatrix,
                 false,
-                projection_mat);
-
-        gl.uniformMatrix4fv(
-                programInfo.uniformLocations.modelViewMatrix,
-                false,
-                modelview_mat);
+                projectionMatrix);
 
         // Execute the actual draw
         {        
@@ -336,7 +344,7 @@ class WebGLController {
         this.setupVirtualTrackball(gl.canvas.clientWidth, gl.canvas.clientHeight);
         this.registerListeners(gl);
 
-        this.modelView = { cubeRotation : 0.0 };
+        this.model = { cubeRotation : 0.0 };
         // "Forward declare" render function
         let then = 0;
         // /!\ A disgraceful alias for this, as a workaround to pass this to the 
