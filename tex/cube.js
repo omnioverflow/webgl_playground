@@ -25,7 +25,6 @@ class WebGLController {
     } // setupWebGL
 
     setupOverlay(gl) {
-        // FIXME: provide impl
         const shaderProgram = initShaders(gl, "vertex-shader-overlay",
                                           "fragment-shader-overlay");
         const programInfo = {
@@ -46,7 +45,6 @@ class WebGLController {
     } // setupOverlay
 
     setupCube(gl, render) {
-        // FIXME: provide impl
         // Load shaders and initialize attribute buffers
         const shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
         const programInfo = {
@@ -262,7 +260,6 @@ class WebGLController {
     } // drawCube
 
     drawOverlay(gl, renderData, deltaTime) {
-        // FIXME: provide impl
         const programInfo = renderData.shaders.overlay;
         const buffers = renderData.buffers.overlay;
         const texture = renderData.textures.overlay;
