@@ -226,6 +226,8 @@ class ProceduralCube {
             16, 17, 18,     16, 18, 19,   // right
             20, 21, 22,     20, 22, 23,   // left
         ]);
+
+        return cube;
     }
 
     match_tex_coords(curr_vert, curr_tex_coord,
