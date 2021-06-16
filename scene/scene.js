@@ -4,8 +4,11 @@
 //
 // =============================================================================
 class Scene {
+    #camera
     #objects
+
     constructor(args = {}) {
+        this.#camera = new Camera();
         this.#objects = args;
     }
 
