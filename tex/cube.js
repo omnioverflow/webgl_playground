@@ -9,8 +9,15 @@
 //
 // =============================================================================
 class WebGLController {
+    #scene
+
     // noop ctor
     constructor() {
+        const sceneProperties = { 
+            "cubePosition" : vec3.create(new Float32Array([-0.0, 0.0, -7.0]))
+        };
+        this.#scene = new Scene(sceneProperties);
+
         this.virtualTrackball = new VirtualTrackball();
     }
 
