@@ -10,6 +10,7 @@
 // =============================================================================
 class WebGLController {
     #scene
+    #virtualTrackball
 
     // noop ctor
     constructor() {
@@ -18,7 +19,7 @@ class WebGLController {
         };
         this.#scene = new Scene(sceneProperties);
 
-        this.virtualTrackball = new VirtualTrackball();
+        this.#virtualTrackball = new VirtualTrackball();
     }
 
     setupWebGL() {
@@ -204,6 +205,11 @@ class WebGLController {
                         modelMatrix);
         }
 
+        if (this.#virtualTrackball) {
+            // Get possibly changed viewMatrix
+            viewMatrix = this.#virtualTrackball.viewMatrix;
+        }
+
         gl.useProgram(programInfo.program);
 
         // Tell GPU how to pull out vertex coordinates
@@ -306,13 +312,13 @@ class WebGLController {
 
         {
             const uniformLoc = programInfo.uniformLocations;
-            const drawEffectFlag = this.virtualTrackball.drawEffectFlag;
+            const drawEffectFlag = this.#virtualTrackball.drawEffectFlag;
             gl.uniform1i(uniformLoc.drawEffectFlag, drawEffectFlag);
             if (drawEffectFlag) {
                 gl.uniform2fv(uniformLoc.prevMousePos, 
-                    this.virtualTrackball.prevMousePos);
+                    this.#virtualTrackball.prevMousePos);
                 gl.uniform2fv(uniformLoc.currMousePos,
-                    this.virtualTrackball.currMousePos);
+                    this.#virtualTrackball.currMousePos);
             }
 
         }
@@ -327,19 +333,19 @@ class WebGLController {
     } // drawOverlay
 
     setupVirtualTrackball(canvasWidth, canvasHeight) {
-        this.virtualTrackball.canvasWidth = canvasWidth;
-        this.virtualTrackball.canvasHeight = canvasHeight;
+        this.#virtualTrackball.canvasWidth = canvasWidth;
+        this.#virtualTrackball.canvasHeight = canvasHeight;
     }
 
     registerListeners(gl) {        
         gl.canvas.addEventListener("mousedown", event => {            
-            this.virtualTrackball.onMouseDown(
+            this.#virtualTrackball.onMouseDown(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );
         });
 
         gl.canvas.addEventListener("mouseup", e => {
-            this.virtualTrackball.onMouseUp(
+            this.#virtualTrackball.onMouseUp(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );
         });
