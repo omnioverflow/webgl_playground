@@ -106,7 +106,9 @@ class WebGLController {
     } // initOverlayBuffers
 
     initCubeBuffers(gl, programInfo) {
-        const cube = new ProceduralCube([0.0, 0.0, 0.0], 1.0);
+        // FIXME: temporarily fall back to hardCodedCube version
+        // const cube = new ProceduralCube([0.0, 0.0, 0.0], 1.0);
+        const cube = ProceduralCube.hardCodedCube([0.0, 0.0, 0.0], 1.0);
 
         // Load the vertex position data into the GPU
         const positionBuffer = gl.createBuffer();
