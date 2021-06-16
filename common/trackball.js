@@ -7,7 +7,8 @@ class VirtualTrackball {
     #canvasWidth
     #drawEffectFlag
 
-    constructor() {
+    constructor(scene) {
+        this.scene = scene;
         this.#canvasWidth = NaN;
         this.#canvasHeight = NaN;
         this.prevMousePos = vec2.create(new Float32Array([NaN, NaN]));
