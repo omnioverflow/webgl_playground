@@ -47,7 +47,14 @@ class WebGLController {
         return { "buffers" : buffers, "programInfo" : programInfo }
     } // setupOverlay
 
-    setupCube(gl, render) {
+    loadCube(cubeCenter, cubeSize) {
+        // FIXME: temporarily fall back to hardCodedCube version
+        // const cube = new ProceduralCube(cubeCenter, cubeSize);
+        const cube = ProceduralCube.hardCodedCube(cubeCenter, cubeSize);
+        return cube;
+    } // loadCube
+
+    setupCube(gl, render, cubeCenter, cubeSize) {
         // Load shaders and initialize attribute buffers
         const shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
         const programInfo = {
@@ -64,7 +71,8 @@ class WebGLController {
             }
         };
 
-        const buffers = this.initCubeBuffers(gl, shaderProgram);
+        const cubeObject = this.loadCube(cubeCenter, cubeSize);
+        const buffers = this.initCubeBuffers(gl, shaderProgram, cubeObject);
 
         const textureUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
 
@@ -72,6 +80,7 @@ class WebGLController {
                                     shaderProgram, buffers);
 
         return { 
+            "cubeObject" : cubeObject,
             "buffers" : buffers,
             "programInfo" : programInfo,
             "texture" : texture
@@ -83,7 +92,8 @@ class WebGLController {
     } // update
 
     setupCamera(cube) {
-        this.#virtualTrackball.scene.camera.moveTo(cube.position);
+        // FIXME: fix setup camera
+        // this.#virtualTrackball.scene.camera.moveTo(cube.center);
     } // setupCamera
 
     initOverlayBuffers(gl, progarmInfo) {
@@ -104,16 +114,12 @@ class WebGLController {
         }
     } // initOverlayBuffers
 
-    initCubeBuffers(gl, programInfo) {
-        // FIXME: temporarily fall back to hardCodedCube version
-        // const cube = new ProceduralCube([0.0, 0.0, 0.0], 1.0);
-        const cube = ProceduralCube.hardCodedCube([0.0, 0.0, 0.0], 1.0);
-
+    initCubeBuffers(gl, programInfo, cubeObject) {
         // Load the vertex position data into the GPU
         const positionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, 
-                      cube.vertexCoordinates,
+                      cubeObject.vertexCoordinates,
                       gl.STATIC_DRAW);
 
         // Init texture coordinate buffer
@@ -121,7 +127,7 @@ class WebGLController {
         gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
 
         gl.bufferData(gl.ARRAY_BUFFER, 
-                      cube.textureCoordinates,
+                      cubeObject.textureCoordinates,
                       gl.STATIC_DRAW);
 
         // Set up an element array buffer to hold indices into
@@ -131,14 +137,14 @@ class WebGLController {
 
         // send the element array to the GPU
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, 
-                      cube.faces,
+                      cubeObject.faces,
                       gl.STATIC_DRAW);
 
         return {
             position: positionBuffer,
             textureCoord: textureCoordBuffer,
             indices: indexBuffer,
-            nbIndices: cube.faces.length
+            nbIndices: cubeObject.faces.length
         }
     } // initCubeBuffers
 
@@ -384,9 +390,11 @@ class WebGLController {
         // Compile shaders and set up buffers
         // For the fullscreen overlay and cube object
         const overlayData = this.setupOverlay(gl);
-        const cubeData = this.setupCube(gl, renderFn);
+        const cubeCenter = [0.0, 0.0, 0.0];
+        const cubeSize = 1.0;
+        const cubeData = this.setupCube(gl, renderFn, cubeCenter, cubeSize);
         // Configure the camera
-        this.setupCamera(cube);
+        this.setupCamera(cubeData.cubeObject);
 
         const buffers = { "overlay" : overlayData.buffers,
                           "cube": cubeData.buffers };
