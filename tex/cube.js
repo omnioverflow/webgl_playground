@@ -14,11 +14,7 @@ class WebGLController {
 
     // noop ctor
     constructor() {
-        const sceneProperties = { 
-            "cubePosition" : vec3.create(new Float32Array([-0.0, 0.0, -7.0]))
-        };
-        const scene = new Scene(sceneProperties);
-
+        const scene = new Scene();
         this.#virtualTrackball = new VirtualTrackball(scene);
     }
 
@@ -86,6 +82,10 @@ class WebGLController {
     update(deltaTime) {
         this.model.cubeRotation += deltaTime;
     } // update
+
+    setupCamera(cube) {
+        this.#virtualTrackball.scene.camera.moveTo(cube.position);
+    }
 
     initOverlayBuffers(gl, progarmInfo) {
         const overlay = new FullScreenQuad();
@@ -386,6 +386,8 @@ class WebGLController {
         // For the fullscreen overlay and cube object
         const overlayData = this.setupOverlay(gl);
         const cubeData = this.setupCube(gl, renderFn);
+        // Configure the camera
+        this.setupCamera(cube);
 
         const buffers = { "overlay" : overlayData.buffers,
                           "cube": cubeData.buffers };
