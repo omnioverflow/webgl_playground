@@ -10,6 +10,8 @@ class VirtualTrackball {
     constructor(scene) {
         this.scene = scene;
 
+        this.viewMatrix = mat4.identity();
+
         this.#canvasWidth = NaN;
         this.#canvasHeight = NaN;
 
