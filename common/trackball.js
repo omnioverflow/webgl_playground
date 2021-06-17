@@ -9,10 +9,13 @@ class VirtualTrackball {
 
     constructor(scene) {
         this.scene = scene;
+
         this.#canvasWidth = NaN;
         this.#canvasHeight = NaN;
+
         this.prevMousePos = vec2.create(new Float32Array([NaN, NaN]));
         this.currMousePos = vec2.create(new Float32Array([NaN, NaN]));
+
         this.#drawEffectFlag = false;
         this.timestamp = NaN;
     } // ctor
