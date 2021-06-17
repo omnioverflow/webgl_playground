@@ -15,7 +15,7 @@ class WebGLController {
     // noop ctor
     constructor() {
         this.#virtualTrackball = new VirtualTrackball(new Scene());
-    }
+    } // ctor
 
     setupWebGL() {
         const canvas = document.getElementById("gl-canvas");
@@ -84,7 +84,7 @@ class WebGLController {
 
     setupCamera(cube) {
         this.#virtualTrackball.scene.camera.moveTo(cube.position);
-    }
+    } // setupCamera
 
     initOverlayBuffers(gl, progarmInfo) {
         const overlay = new FullScreenQuad();
@@ -336,7 +336,7 @@ class WebGLController {
     setupVirtualTrackball(canvasWidth, canvasHeight) {
         this.#virtualTrackball.canvasWidth = canvasWidth;
         this.#virtualTrackball.canvasHeight = canvasHeight;
-    }
+    } // setupVirtualTrackball
 
     registerListeners(gl) {        
         gl.canvas.addEventListener("mousedown", event => {            
@@ -402,6 +402,7 @@ class WebGLController {
         
         requestAnimationFrame(renderFn);
     } // init
+    
 } // class WebGLController
 
 // =============================================================================
