@@ -14,6 +14,10 @@ class Camera {
         this.#viewMatrix = mat4.identity();
     } // ctor
 
+    lookAt(point) {
+        // FIXME: provide impl
+    } // lookAt
+
     moveTo(position) {
         // FIXME: provide impl
     } // moveTo
