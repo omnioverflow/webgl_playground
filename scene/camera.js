@@ -71,6 +71,6 @@ class Camera {
     } // lookAt
 
     moveTo(position) {
-        // FIXME: provide impl
+        this.#position = position;
     } // moveTo
 };
