@@ -14,6 +14,10 @@ class Camera {
         this.#viewMatrix = mat4.identity();
     } // ctor
 
+    lookAt(to) {
+        lookAt(to, this.#position);
+    }
+
     lookAt(to, translation) {
         // When computing a view matrix of the camera, we
         // use the following notation for the axes 
