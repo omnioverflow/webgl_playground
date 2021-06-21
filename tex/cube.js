@@ -364,7 +364,15 @@ class WebGLController {
     } // displayDebugInfoCamPos
 
     displayDebugInfoCamLooksAt(debugInfoDiv, debugSubDiv) {
+        debugInfoDiv.innerHTML += "<b>Camera: looksAt</b><br/>";
 
+        const looksAt = this.#scene.camera.looksAt;
+        let i = 0;
+        looksAt.forEach(el => {
+            debugInfoDiv.innerHTML += `${el}`;
+            if (i++ < 2)
+                debugInfoDiv.innerHTML += ', ';
+        });
     } // displayDebugInfoCamLooksAt
 
     displayDebugInfoCamViewMat(debugInfoDiv, debugSubDiv) {
