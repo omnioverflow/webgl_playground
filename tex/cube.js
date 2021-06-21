@@ -353,6 +353,7 @@ class WebGLController {
 
     displayDebugInfoCamPos(debugInfoDiv, debugSubDiv) {
         debugInfoDiv.innerHTML += "<b>Camera: position</b><br/>";
+
         const position = this.#scene.camera.position;
         let i = 0;
         position.forEach(el => {
@@ -360,7 +361,6 @@ class WebGLController {
             if (i++ < 2)
                 debugInfoDiv.innerHTML += ', ';
         });
-        debugInfoDiv.innerHTML += "<br/>";
     } // displayDebugInfoCamPos
 
     displayDebugInfoCamLooksAt(debugInfoDiv, debugSubDiv) {
@@ -390,24 +390,30 @@ class WebGLController {
                 i++;
             }
         });
-
-        debugInfoDiv.innerHTML += '</div>'
     } // displayDebugInfoCamViewMat
 
     displayDebugInfoDispatch(debugInfoDiv, debugSubDiv) {
         debugInfoDiv.innerHTML += '<div id="' + debugSubDiv + '">';
+
         switch (debugSubDiv) {            
             case 'Camera.position':
                 debugInfoDiv.innerHTML += "<br/>";
                 this.displayDebugInfoCamPos(debugInfoDiv, debugSubDiv);
+                debugInfoDiv.innerHTML += "<br/>";
                 break;
             case 'Camera.looksAt':
+                debugInfoDiv.innerHTML += "<br/>";
+                this.displayDebugInfoCamLooksAt(debugInfoDiv, debugSubDiv);
+                debugInfoDiv.innerHTML += "<br/>";
                 break;
             case 'Camera.viewMatrix':
                 debugInfoDiv.innerHTML += "<br/>";
                 this.displayDebugInfoCamViewMat(debugInfoDiv, debugSubDiv)
+                debugInfoDiv.innerHTML += "<br/>";
                 break;
-        }    
+        }
+
+        debugInfoDiv.innerHTML += '</div>';
     } // displayDebugInfoDispatch
 
     displayDebugInfo() {
