@@ -6,6 +6,16 @@
     <title>WebGL Playground: Triangle</title>
     <link rel="stylesheet" href="../common/css/webgl.css" type="text/css">
 
+    <style>
+      .debugInfoDiv {
+      border: 2px outset gray;
+      background-color: lightgray;
+      font-size: smaller;
+      text-align: left;
+      width: 80%;
+    }
+    </style>
+
     <!-- =================================================================== -->
     <!-- Shaders for cube rendering -->    
     <script id="vertex-shader" type="x-shader/x-vertex">      
@@ -125,6 +135,10 @@
     <canvas id="gl-canvas" width="512" height="512">
       Oops
     </canvas>
+
+    <div class="debugInfoDiv" id="debugInfoDiv">
+      <p style="text-align:left">Camera</p>
+    </div>
     
     <script type="text/javascript" src="../common/init_shaders.js"></script>
     <script type="text/javascript" src="../common/load_tex.js"></script>
@@ -134,6 +148,6 @@
     <script type="text/javascript" src="../procedural/procedural.js"></script>
     <script type="text/javascript" src="../scene/camera.js"></script>
     <script type="text/javascript" src="../scene/scene.js"></script>
-    <script type="text/javascript" src="cube.js"></script>  
+    <script type="text/javascript" src="cube.js"></script>
   </body>
 </html>

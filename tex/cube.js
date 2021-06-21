@@ -345,6 +345,77 @@ class WebGLController {
         this.#virtualTrackball.canvasHeight = canvasHeight;
     } // setupVirtualTrackball
 
+// =============================================================================
+//
+// DisplayDebugInfo
+//
+// =============================================================================
+
+    displayDebugInfoCamPos(debugInfoDiv, debugSubDiv) {
+        debugInfoDiv.innerHTML += "<b>Camera: position</b><br/>";
+        const position = this.#scene.camera.position;
+        let i = 0;
+        position.forEach(el => {
+            debugInfoDiv.innerHTML += `${el}`;
+            if (i++ < 2)
+                debugInfoDiv.innerHTML += ', ';
+        });
+        debugInfoDiv.innerHTML += "<br/>";
+    } // displayDebugInfoCamPos
+
+    displayDebugInfoCamLooksAt(debugInfoDiv, debugSubDiv) {
+
+    } // displayDebugInfoCamLooksAt
+
+    displayDebugInfoCamViewMat(debugInfoDiv, debugSubDiv) {
+        debugInfoDiv.innerHTML += "<b>Camera: viewMatrix</b><br/>";
+
+        const camera = this.#scene.camera;
+        const viewMatrix = mat4.transpose(camera.viewMatrix);
+        let i = 0;
+        viewMatrix.forEach(el => {
+            debugInfoDiv.innerHTML +=`${el} `;
+            if (i > 0 && !(i % 3)) {
+                debugInfoDiv.innerHTML += '<br/>';
+                i = 0;
+            } else {
+                i++;
+            }
+        });
+
+        debugInfoDiv.innerHTML += '</div>'
+    } // displayDebugInfoCamViewMat
+
+    displayDebugInfoDispatch(debugInfoDiv, debugSubDiv) {
+        debugInfoDiv.innerHTML += '<div id="' + debugSubDiv + '">';
+        switch (debugSubDiv) {            
+            case 'Camera.position':
+                debugInfoDiv.innerHTML += "<br/>";
+                this.displayDebugInfoCamPos(debugInfoDiv, debugSubDiv);
+                break;
+            case 'Camera.looksAt':
+                break;
+            case 'Camera.viewMatrix':
+                debugInfoDiv.innerHTML += "<br/>";
+                this.displayDebugInfoCamViewMat(debugInfoDiv, debugSubDiv)
+                break;
+        }    
+    } // displayDebugInfoDispatch
+
+    displayDebugInfo() {
+        const debugInfoDiv = document.getElementById('debugInfoDiv');
+        debugInfoDiv.innerHTML = "";
+        this.displayDebugInfoDispatch(debugInfoDiv, 'Camera.position');
+        this.displayDebugInfoDispatch(debugInfoDiv, 'Camera.looksAt');
+        this.displayDebugInfoDispatch(debugInfoDiv, 'Camera.viewMatrix');
+    } // displayDebugInfo
+
+// =============================================================================
+//
+// Listeners
+//
+// =============================================================================
+
     registerListeners(gl) {        
         gl.canvas.addEventListener("mousedown", event => {            
             this.#virtualTrackball.onMouseDown(
@@ -356,14 +427,23 @@ class WebGLController {
             this.#virtualTrackball.onMouseUp(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );
+            this.displayDebugInfoDispatch("Camera.viewMatrix");
         });
     } // registerListeners
+
+// =============================================================================
+//
+// init
+//
+// =============================================================================
 
     init() {
         const gl = this.setupWebGL();
 
         this.setupVirtualTrackball(gl.canvas.clientWidth, gl.canvas.clientHeight);
         this.registerListeners(gl);
+
+        this.displayDebugInfo();
 
         this.model = { cubeRotation : 0.0 };
         // "Forward declare" render function
