@@ -14,7 +14,8 @@ class WebGLController {
 
     // noop ctor
     constructor() {
-        this.#virtualTrackball = new VirtualTrackball(new Scene());
+        this.#scene = new Scene();
+        this.#virtualTrackball = new VirtualTrackball(this.#scene);
     } // ctor
 
     setupWebGL() {
