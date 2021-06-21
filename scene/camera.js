@@ -14,6 +14,10 @@ class Camera {
         this.#viewMatrix = mat4.identity();
     } // ctor
 
+    get viewMatrix() {
+        return this.#viewMatrix;
+    }
+
     lookAt(to) {
         lookAt(to, this.#position);
     }
