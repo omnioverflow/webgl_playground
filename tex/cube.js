@@ -188,10 +188,11 @@ class WebGLController {
 
         // let projection_mat = mat4.perspective(fovy, aspect, z_near, z_far);
         let projectionMatrix = new Float32Array(
-            [1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 
-            0, 0, 0, 0, -1.0020020008087158,
-             -1, 0, 0, -0.20020020008087158, 0]
-            );
+            [1.8106601238250732, 0, 0, 0,
+             0, 2.4142136573791504, 0, 0,
+             0, 0, -1.0020020008087158, -1,
+             0, 0, -0.20020020008087158, 0
+            ]);
         // let projection_mat = mat4.identity();
         let modelMatrix = mat4.identity();
         let viewMatrix = mat4.identity();
