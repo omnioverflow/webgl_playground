@@ -5,6 +5,7 @@
 // =============================================================================
 class Camera {
     #position
+    #looksAt
     #rotationCenter
     #viewMatrix
 
@@ -18,11 +19,16 @@ class Camera {
         return this.#position;
     }
 
+    get looksAt() {
+        return this.#looksAt;
+    }
+
     get viewMatrix() {
         return this.#viewMatrix;
     }
 
     lookAt(to) {
+        this.#looksAt = to;
         lookAt(to, this.#position);
     }
 
