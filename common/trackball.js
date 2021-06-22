@@ -120,6 +120,10 @@ class VirtualTrackball {
         this.#drawEffectFlag = true;
         this.timestamp = Date.now();
 
-        return this.computeRotation();
+        const rot = this.computeRotation();
+        const prevViewMatrix = this.scene.camera.viewMatrix;
+        this.scene.viewMatrix = mat4.multiply(prevViewMatrix, rot);
+
+        this.viewMatrix = this.scene.viewMatrix;
     } // onMouseUp
 } // class Trackball
