@@ -52,7 +52,7 @@ class WebGLController {
         // FIXME: temporarily fall back to hardCodedCube version
         // let cube = new ProceduralCube(cubeCenter, cubeSize);
         let cube = ProceduralCube.hardCodedCube(cubeCenter, cubeSize);
-        cube.center = cubeCenter;
+        cube.center = vec3.create(new Float32Array(cubeCenter));
         cube.size = cubeSize;
         return cube;
     } // loadCube
