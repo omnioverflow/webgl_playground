@@ -91,5 +91,9 @@ class Camera {
 
     moveTo(position) {
         this.#position = position;
+
+        this.#viewMatrix[3] = -position[0];
+        this.#viewMatrix[7] = -position[1];
+        this.#viewMatrix[11] = -position[2];
     } // moveTo
 };
