@@ -8,9 +8,7 @@ class VirtualTrackball {
     #drawEffectFlag
 
     constructor(scene) {
-        this.scene = scene;
-
-        this.viewMatrix = mat4.identity();
+        this.scene = scene;        
 
         this.#canvasWidth = NaN;
         this.#canvasHeight = NaN;
