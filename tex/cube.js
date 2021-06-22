@@ -442,7 +442,7 @@ class WebGLController {
             this.#virtualTrackball.onMouseUp(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );
-            this.displayDebugInfoDispatch("Camera.viewMatrix");
+            this.displayDebugInfo();
         });
     } // registerListeners
 
