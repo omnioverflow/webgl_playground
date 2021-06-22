@@ -96,7 +96,9 @@ class WebGLController {
 
     setupCamera(cube) {
         // FIXME: fix setup camera
-        // this.#virtualTrackball.scene.camera.moveTo(cube.center);
+        const disp = vec3.create(new Float32Array([0.0, 0.0, 1.0]))
+        const camPos = vec3.add(cube.center, disp);
+        this.#scene.camera.moveTo(camPos);
     } // setupCamera
 
     initOverlayBuffers(gl, progarmInfo) {
