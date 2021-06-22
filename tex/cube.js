@@ -166,6 +166,9 @@ class WebGLController {
         // Draw the overlay quad
         this.drawOverlay(gl, renderData, deltaTime);
 
+        // Display the debug info
+        this.displayDebugInfo();
+
         // Update view frustrum
         this.update(deltaTime);
     } // drawScene
@@ -443,8 +446,7 @@ class WebGLController {
         gl.canvas.addEventListener("mouseup", e => {
             this.#virtualTrackball.onMouseUp(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
-                );
-            this.displayDebugInfo();
+                );            
         });
     } // registerListeners
 
