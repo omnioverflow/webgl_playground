@@ -50,8 +50,10 @@ class WebGLController {
 
     loadCube(cubeCenter, cubeSize) {
         // FIXME: temporarily fall back to hardCodedCube version
-        // const cube = new ProceduralCube(cubeCenter, cubeSize);
-        const cube = ProceduralCube.hardCodedCube(cubeCenter, cubeSize);
+        // let cube = new ProceduralCube(cubeCenter, cubeSize);
+        let cube = ProceduralCube.hardCodedCube(cubeCenter, cubeSize);
+        cube.center = cubeCenter;
+        cube.size = cubeSize;
         return cube;
     } // loadCube
 
