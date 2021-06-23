@@ -18,20 +18,20 @@ class Camera {
 
     get position() {
         return this.#position;
-    }
+    } // position
 
     get looksAt() {
         return this.#looksAt;
-    }
+    } // looksAt
 
     get viewMatrix() {
         return this.#viewMatrix;
-    }
+    } // viewMatrix
 
     lookAt(to) {
         this.#looksAt = to;
         lookAt(to, this.#position);
-    }
+    } // lookAt
 
     lookAt(to, translation) {
         // When computing a view matrix of the camera, we
