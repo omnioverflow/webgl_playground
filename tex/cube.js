@@ -272,6 +272,7 @@ class WebGLController {
         // Associate shader sampler to texture unit 0
         gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
+        // FIXME: Precompute the MVP matrix on the application side on the CPU
         // Configure MVP uniforms
         // Model
         gl.uniformMatrix4fv(
