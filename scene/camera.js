@@ -28,12 +28,88 @@ class Camera {
         return this.#viewMatrix;
     } // get viewMatrix
 
+    setViewMatrix(value) {
+        this.#viewMatrix = value;
+        if (this.#viewMatrix[14] < 0) {
+            let lol = 0;
+        }
+    } // set viewMatrix
+
     lookAt(to) {
         this.#looksAt = to;
         lookAt(to, this.#position);
     } // lookAt
 
-    lookAt(to, translation) {
+
+    // Unoptimized implementation of camera "lookAt" method
+    lookAtNaive(eye, target, up) {
+        this.#position = eye;
+        this.#looksAt = target;
+
+        let zAxis = vec3.create();
+        zAxis = vec3.normalize(vec3.subtract(eye, target, zAxis));
+        let xAxis = vec3.create();
+        xAxis = vec3.normalize(vec3.cross(up, zAxis, xAxis));
+        let yAxis = vec3.create();
+        yAxis = vec3.cross(zAxis, xAxis, yAxis);
+
+        let orientation = mat4.create();
+        // column 0
+        orientation[0] = xAxis[0];
+        orientation[1] = xAxis[1];
+        orientation[2] = xAxis[2];
+        orientation[3] = 0.0;
+        // column 1
+        orientation[4] = yAxis[0];
+        orientation[5] = yAxis[1];
+        orientation[6] = yAxis[2];
+        orientation[7] = 0.0;
+        // column 2
+        orientation[8] = zAxis[0];
+        orientation[9] = zAxis[1];
+        orientation[10] = zAxis[2];
+        orientation[11] = 0.0;
+        // column3
+        orientation[12] = 0.0;
+        orientation[13] = 0.0;
+        orientation[14] = 0.0;
+        orientation[15] = 1.0;
+
+        let translation = mat4.create();
+        // column 0
+        translation[0] = 1.0;
+        translation[1] = 0.0;
+        translation[2] = 0.0;
+        translation[3] = -eye[0];
+        // column 1
+        translation[4] = 0.0;
+        translation[5] = 1.0;
+        translation[6] = 0.0;
+        translation[7] = -eye[1];
+        // column 2
+        translation[8] = 0.0;
+        translation[9] = 0.0;
+        translation[10] = 1.0;
+        translation[11] = -eye[2];
+        // column 3
+        translation[12] = 0.0;
+        translation[13] = 0.0;
+        translation[14] = 0.0;
+        translation[15] = 1.0;
+
+        let viewMat = mat4.create();
+        // Note: first translate, then rotate (which is the inverse
+        // of the common transformation concatenation order,
+        // because view transform matrix is the inverse of the
+        // camera matrix)
+        viewMat = mat4.multiply(translation, orientation, viewMat);
+
+        viewMat = mat4.transpose(viewMat);
+
+        this.setViewMatrix(viewMat);
+    } // lookAtNaive
+
+    lookAt(to, fromPosition) {
         // When computing a view matrix of the camera, we
         // use the following notation for the axes 
         // defining the camera position in space:
