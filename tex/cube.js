@@ -96,11 +96,12 @@ class WebGLController {
 
     setupCamera(cube) {
         // FIXME: fix setup camera
-        const disp = vec3.create(new Float32Array([0.0, 0.0, 1.0]))
+        const disp = vec3.create(new Float32Array([0.0, 0.0, 5.0]))
         let camPos = vec3.create();
         camPos = vec3.add(cube.center, disp, camPos);
-        this.#scene.camera.lookAt(cube.center, camPos);
-        // this.#scene.camera.moveTo(camPos);
+        
+        this.#scene.camera.lookAtNaive(disp, cube.center,
+            vec3.create(new Float32Array([0.0, 1.0, 0.0])));
     } // setupCamera
 
     initOverlayBuffers(gl, progarmInfo) {
