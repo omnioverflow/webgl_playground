@@ -1,3 +1,11 @@
+// =============================================================================
+//
+// VirtualTrackball
+//
+// =============================================================================
+
+// FIXME: reminder to resolve all fixmes
+
 const VirtualTrackballImpl = {
     resetTimeMillis: 1500
 }
@@ -108,6 +116,17 @@ class VirtualTrackball {
         const R = quat4.toMat4(q);
 
         return R;
+    }
+
+    // FIXME: debug purpose only, so remove it
+    computeDebugRotation() {
+        let rotation = mat4.identity();
+        rotation[0] = 0;
+        rotation[2] = 1;
+        rotation[8] = -1;
+        rotation[10] = 0;
+
+        return rotation;
     }
 
     onMouseDown(pos) {
