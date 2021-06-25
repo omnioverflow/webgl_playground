@@ -18,15 +18,15 @@ class Camera {
 
     get position() {
         return this.#position;
-    } // position
+    } // get position
 
     get looksAt() {
         return this.#looksAt;
-    } // looksAt
+    } // get looksAt
 
     get viewMatrix() {
         return this.#viewMatrix;
-    } // viewMatrix
+    } // get viewMatrix
 
     lookAt(to) {
         this.#looksAt = to;
