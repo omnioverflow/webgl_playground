@@ -390,17 +390,15 @@ class WebGLController {
         debugInfoDiv.innerHTML += "<b>Camera: viewMatrix</b><br/>";
 
         const camera = this.#scene.camera;
-        const viewMatrix = mat4.transpose(camera.viewMatrix);
-        let i = 0;
-        viewMatrix.forEach(el => {
-            debugInfoDiv.innerHTML +=`${el} `;
-            if (i > 0 && !(i % 3)) {
-                debugInfoDiv.innerHTML += '<br/>';
-                i = 0;
-            } else {
-                i++;
+        const viewMatrix = camera.viewMatrix;
+        for (let i = 0; i < 4; ++i) {
+            for (let j = 0; j < 4; ++j) {
+                const el = viewMatrix[j * 4 + i];
+                debugInfoDiv.innerHTML +=`${el} `;
+                if (j == 3)
+                    debugInfoDiv.innerHTML += '<br/>';    
             }
-        });
+        }
     } // displayDebugInfoCamViewMat
 
     displayDebugInfoDispatch(debugInfoDiv, debugSubDiv) {
