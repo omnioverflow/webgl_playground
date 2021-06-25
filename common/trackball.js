@@ -139,10 +139,43 @@ class VirtualTrackball {
         this.#drawEffectFlag = true;
         this.timestamp = Date.now();
 
-        const rot = this.computeRotation();
-        const prevViewMatrix = this.scene.camera.viewMatrix;
-        this.scene.viewMatrix = mat4.multiply(prevViewMatrix, rot);
+        // const rotation = this.computeRotation();
+        const rotation = this.computeDebugRotation();
+        let currViewMatrix = this.scene.camera.viewMatrix;
 
-        this.viewMatrix = this.scene.viewMatrix;
+        // 1. Translate camera to the origin
+        let translation = mat4.identity();
+        translation[12] = this.scene.camera.position[0];
+        translation[13] = this.scene.camera.position[1];
+        translation[14] = this.scene.camera.position[2];
+        currViewMatrix = mat4.multiply(currViewMatrix, 
+            translation,
+            currViewMatrix);
+
+        // 2. Rotate the camera
+        currViewMatrix = mat4.multiply(currViewMatrix, 
+            rotation,
+            currViewMatrix);
+
+        // 3. Translate the camera back to it's position
+        // (inverse transformation to the step 3)
+        translation[12] = -translation[12];
+        translation[13] = -translation[13];
+        translation[14] = -translation[14];
+
+        let invTranslation = vec4.create();
+        invTranslation[0] = translation[12];
+        invTranslation[1] = translation[13];
+        invTranslation[2] = translation[14];
+        invTranslation[3] = 1;
+
+        invTranslation = mat4.multiplyVec4(rotation, invTranslation);
+
+        const target = this.scene.camera.looksAt;
+        this.scene.camera.lookAtNaive(invTranslation,
+                                      target,
+                                      vec3.create(new Float32Array([0, 1, 0])));
+
+        this.scene.camera.setViewMatrix(currViewMatrix);
     } // onMouseUp
 } // class Trackball

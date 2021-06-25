@@ -225,8 +225,9 @@ class WebGLController {
         }
 
         if (this.#virtualTrackball) {
+            // FIXME: GROS FIXME
             // Get possibly changed viewMatrix
-            viewMatrix = this.#virtualTrackball.viewMatrix;
+            viewMatrix = this.#scene.camera.viewMatrix;
         }
 
         gl.useProgram(programInfo.program);

@@ -124,7 +124,8 @@ class Camera {
         // where T is the camera translation.
 
         // 1. Compute the forward axis (y-axis).
-        const forward = vec3.normalize(vec3.subtract(to - position));
+        let forward = vec3.create();
+        forward = vec3.normalize(vec3.subtract(to, fromPosition, forward));
 
         {
             // FIXME: handle the edge case when forward is aligned with the y-axis
@@ -145,24 +146,24 @@ class Camera {
 
         // 4. Finally, construct the view matrix for the camera
         let viewMat = mat4.create();
-        viweMat[0] = right[0];
+        viewMat[0] = right[0];
         viewMat[1] = up[0];
         viewMat[2] = forward[0];
-        viewMat[3] = translation[0];
+        viewMat[3] = fromPosition[0];
         viewMat[4] = right[1];
         viewMat[5] = up[1];
         viewMat[6] = forward[1];
-        viewMat[7] = translation[1];
+        viewMat[7] = fromPosition[1];
         viewMat[8] = right[2];
         viewMat[9] = up[2];
         viewMat[10] = forward[2];
-        viewMat[11] = translation[2];
+        viewMat[11] = fromPosition[2];
         viewMat[12] = 0.0;
         viewMat[13] = 0.0;
         viewMat[14] = 0.0;
         viewMat[15] = 1.0;
 
-        this.#viewMatrix = viewMat;
+        this.setViewMatrix(viewMat);
     } // lookAt
 
     moveTo(position) {
