@@ -14,8 +14,8 @@ class WebGLController {
 
     // noop ctor
     constructor() {
-        this.#scene = new Scene();
-        this.#virtualTrackball = new VirtualTrackball(this.#scene);
+        this.#scene = null;
+        this.#virtualTrackball = null;
     } // ctor
 
     setupWebGL() {
@@ -94,15 +94,24 @@ class WebGLController {
         this.model.cubeRotation += deltaTime;
     } // update
 
-    setupCamera(cube) {
-        // FIXME: fix setup camera
-        const disp = vec3.create(new Float32Array([0.0, 0.0, 5.0]))
-        let camPos = vec3.create();
-        camPos = vec3.add(cube.center, disp, camPos);
-        
-        this.#scene.camera.lookAtNaive(disp, cube.center,
-            vec3.create(new Float32Array([0.0, 1.0, 0.0])));
-    } // setupCamera
+    setupScene(cube, eye, canvas) {
+        // Create a scene with a camera
+        {
+            const target = cube.center;
+            const pivot = cube.center;
+            const up = vec3.create(new Float32Array([0.0, 1.0, 0.0]));
+            this.#scene = new Scene(
+                new Camera(eye, target, pivot, up)
+                );
+        }
+        // Create virtual trackball
+        {
+            this.#virtualTrackball = new VirtualTrackball(
+                this.#scene,
+                canvas.clientWidth,
+                canvas.clientHeight);
+        }
+    } // setupScene
 
     initOverlayBuffers(gl, progarmInfo) {
         const overlay = new FullScreenQuad();
@@ -353,11 +362,6 @@ class WebGLController {
         }
     } // drawOverlay
 
-    setupVirtualTrackball(canvasWidth, canvasHeight) {
-        this.#virtualTrackball.canvasWidth = canvasWidth;
-        this.#virtualTrackball.canvasHeight = canvasHeight;
-    } // setupVirtualTrackball
-
 // =============================================================================
 //
 // DisplayDebugInfo
@@ -464,10 +468,7 @@ class WebGLController {
     init() {
         const gl = this.setupWebGL();
 
-        this.setupVirtualTrackball(gl.canvas.clientWidth, gl.canvas.clientHeight);
         this.registerListeners(gl);
-
-        this.displayDebugInfo();
 
         this.model = { cubeRotation : 0.0 };
         // "Forward declare" render function
@@ -498,8 +499,9 @@ class WebGLController {
         const cubeCenter = [0.0, 0.0, 0.0];
         const cubeSize = 1.0;
         const cubeData = this.setupCube(gl, renderFn, cubeCenter, cubeSize);
-        // Configure the camera
-        this.setupCamera(cubeData.cubeObject);
+        
+        const eye = vec3.create(new Float32Array([0.0, 0.0, 5.0]));
+        this.setupScene(cubeData.cubeObject, eye, gl.canvas);
 
         const buffers = { "overlay" : overlayData.buffers,
                           "cube": cubeData.buffers };
@@ -512,6 +514,8 @@ class WebGLController {
             "shaders": shaders,
             "textures": textures
         }
+
+        this.displayDebugInfo();
         
         requestAnimationFrame(renderFn);
     } // init

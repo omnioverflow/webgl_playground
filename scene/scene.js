@@ -7,8 +7,8 @@ class Scene {
     camera
     #objects
 
-    constructor(args = {}) {
-        this.camera = new Camera();
+    constructor(camera, args = {}) {
+        this.camera = camera;
         this.#objects = args;
     }
 

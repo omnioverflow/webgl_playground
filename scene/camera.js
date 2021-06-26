@@ -12,12 +12,13 @@ class Camera {
     #pivot
     #viewMatrix
 
-    constructor() {
-        this.#position = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
-        this.#target = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
+    constructor(position, target, pivot, up) {
+        this.#position = position;
+        this.#target = target;
         // FIXME: rotate camera around its pivot
-        this.#pivot = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
-        this.#viewMatrix = mat4.identity();
+        this.#pivot = pivot;
+
+        this.lookAtNaive(position, target, up);
     } // ctor
 
     get position() {
