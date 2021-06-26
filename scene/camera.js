@@ -5,13 +5,13 @@
 // =============================================================================
 class Camera {
     #position
-    #looksAt
+    #target
     #rotationCenter
     #viewMatrix
 
     constructor() {
         this.#position = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
-        this.#looksAt = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
+        this.#target = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
         this.#rotationCenter = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
         this.#viewMatrix = mat4.identity();
     } // ctor
@@ -20,9 +20,9 @@ class Camera {
         return this.#position;
     } // get position
 
-    get looksAt() {
-        return this.#looksAt;
-    } // get looksAt
+    get target() {
+        return this.#target;
+    } // get target
 
     get viewMatrix() {
         return this.#viewMatrix;
@@ -36,7 +36,7 @@ class Camera {
     } // set viewMatrix
 
     lookAt(to) {
-        this.#looksAt = to;
+        this.#target = to;
         lookAt(to, this.#position);
     } // lookAt
 
@@ -44,7 +44,7 @@ class Camera {
     // Unoptimized implementation of camera "lookAt" method
     lookAtNaive(eye, target, up) {
         this.#position = eye;
-        this.#looksAt = target;
+        this.#target = target;
 
         let zAxis = vec3.create();
         zAxis = vec3.normalize(vec3.subtract(eye, target, zAxis));

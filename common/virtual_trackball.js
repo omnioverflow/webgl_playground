@@ -171,7 +171,7 @@ class VirtualTrackball {
 
         invTranslation = mat4.multiplyVec4(rotation, invTranslation);
 
-        const target = this.scene.camera.looksAt;
+        const target = this.scene.camera.target;
         this.scene.camera.lookAtNaive(invTranslation,
                                       target,
                                       vec3.create(new Float32Array([0, 1, 0])));
