@@ -11,15 +11,15 @@ const VirtualTrackballImpl = {
 }
 
 class VirtualTrackball {
-    #canvasHeight
     #canvasWidth
+    #canvasHeight
     #drawEffectFlag
 
-    constructor(scene) {
+    constructor(scene, canvasWidth, canvasHeight) {
         this.scene = scene;        
 
-        this.#canvasWidth = NaN;
-        this.#canvasHeight = NaN;
+        this.#canvasWidth = canvasWidth;
+        this.#canvasHeight = canvasHeight;
 
         this.prevMousePos = vec2.create(new Float32Array([NaN, NaN]));
         this.currMousePos = vec2.create(new Float32Array([NaN, NaN]));
@@ -27,20 +27,6 @@ class VirtualTrackball {
         this.#drawEffectFlag = false;
         this.timestamp = NaN;
     } // ctor
-
-    set canvasWidth(value) {
-        if (value <= 0)
-            throw 'Invalid canvasWidth';
-
-        this.#canvasWidth = value;
-    } // setter canvasWidth
-
-    set canvasHeight(value) {
-        if (value <= 0.0)
-            throw 'Invalid canvasHeight';
-
-        this.#canvasHeight = value;
-    } // setter canvasHeight
 
     get drawEffectFlag() {
         if (isNaN(this.timestamp))
