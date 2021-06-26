@@ -3,6 +3,9 @@
 // Camera
 //
 // =============================================================================
+
+// FIXME: resolve all fixmes
+
 class Camera {
     #position
     #target
@@ -12,6 +15,7 @@ class Camera {
     constructor() {
         this.#position = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
         this.#target = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
+        // FIXME: rotate camera around its pivot
         this.#pivot = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
         this.#viewMatrix = mat4.identity();
     } // ctor
