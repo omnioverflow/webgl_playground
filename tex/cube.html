@@ -26,16 +26,12 @@
 
       varying highp vec2 vTextureCoord;
 
-      uniform mat4 uModelMatrix;
-      uniform mat4 uViewMatrix;
-      uniform mat4 uProjectionMatrix;
+      // Model-View-Projection
+      uniform mat4 uMVP;
 
       void main()
       {
-        // FIXME: precompute the MVP matrix on the CPU
-        // instead of duplicating computations for each vertex
-        mat4 MVP = uProjectionMatrix * uViewMatrix * uModelMatrix;
-        gl_Position = MVP * aPosition;
+        gl_Position = uMVP * aPosition;
         vTextureCoord = aTextureCoord;
       }
     </script>

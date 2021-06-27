@@ -68,9 +68,7 @@ class WebGLController {
             },
             uniformLocations: {
                 uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-                modelMatrix: gl.getUniformLocation(shaderProgram, 'uModelMatrix'),
-                viewMatrix: gl.getUniformLocation(shaderProgram, 'uViewMatrix'),
-                projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix')
+                mvpMatrix: gl.getUniformLocation(shaderProgram, 'uMVP')
             }
         };
 
@@ -257,23 +255,19 @@ class WebGLController {
         // Associate shader sampler to texture unit 0
         gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
-        // FIXME: Precompute the MVP matrix on the application side on the CPU
-        // Configure MVP uniforms
-        // Model
+        // Compute the model-view-projection matrix
+        // FIXME: GROS FIXME
+        let mvpMatrix = mat4.create();
+
+        mvpMatrix = mat4.multiply(viewMatrix, modelMatrix, mvpMatrix);
+
+        // /!\ Cache mvpMatrix for debugging purposes
+        this.mvpMatrix = mvpMatrix;
+
         gl.uniformMatrix4fv(
-            programInfo.uniformLocations.modelMatrix,
-            false,
-            modelMatrix);
-        // View
-        gl.uniformMatrix4fv(
-            programInfo.uniformLocations.viewMatrix,
-            false,
-            viewMatrix);
-        // Projection
-        gl.uniformMatrix4fv(
-                programInfo.uniformLocations.projectionMatrix,
+            programInfo.uniformLocations.mvpMatrix,
                 false,
-                projectionMatrix);
+            mvpMatrix);
 
         // Execute the actual draw
         {        
