@@ -11,12 +11,18 @@
 class WebGLController {
     #scene
     #virtualTrackball
+    #mvpMatrix
 
     // noop ctor
     constructor() {
         this.#scene = null;
         this.#virtualTrackball = null;
+        this.#mvpMatrix = null;
     } // ctor
+
+    set mvpMatrix(matrix) {
+        this.#mvpMatrix = matrix;
+    } // set mvpMatrix
 
     setupWebGL() {
         const canvas = document.getElementById("gl-canvas");
