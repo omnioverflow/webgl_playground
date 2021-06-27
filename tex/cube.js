@@ -266,6 +266,7 @@ class WebGLController {
         let mvpMatrix = mat4.create();
 
         mvpMatrix = mat4.multiply(viewMatrix, modelMatrix, mvpMatrix);
+        mvpMatrix = mat4.multiply(projectionMatrix, mvpMatrix, mvpMatrix);
 
         // /!\ Cache mvpMatrix for debugging purposes
         this.mvpMatrix = mvpMatrix;
