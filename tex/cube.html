@@ -8,12 +8,22 @@
 
     <style>
       .debugInfoDiv {
-      border: 2px outset gray;
-      background-color: lightgray;
-      font-size: smaller;
-      text-align: left;
-      width: 80%;
-    }
+        border: 2px outset gray;
+        background-color: lightgray;
+        font-size: smaller;
+        text-align: left;
+        width: 100%;
+        height: 200px;
+      },
+
+/*      .debugColumn {
+        float: left;
+        width: 33.33%;
+      },
+
+      .debugInfoDiv.after {
+        display: table;
+      }*/
     </style>
 
     <!-- =================================================================== -->
@@ -135,7 +145,13 @@
     </canvas>
 
     <div class="debugInfoDiv" id="debugInfoDiv">
-      <p style="text-align:left">Camera</p>
+      <div class="debugColumn" style="float: left; width: 200px;" id="debugInfoCameraDiv">
+      </div>
+      <div class="debugColumn" style="float: left; width: 200px;" id="debugInfoMPDiv">
+      </div>
+      <div class="debugColumn" style="float: left; width: 200px;" id="debugInfoMVPDiv">
+        ololol
+      </div>
     </div>
     
     <script type="text/javascript" src="../common/init_shaders.js"></script>

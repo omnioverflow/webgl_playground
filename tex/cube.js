@@ -348,6 +348,7 @@ class WebGLController {
         const position = this.#scene.camera.position;
         let i = 0;
         position.forEach(el => {
+            el = el.toFixed(2);
             debugInfoDiv.innerHTML += `${el}`;
             if (i++ < 2)
                 debugInfoDiv.innerHTML += ', ';
@@ -360,6 +361,7 @@ class WebGLController {
         const target = this.#scene.camera.target;
         let i = 0;
         target.forEach(el => {
+            el = el.toFixed(2);
             debugInfoDiv.innerHTML += `${el}`;
             if (i++ < 2)
                 debugInfoDiv.innerHTML += ', ';
@@ -367,13 +369,13 @@ class WebGLController {
     } // displayDebugInfoCamTarget
 
     displayDebugInfoCamViewMat(debugInfoDiv, debugSubDiv) {
-        debugInfoDiv.innerHTML += "<b>Camera: viewMatrix</b><br/>";
+        debugInfoDiv.innerHTML += "<b>View Matrix</b><br/>";
 
         const camera = this.#scene.camera;
         const viewMatrix = camera.viewMatrix;
         for (let i = 0; i < 4; ++i) {
             for (let j = 0; j < 4; ++j) {
-                const el = viewMatrix[j * 4 + i];
+                const el = viewMatrix[j * 4 + i].toFixed(2);
                 debugInfoDiv.innerHTML +=`${el} `;
                 if (j == 3)
                     debugInfoDiv.innerHTML += '<br/>';    
@@ -381,12 +383,56 @@ class WebGLController {
         }
     } // displayDebugInfoCamViewMat
 
+    displayDebugInfoModelMat(debugInfoDiv) {
+        debugInfoDiv.innerHTML += "<b>Model matrix</b><br/>";
+
+        const modelMatrix = this.#scene.cubeModelMatrix;
+        for (let i = 0; i < 4; ++i) {
+            for (let j = 0; j < 4; ++j) {
+                const el = modelMatrix[j * 4 + i].toFixed(2);
+                debugInfoDiv.innerHTML +=`${el} `;
+                if (j == 3)
+                    debugInfoDiv.innerHTML += '<br/>';    
+            }
+        }
+    } // displayDebugInfoModelMat
+
+    displayDebugInfoProjMat(debugInfoDiv) {
+        debugInfoDiv.innerHTML += "<b>Projection matrix</b><br/>";
+
+        const projectionMatrix = this.#scene.camera.projectionMatrix;
+        for (let i = 0; i < 4; ++i) {
+            for (let j = 0; j < 4; ++j) {
+                const el = projectionMatrix[j * 4 + i].toFixed(2);
+                debugInfoDiv.innerHTML +=`${el} `;
+                if (j == 3)
+                    debugInfoDiv.innerHTML += '<br/>';    
+            }
+        }
+    } // displayDebugInfoProjMat
+
+    displayDebugInfoMVPMat(debugInfoDiv) {
+        const mvpMatrix = this.#mvpMatrix;
+        if (mvpMatrix == null)
+            return;
+
+        debugInfoDiv.innerHTML += "<b>MVP</b><br/>";
+
+        for (let i = 0; i < 4; ++i) {
+            for (let j = 0; j < 4; ++j) {
+                const el = mvpMatrix[j * 4 + i].toFixed(2);
+                debugInfoDiv.innerHTML +=`${el} `;
+                if (j == 3)
+                    debugInfoDiv.innerHTML += '<br/>';    
+            }
+        }
+    } // displayDebugInfoMVPMat
+
     displayDebugInfoDispatch(debugInfoDiv, debugSubDiv) {
         debugInfoDiv.innerHTML += '<div id="' + debugSubDiv + '">';
 
         switch (debugSubDiv) {            
             case 'Camera.position':
-                debugInfoDiv.innerHTML += "<br/>";
                 this.displayDebugInfoCamPos(debugInfoDiv, debugSubDiv);
                 debugInfoDiv.innerHTML += "<br/>";
                 break;
@@ -397,8 +443,23 @@ class WebGLController {
                 break;
             case 'Camera.viewMatrix':
                 debugInfoDiv.innerHTML += "<br/>";
-                this.displayDebugInfoCamViewMat(debugInfoDiv, debugSubDiv)
+                this.displayDebugInfoCamViewMat(debugInfoDiv, debugSubDiv);
                 debugInfoDiv.innerHTML += "<br/>";
+                break;
+            case 'MVP.model':
+                this.displayDebugInfoModelMat(debugInfoDiv);
+                debugInfoDiv.innerHTML += "<br/>";
+                break;
+            case 'MVP.projection':
+                this.displayDebugInfoProjMat(debugInfoDiv);
+                debugInfoDiv.innerHTML += "<br/>";
+                break;
+            case 'MVP.mvp':
+                this.displayDebugInfoMVPMat(debugInfoDiv);
+                debugInfoDiv.innerHTML += "<br/>";
+                break;
+            default:
+                throw 'Invalid debug call';
                 break;
         }
 
@@ -406,11 +467,30 @@ class WebGLController {
     } // displayDebugInfoDispatch
 
     displayDebugInfo() {
-        const debugInfoDiv = document.getElementById('debugInfoDiv');
-        debugInfoDiv.innerHTML = "";
-        this.displayDebugInfoDispatch(debugInfoDiv, 'Camera.position');
-        this.displayDebugInfoDispatch(debugInfoDiv, 'Camera.target');
-        this.displayDebugInfoDispatch(debugInfoDiv, 'Camera.viewMatrix');
+        // Camera
+        {
+            const debugInfoCameraDiv = document.getElementById('debugInfoCameraDiv');
+            // Clear camera div contents
+            debugInfoCameraDiv.innerHTML = "";
+            this.displayDebugInfoDispatch(debugInfoCameraDiv, 'Camera.position');
+            this.displayDebugInfoDispatch(debugInfoCameraDiv, 'Camera.target');
+            this.displayDebugInfoDispatch(debugInfoCameraDiv, 'Camera.viewMatrix');
+        }
+        // Model and Projection
+        {
+            const debugInfoMPDiv = document.getElementById('debugInfoMPDiv');
+            // Clear mp div contents
+            debugInfoMPDiv.innerHTML = "";
+            this.displayDebugInfoDispatch(debugInfoMPDiv, 'MVP.model');
+            this.displayDebugInfoDispatch(debugInfoMPDiv, 'MVP.projection');
+            
+        }
+        // MVP
+        {
+            const debugInfoMVPDiv = document.getElementById('debugInfoMVPDiv');
+            debugInfoMVPDiv.innerHTML = "";
+            this.displayDebugInfoDispatch(debugInfoMVPDiv, 'MVP.mvp');
+        }
     } // displayDebugInfo
 
 // =============================================================================
@@ -474,8 +554,9 @@ class WebGLController {
         const cubeSize = 1.0;
         const cubeData = this.setupCube(gl, renderFn, cubeCenter, cubeSize);
         
-        const eye = vec3.create(new Float32Array([0.0, 0.0, 5.0]));
+        const eye = vec3.create(new Float32Array([8.0, 0.0, 8.0]));
         this.setupScene(cubeData.cubeObject, eye, gl.canvas);
+        this.#scene.uniformScaleCube(0.2);
 
         const buffers = { "overlay" : overlayData.buffers,
                           "cube": cubeData.buffers };
