@@ -60,9 +60,6 @@ class Camera {
 
     setViewMatrix(value) {
         this.#viewMatrix = value;
-        if (this.#viewMatrix[14] < 0) {
-            let lol = 0;
-        }
     } // set viewMatrix
 
     get projectionMatrix() {
