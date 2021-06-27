@@ -190,7 +190,7 @@ class WebGLController {
         const buffers = renderData.buffers.cube;
         const texture = renderData.textures.cube;
 
-        let modelMatrix = mat4.identity();
+        const modelMatrix = this.#scene.cubeModelMatrix;
         const viewMatrix = this.#scene.camera.viewMatrix;
         const projectionMatrix = this.#scene.camera.projectionMatrix;
 
