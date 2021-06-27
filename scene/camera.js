@@ -10,6 +10,7 @@ class Camera {
     #position
     #target
     #pivot
+    #projectionMatrix
     #viewMatrix
 
     constructor(position, target, pivot, up) {
@@ -17,6 +18,30 @@ class Camera {
         this.#target = target;
         // FIXME: rotate camera around its pivot
         this.#pivot = pivot;
+
+        // TODO: make projection matrix flexible
+
+        // Create a perspective matrix, a special matrix that is
+        // used to simulate the distortion of perspective in a camera.
+        // Our field of view is 45 degrees, with a width/height
+        // ratio that matches the display size of the canvas
+        // and we only want to see objects between 0.1 units
+        // and 100 units away from the camera.
+
+        // vertical field-of-view
+        // const fovy = 60 * Math.PI / 180;   // in radians
+        // const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        // const z_near = 0.01;
+        // const z_far = 100.0;
+
+        // this.#projectionMatrix = mat4.perspective(fovy, aspect, z_near, z_far);
+        this.#projectionMatrix = new Float32Array(
+            [1.8106601238250732, 0, 0, 0,
+             0, 2.4142136573791504, 0, 0,
+             0, 0, -1.0020020008087158, -1,
+             0, 0, -0.20020020008087158, 0
+            ]);
+        // this.#projectionMatrix = mat4.identity();
 
         this.lookAtNaive(position, target, up);
     } // ctor
@@ -39,6 +64,10 @@ class Camera {
             let lol = 0;
         }
     } // set viewMatrix
+
+    get projectionMatrix() {
+        return this.#projectionMatrix;
+    } // get projectionMatrix
 
     lookAt(to) {
         this.#target = to;
