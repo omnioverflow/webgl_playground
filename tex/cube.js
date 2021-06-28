@@ -266,13 +266,14 @@ class WebGLController {
 
         // Compute the model-view-projection matrix
         // FIXME: GROS FIXME
+        let modelViewMatrix = mat4.create();
         let mvpMatrix = mat4.create();
 
-        mvpMatrix = mat4.multiply(viewMatrix, modelMatrix, mvpMatrix);
+        modelViewMatrix = mat4.multiply(viewMatrix, modelMatrix, modelViewMatrix);
         // Cache model-view matrix
-        this.#modelViewMatrix = mvpMatrix;
+        this.#modelViewMatrix = modelViewMatrix;
 
-        mvpMatrix = mat4.multiply(projectionMatrix, mvpMatrix, mvpMatrix);
+        mvpMatrix = mat4.multiply(projectionMatrix, modelViewMatrix, mvpMatrix);
 
         // /!\ Cache mvpMatrix for debugging purposes
         this.mvpMatrix = mvpMatrix;
