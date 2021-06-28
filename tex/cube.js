@@ -108,7 +108,7 @@ class WebGLController {
             const pivot = cube.center;
             const up = vec3.create(new Float32Array([0.0, 1.0, 0.0]));
             this.#scene = new Scene(
-                new Camera(eye, target, pivot, up)
+                new Camera(eye, target, pivot, up, canvas)
                 );
         }
         // Create virtual trackball

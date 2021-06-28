@@ -13,7 +13,8 @@ class Camera {
     #projectionMatrix
     #viewMatrix
 
-    constructor(position, target, pivot, up) {
+    // FIXME: get rid of canvas argument if possible
+    constructor(position, target, pivot, up, canvas) {
         this.#position = position;
         this.#target = target;
         // FIXME: rotate camera around its pivot
