@@ -115,6 +115,27 @@ class VirtualTrackball {
         return rotation;
     }
 
+    rotate(rotation) {
+        // Rotate camera's position
+        let position = this.scene.camera.position;
+        let newPosition = vec4.create();
+        newPosition[0] = position[0];
+        newPosition[1] = position[1];
+        newPosition[2] = position[2];
+        newPosition[3] = 1.0;
+
+        const len0 = vec3.length(newPosition);
+        newPosition = mat4.multiplyVec4(rotation, newPosition, newPosition);
+        const len1 = vec3.length(newPosition);
+
+        newPosition[0] = 5.0;
+        newPosition[1] = 0.0;
+        newPosition[2] = 0.0;
+         this.scene.camera.lookAtNaive(newPosition,
+                                      this.scene.camera.target,
+                                      vec3.create(new Float32Array([0, 1, 0])));
+    } // rotate
+
     onMouseDown(pos) {
         this.prevMousePos = this.convertToNDC(pos);
         this.#drawEffectFlag = false;
@@ -125,43 +146,8 @@ class VirtualTrackball {
         this.#drawEffectFlag = true;
         this.timestamp = Date.now();
 
-        // const rotation = this.computeRotation();
+        //const rotation = this.computeRotation();
         const rotation = this.computeDebugRotation();
-        let currViewMatrix = this.scene.camera.viewMatrix;
-
-        // 1. Translate camera to the origin
-        let translation = mat4.identity();
-        translation[12] = this.scene.camera.position[0];
-        translation[13] = this.scene.camera.position[1];
-        translation[14] = this.scene.camera.position[2];
-        currViewMatrix = mat4.multiply(currViewMatrix, 
-            translation,
-            currViewMatrix);
-
-        // 2. Rotate the camera
-        currViewMatrix = mat4.multiply(currViewMatrix, 
-            rotation,
-            currViewMatrix);
-
-        // 3. Translate the camera back to it's position
-        // (inverse transformation to the step 3)
-        translation[12] = -translation[12];
-        translation[13] = -translation[13];
-        translation[14] = -translation[14];
-
-        let invTranslation = vec4.create();
-        invTranslation[0] = translation[12];
-        invTranslation[1] = translation[13];
-        invTranslation[2] = translation[14];
-        invTranslation[3] = 1;
-
-        invTranslation = mat4.multiplyVec4(rotation, invTranslation);
-
-        const target = this.scene.camera.target;
-        this.scene.camera.lookAtNaive(invTranslation,
-                                      target,
-                                      vec3.create(new Float32Array([0, 1, 0])));
-
-        this.scene.camera.setViewMatrix(currViewMatrix);
+        this.rotate(rotation);
     } // onMouseUp
 } // class Trackball

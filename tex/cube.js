@@ -204,20 +204,20 @@ class WebGLController {
         const projectionMatrix = this.#scene.camera.projectionMatrix;
 
         {
-            modelMatrix = mat4.translate(modelMatrix, 
-                           [-0.0, 0.0, -7.0]);
+            // modelMatrix = mat4.translate(modelMatrix, 
+            //                [-0.0, 0.0, -7.0]);
             
-            const rot_z_radian = this.model.cubeRotation;
-            mat4.rotate(modelMatrix,
-                        rot_z_radian,
-                        [0, 0, 1],
-                        modelMatrix);
+            // const rot_z_radian = this.model.cubeRotation;
+            // mat4.rotate(modelMatrix,
+            //             rot_z_radian,
+            //             [0, 0, 1],
+            //             modelMatrix);
             
-            const rot_x_radian = .7 * this.model.cubeRotation;
-            mat4.rotate(modelMatrix,
-                        rot_x_radian,
-                        [1, 0, 0],
-                        modelMatrix);
+            // const rot_x_radian = .7 * this.model.cubeRotation;
+            // mat4.rotate(modelMatrix,
+            //             rot_x_radian,
+            //             [1, 0, 0],
+            //             modelMatrix);
         }
 
         gl.useProgram(programInfo.program);
@@ -274,13 +274,15 @@ class WebGLController {
         this.#modelViewMatrix = modelViewMatrix;
 
         mvpMatrix = mat4.multiply(projectionMatrix, modelViewMatrix, mvpMatrix);
+        // mvpMatrix[14] = -20.0;
+        // mvpMatrix = mat4.transpose(mvpMatrix);
 
         // /!\ Cache mvpMatrix for debugging purposes
         this.mvpMatrix = mvpMatrix;
 
         gl.uniformMatrix4fv(
             programInfo.uniformLocations.mvpMatrix,
-                false,
+            false,
             mvpMatrix);
 
         // Execute the actual draw
@@ -585,9 +587,9 @@ class WebGLController {
         const cubeSize = 1.0;
         const cubeData = this.setupCube(gl, renderFn, cubeCenter, cubeSize);
         
-        const eye = vec3.create(new Float32Array([8.0, 0.0, 8.0]));
+        const eye = vec3.create(new Float32Array([10.0, 10.0, -10.0]));
         this.setupScene(cubeData.cubeObject, eye, gl.canvas);
-        this.#scene.uniformScaleCube(0.2);
+        this.#scene.uniformScaleCube(1.0);
 
         const buffers = { "overlay" : overlayData.buffers,
                           "cube": cubeData.buffers };

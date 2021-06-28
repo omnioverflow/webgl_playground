@@ -31,8 +31,8 @@ class Camera {
 
         // vertical field-of-view
         // const fovy = 60 * Math.PI / 180;   // in radians
-        // const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-        // const z_near = 0.01;
+        // const aspect = canvas.clientWidth / canvas.clientHeight;
+        // const z_near = -0.01;
         // const z_far = 100.0;
 
         // this.#projectionMatrix = mat4.perspective(fovy, aspect, z_near, z_far);
@@ -43,6 +43,14 @@ class Camera {
              0, 0, -0.20020020008087158, 0
             ]);
         // this.#projectionMatrix = mat4.identity();
+        // const size = 30.0;
+        // const left = -size;
+        // const right = size;
+        // const bottom = -size;
+        // const top = size;
+        // const near = -size; 
+        // const far = size;
+        // this.#projectionMatrix = mat4.ortho(left, right, bottom, top, near, far);
 
         this.lookAtNaive(position, target, up);
     } // ctor
@@ -85,48 +93,28 @@ class Camera {
         let yAxis = vec3.create();
         yAxis = vec3.cross(zAxis, xAxis, yAxis);
 
-        let orientation = mat4.create();
+        let orientation = mat4.identity();
         // column 0
         orientation[0] = xAxis[0];
-        orientation[1] = xAxis[1];
-        orientation[2] = xAxis[2];
+        orientation[1] = yAxis[0];
+        orientation[2] = zAxis[0];
         orientation[3] = 0.0;
         // column 1
-        orientation[4] = yAxis[0];
+        orientation[4] = xAxis[1];
         orientation[5] = yAxis[1];
-        orientation[6] = yAxis[2];
+        orientation[6] = zAxis[1];
         orientation[7] = 0.0;
         // column 2
-        orientation[8] = zAxis[0];
-        orientation[9] = zAxis[1];
+        orientation[8] = xAxis[2];
+        orientation[9] = yAxis[2];
         orientation[10] = zAxis[2];
         orientation[11] = 0.0;
-        // column3
-        orientation[12] = 0.0;
-        orientation[13] = 0.0;
-        orientation[14] = 0.0;
-        orientation[15] = 1.0;
 
-        let translation = mat4.create();
-        // column 0
-        translation[0] = 1.0;
-        translation[1] = 0.0;
-        translation[2] = 0.0;
-        translation[3] = -eye[0];
-        // column 1
-        translation[4] = 0.0;
-        translation[5] = 1.0;
-        translation[6] = 0.0;
-        translation[7] = -eye[1];
-        // column 2
-        translation[8] = 0.0;
-        translation[9] = 0.0;
-        translation[10] = 1.0;
-        translation[11] = -eye[2];
+        let translation = mat4.identity();
         // column 3
-        translation[12] = 0.0;
-        translation[13] = 0.0;
-        translation[14] = 0.0;
+        translation[12] = -eye[0];
+        translation[13] = -eye[1];
+        translation[14] = -eye[2];
         translation[15] = 1.0;
 
         let viewMat = mat4.create();
@@ -134,9 +122,10 @@ class Camera {
         // of the common transformation concatenation order,
         // because view transform matrix is the inverse of the
         // camera matrix)
-        viewMat = mat4.multiply(translation, orientation, viewMat);
+        // orientation = mat4.transpose(orientation);
+        viewMat = mat4.multiply(orientation, translation, viewMat);
 
-        viewMat = mat4.transpose(viewMat);
+        // viewMat = mat4.transpose(viewMat);
 
         this.setViewMatrix(viewMat);
     } // lookAtNaive
