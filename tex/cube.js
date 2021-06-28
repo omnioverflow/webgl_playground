@@ -247,18 +247,17 @@ class WebGLController {
         // Associate shader sampler to texture unit 0
         gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
-        // Compute the model-view-projection matrix
-        // FIXME: GROS FIXME
         let modelViewMatrix = mat4.create();
         let mvpMatrix = mat4.create();
 
+        // Compute the model-view matrix as a preliminary step
+        // for computing the model-view-projection
         modelViewMatrix = mat4.multiply(viewMatrix, modelMatrix, modelViewMatrix);
         // Cache model-view matrix
         this.#modelViewMatrix = modelViewMatrix;
 
+        // Compute the model-view-projection
         mvpMatrix = mat4.multiply(projectionMatrix, modelViewMatrix, mvpMatrix);
-        // mvpMatrix[14] = -20.0;
-        // mvpMatrix = mat4.transpose(mvpMatrix);
 
         // /!\ Cache mvpMatrix for debugging purposes
         this.mvpMatrix = mvpMatrix;
