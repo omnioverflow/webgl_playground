@@ -128,10 +128,7 @@ class VirtualTrackball {
         newPosition = mat4.multiplyVec4(rotation, newPosition, newPosition);
         const len1 = vec3.length(newPosition);
 
-        newPosition[0] = 5.0;
-        newPosition[1] = 0.0;
-        newPosition[2] = 0.0;
-         this.scene.camera.lookAtNaive(newPosition,
+        this.scene.camera.lookAtNaive(newPosition,
                                       this.scene.camera.target,
                                       vec3.create(new Float32Array([0, 1, 0])));
     } // rotate
@@ -146,8 +143,8 @@ class VirtualTrackball {
         this.#drawEffectFlag = true;
         this.timestamp = Date.now();
 
-        //const rotation = this.computeRotation();
-        const rotation = this.computeDebugRotation();
+        const rotation = this.computeRotation();
+        // const rotation = this.computeDebugRotation();
         this.rotate(rotation);
     } // onMouseUp
 } // class Trackball
