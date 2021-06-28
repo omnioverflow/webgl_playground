@@ -11,6 +11,9 @@
 class WebGLController {
     #scene
     #virtualTrackball
+
+    // Cache model-view and mvp matrices
+    #modelViewMatrix
     #mvpMatrix
 
     // noop ctor
@@ -266,6 +269,9 @@ class WebGLController {
         let mvpMatrix = mat4.create();
 
         mvpMatrix = mat4.multiply(viewMatrix, modelMatrix, mvpMatrix);
+        // Cache model-view matrix
+        this.#modelViewMatrix = mvpMatrix;
+
         mvpMatrix = mat4.multiply(projectionMatrix, mvpMatrix, mvpMatrix);
 
         // /!\ Cache mvpMatrix for debugging purposes
@@ -412,6 +418,23 @@ class WebGLController {
         }
     } // displayDebugInfoProjMat
 
+    displayDebugInfoMVMat(debugInfoDiv) {
+        const modelViewMatrix = this.#modelViewMatrix;
+        if (modelViewMatrix == null)
+            return;
+
+        debugInfoDiv.innerHTML += "<b>Model-View</b><br/>";
+
+        for (let i = 0; i < 4; ++i) {
+            for (let j = 0; j < 4; ++j) {
+                const el = modelViewMatrix[j * 4 + i].toFixed(2);
+                debugInfoDiv.innerHTML +=`${el} `;
+                if (j == 3)
+                    debugInfoDiv.innerHTML += '<br/>';    
+            }
+        }
+    } // displayDebugInfoMVMat
+
     displayDebugInfoMVPMat(debugInfoDiv) {
         const mvpMatrix = this.#mvpMatrix;
         if (mvpMatrix == null)
@@ -455,6 +478,11 @@ class WebGLController {
                 this.displayDebugInfoProjMat(debugInfoDiv);
                 debugInfoDiv.innerHTML += "<br/>";
                 break;
+            case 'MVP.mv':
+                // model-view
+                this.displayDebugInfoMVMat(debugInfoDiv);
+                debugInfoDiv.innerHTML += "<br/>";
+                break;
             case 'MVP.mvp':
                 this.displayDebugInfoMVPMat(debugInfoDiv);
                 debugInfoDiv.innerHTML += "<br/>";
@@ -490,6 +518,7 @@ class WebGLController {
         {
             const debugInfoMVPDiv = document.getElementById('debugInfoMVPDiv');
             debugInfoMVPDiv.innerHTML = "";
+            this.displayDebugInfoDispatch(debugInfoMVPDiv, 'MVP.mv');
             this.displayDebugInfoDispatch(debugInfoMVPDiv, 'MVP.mvp');
         }
     } // displayDebugInfo
