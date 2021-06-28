@@ -7,16 +7,22 @@ class Scene {
     camera
     #objects
     #cubeModelMatrix
+    #enableCubeRotation
 
     constructor(camera, args = {}) {
         this.camera = camera;
         this.#objects = args;
         this.#cubeModelMatrix = mat4.identity();
+        this.#enableCubeRotation = false;
     } // ctor
 
     get cubeModelMatrix() {
         return this.#cubeModelMatrix;
     } // get cubeModelMatrix
+
+    toggleCubeRotation() {
+        this.#enableCubeRotation = !this.#enableCubeRotation;
+    } // toggleCubeRotation
 
     uniformScaleCube(uniformScale) {
         this.#cubeModelMatrix[0] = uniformScale;

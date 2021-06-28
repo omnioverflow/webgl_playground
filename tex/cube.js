@@ -528,6 +528,16 @@ class WebGLController {
 
 // =============================================================================
 //
+// Controls
+//
+// =============================================================================
+
+    toggleRotation() {
+        this.#scene.toggleCubeRotation();
+    } // toggleRotation
+
+// =============================================================================
+//
 // Listeners
 //
 // =============================================================================
@@ -543,6 +553,12 @@ class WebGLController {
             this.#virtualTrackball.onMouseUp(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );            
+        });
+
+        const toggleRotationButton = document.getElementById(
+            "toggle-rotation-button");
+        toggleRotationButton.addEventListener("click", e => {
+            this.toggleRotation();
         });
     } // registerListeners
 
