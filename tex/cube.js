@@ -98,7 +98,7 @@ class WebGLController {
     } // setupCube
 
     update(deltaTime) {
-        this.model.cubeRotation += deltaTime;
+        this.#scene.update(deltaTime);
     } // update
 
     setupScene(cube, eye, canvas) {
@@ -202,23 +202,6 @@ class WebGLController {
         const modelMatrix = this.#scene.cubeModelMatrix;
         const viewMatrix = this.#scene.camera.viewMatrix;
         const projectionMatrix = this.#scene.camera.projectionMatrix;
-
-        {
-            // modelMatrix = mat4.translate(modelMatrix, 
-            //                [-0.0, 0.0, -7.0]);
-            
-            // const rot_z_radian = this.model.cubeRotation;
-            // mat4.rotate(modelMatrix,
-            //             rot_z_radian,
-            //             [0, 0, 1],
-            //             modelMatrix);
-            
-            // const rot_x_radian = .7 * this.model.cubeRotation;
-            // mat4.rotate(modelMatrix,
-            //             rot_x_radian,
-            //             [1, 0, 0],
-            //             modelMatrix);
-        }
 
         gl.useProgram(programInfo.program);
 
@@ -573,7 +556,6 @@ class WebGLController {
 
         this.registerListeners(gl);
 
-        this.model = { cubeRotation : 0.0 };
         // "Forward declare" render function
         let then = 0;
         // /!\ A disgraceful alias for this, as a workaround to pass this to the 

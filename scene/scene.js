@@ -7,12 +7,14 @@ class Scene {
     camera
     #objects
     #cubeModelMatrix
+    #cubeRotation
     #enableCubeRotation
 
     constructor(camera, args = {}) {
         this.camera = camera;
         this.#objects = args;
         this.#cubeModelMatrix = mat4.identity();
+        this.#cubeRotation = 0.0;
         this.#enableCubeRotation = false;
     } // ctor
 
@@ -23,6 +25,28 @@ class Scene {
     toggleCubeRotation() {
         this.#enableCubeRotation = !this.#enableCubeRotation;
     } // toggleCubeRotation
+
+    update(deltaTime) {
+        if (this.#enableCubeRotation) {
+            this.#cubeRotation += deltaTime;
+
+        // this.#cubeModelMatrix = mat4.translate(this.#cubeModelMatrix, 
+        //                [-0.0, 0.0, -7.0]);
+        
+        const speedCoefficient = 0.001;
+        const rotZ = speedCoefficient * this.#cubeRotation; // radians
+        mat4.rotate(this.#cubeModelMatrix,
+                    rotZ,
+                    [0, 0, 1],
+                    this.#cubeModelMatrix);
+        
+        const rotX = speedCoefficient * this.#cubeRotation; // radians
+        mat4.rotate(this.#cubeModelMatrix,
+                    rotX,
+                    [1, 0, 0],
+                    this.#cubeModelMatrix);
+        }
+    } // update
 
     uniformScaleCube(uniformScale) {
         this.#cubeModelMatrix[0] = uniformScale;
