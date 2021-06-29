@@ -86,28 +86,35 @@ class Camera {
         this.#position = eye;
         this.#target = target;
 
-        let zAxis = vec3.create();
-        zAxis = vec3.normalize(vec3.subtract(eye, target, zAxis));
-        let xAxis = vec3.create();
-        xAxis = vec3.normalize(vec3.cross(up, zAxis, xAxis));
-        let yAxis = vec3.create();
-        yAxis = vec3.cross(zAxis, xAxis, yAxis);
+        let forward = vec3.create();
+        // forward = normalize(eye - target)
+        forward = vec3.normalize(vec3.subtract(eye, target, forward));
+
+        let sideways = vec3.create();
+        // sideways = up x forward
+        sideways = vec3.normalize(vec3.cross(up, forward, sideways));
+        let u = vec3.create();
+        // up and forward are not necessary orthogonal,
+        // therefore in order to get orthonormal coordinate system
+        // we compute another 'up' vector u, as follows
+        // u = forward x sideways
+        u = vec3.cross(forward, sideways, u);
 
         let orientation = mat4.identity();
         // column 0
-        orientation[0] = xAxis[0];
-        orientation[1] = yAxis[0];
-        orientation[2] = zAxis[0];
+        orientation[0] = sideways[0];
+        orientation[1] = u[0];
+        orientation[2] = forward[0];
         orientation[3] = 0.0;
         // column 1
-        orientation[4] = xAxis[1];
-        orientation[5] = yAxis[1];
-        orientation[6] = zAxis[1];
+        orientation[4] = sideways[1];
+        orientation[5] = u[1];
+        orientation[6] = forward[1];
         orientation[7] = 0.0;
         // column 2
-        orientation[8] = xAxis[2];
-        orientation[9] = yAxis[2];
-        orientation[10] = zAxis[2];
+        orientation[8] = sideways[2];
+        orientation[9] = u[2];
+        orientation[10] = forward[2];
         orientation[11] = 0.0;
 
         let translation = mat4.identity();
@@ -124,8 +131,6 @@ class Camera {
         // camera matrix)
         // orientation = mat4.transpose(orientation);
         viewMat = mat4.multiply(orientation, translation, viewMat);
-
-        // viewMat = mat4.transpose(viewMat);
 
         this.setViewMatrix(viewMat);
     } // lookAtNaive
