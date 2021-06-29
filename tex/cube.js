@@ -524,19 +524,22 @@ class WebGLController {
 //
 // =============================================================================
 
-    registerListeners(gl) {        
+    registerListeners(gl) {
+        // Mouse down 
         gl.canvas.addEventListener("mousedown", event => {            
             this.#virtualTrackball.onMouseDown(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );
         });
 
+        // Mouse up
         gl.canvas.addEventListener("mouseup", e => {
             this.#virtualTrackball.onMouseUp(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );            
         });
 
+        // Toggle rotation
         const toggleRotationButton = document.getElementById(
             "toggle-rotation-button");
         toggleRotationButton.addEventListener("click", e => {
