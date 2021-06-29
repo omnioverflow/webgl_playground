@@ -90,6 +90,15 @@ class Camera {
         // forward = normalize(eye - target)
         forward = vec3.normalize(vec3.subtract(eye, target, forward));
 
+        {
+            // Check the corner case, when forward vector is 
+            // collinear with the up vector
+            const dotForwardUp = vec3.dot(forward, up);
+            if (isZero(dotForwardUp)) {
+                throw "[camera] Forward vector is collinear with the up vector";
+            }
+        }
+
         let sideways = vec3.create();
         // sideways = up x forward
         sideways = vec3.normalize(vec3.cross(up, forward, sideways));
