@@ -14,43 +14,57 @@ class Camera {
     #viewMatrix
 
     // FIXME: get rid of canvas argument if possible
-    constructor(position, target, pivot, up, canvas) {
+    constructor(position, target, pivot, up, canvas,
+        projectionType = "projection-ortho") 
+    {
         this.#position = position;
         this.#target = target;
         // FIXME: rotate camera around its pivot
         this.#pivot = pivot;
 
         // TODO: make projection matrix flexible
+        switch (projectionType) {
+            case 'projection-auto':
+                // Create a perspective matrix, a special matrix that is
+                // used to simulate the distortion of perspective in a camera.
+                // Our field of view is 45 degrees, with a width/height
+                // ratio that matches the display size of the canvas
+                // and we only want to see objects between 0.1 units
+                // and 100 units away from the camera.
 
-        // Create a perspective matrix, a special matrix that is
-        // used to simulate the distortion of perspective in a camera.
-        // Our field of view is 45 degrees, with a width/height
-        // ratio that matches the display size of the canvas
-        // and we only want to see objects between 0.1 units
-        // and 100 units away from the camera.
+                // vertical field-of-view
+                const fovy = 60 * Math.PI / 180;   // in radians
+                const aspect = canvas.clientWidth / canvas.clientHeight;
+                const z_near = -0.01;
+                const z_far = 100.0;
 
-        // vertical field-of-view
-        // const fovy = 60 * Math.PI / 180;   // in radians
-        // const aspect = canvas.clientWidth / canvas.clientHeight;
-        // const z_near = -0.01;
-        // const z_far = 100.0;
-
-        // this.#projectionMatrix = mat4.perspective(fovy, aspect, z_near, z_far);
-        this.#projectionMatrix = new Float32Array(
-            [1.8106601238250732, 0, 0, 0,
-             0, 2.4142136573791504, 0, 0,
-             0, 0, -1.0020020008087158, -1,
-             0, 0, -0.20020020008087158, 0
-            ]);
-        // this.#projectionMatrix = mat4.identity();
-        // const size = 30.0;
-        // const left = -size;
-        // const right = size;
-        // const bottom = -size;
-        // const top = size;
-        // const near = -size; 
-        // const far = size;
-        // this.#projectionMatrix = mat4.ortho(left, right, bottom, top, near, far);
+                this.#projectionMatrix = mat4.perspective(fovy, aspect, z_near, z_far);
+                break;
+            case 'projection-hardcoded':
+                this.#projectionMatrix = new Float32Array(
+                    [1.8106601238250732, 0, 0, 0,
+                     0, 2.4142136573791504, 0, 0,
+                     0, 0, -1.0020020008087158, -1,
+                     0, 0, -0.20020020008087158, 0
+                    ]);
+            break;
+            case 'projection-identity':
+                this.#projectionMatrix = mat4.identity();
+                break;
+            case 'projection-ortho':
+                const size = 30.0;
+                const left = -size;
+                const right = size;
+                const bottom = -size;
+                const top = size;
+                const near = -size; 
+                const far = size;
+                this.#projectionMatrix = mat4.ortho(left, right, bottom, top, near, far);
+            break;
+            default:
+                throw '[camera] Unsupported projection type';
+            break;
+        }
 
         this.lookAtNaive(position, target, up);
     } // ctor
