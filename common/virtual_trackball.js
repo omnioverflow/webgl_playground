@@ -104,17 +104,6 @@ class VirtualTrackball {
         return R;
     }
 
-    // FIXME: debug purpose only, so remove it
-    computeDebugRotation() {
-        let rotation = mat4.identity();
-        rotation[0] = 0;
-        rotation[2] = 1;
-        rotation[8] = -1;
-        rotation[10] = 0;
-
-        return rotation;
-    }
-
     rotate(rotation) {
         // Rotate camera's position
         let position = this.scene.camera.position;
@@ -143,8 +132,7 @@ class VirtualTrackball {
         this.#drawEffectFlag = true;
         this.timestamp = Date.now();
 
-        const rotation = this.computeRotation();
-        // const rotation = this.computeDebugRotation();
+        const rotation = this.computeRotation();        
         this.rotate(rotation);
     } // onMouseUp
 } // class Trackball
