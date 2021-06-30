@@ -1172,6 +1172,29 @@ mat3.str = function(mat) {
 };
 
 /*
+ * Check if mat3 matrix is a pure rotation matrix.
+ * A rotation matrix M must satisfy the following:
+ * M * (M^T) == (M^T) * M == I
+ */
+mat3.isRotation = function(mat) {
+    const identity = mat3.identity();
+    let transpose = mat3.create();
+    transpose = mat3.transpose(mat);
+
+    let leftMult = mat3.create();
+    leftMult = mat3.multiply(mat, transpose, leftMult);
+    if (leftMult != identity)
+        return false;
+
+    let rightMult = mat3.create();
+    rightMult = mat3.multiply(transpose, mat, rightMult);
+    if (rightMult != identity)
+        return false;
+
+    return true;
+} // mat3.isRotation
+
+/*
  * mat4 - 4x4 Matrix
  */
 var mat4 = {};
@@ -2122,6 +2145,30 @@ mat4.str = function(mat) {
 		', '+ mat[8] + ', ' + mat[9] + ', ' + mat[10] + ', ' + mat[11] + 
 		', '+ mat[12] + ', ' + mat[13] + ', ' + mat[14] + ', ' + mat[15] + ']';
 };
+
+/*
+ * Check if the mat4 is a rotation matrix.
+ *
+ * A rotation M matrix must satisfy the following:
+ * M * (M^T) = (M^T) * M == I, and det(M) == 1
+ */
+mat4.isRotation = function(mat) {
+    const identity = mat4.identity();
+    let transpose = mat4.create();
+    transpose = mat4.transpose(mat, transpose);
+
+    let leftMult = mat4.create();
+    leftMult = mat4.multiply(mat, transpose, leftMult)
+    if (leftMult != identity)
+        return false;
+
+    let rightMult = mat4.create();
+    rightMult = mat.multiply(transpose, mat, rightMult);
+    if (rightMult != identity)
+        return false;
+
+    return true;
+} // mat4.isRotation
 
 /*
  * quat4 - Quaternions 
