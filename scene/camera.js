@@ -89,6 +89,10 @@ class Camera {
         return this.#projectionMatrix;
     } // get projectionMatrix
 
+    rotateAroundPivot(quatRot) {
+        // FIXME: implementation
+    } // rotateAroundPivot
+
     lookAt(to) {
         this.#target = to;
         lookAt(to, this.#position);
