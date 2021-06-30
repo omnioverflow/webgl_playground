@@ -85,6 +85,17 @@ vec3.create = function(vec) {
 };
 
 /*
+ * Check two vec3 for equality
+ */
+vec3.isEqual = function(v, w) {
+    let res = true;
+    for (let i = 0; i < 3; ++i)
+        res = res && isEqual(v[i], w[i]);
+
+    return res;
+} // equals
+
+/*
  * vec3.set
  * Copies the values of one vec3 to another
  *
@@ -669,6 +680,18 @@ vec4.create = function(vec) {
 	
 	return dest;
 };
+
+/*
+ * Checks two vec4 for equality
+ */
+vec4.isEqual = function(v, w) {
+    let res = true;
+    for (let i = 0; i < 4; ++i) {
+        res = res && isEqual(v[i], w[i]);
+    }
+
+    return res;
+} // vec4.isEqual
 
 /*
  * vec4.set
