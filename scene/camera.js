@@ -15,7 +15,7 @@ class Camera {
 
     // FIXME: get rid of canvas argument if possible
     constructor(position, target, pivot, up, canvas,
-        projectionType = "projection-ortho") 
+        projectionType = "projection-hardcoded") 
     {
         this.#position = position;
         this.#target = target;
@@ -47,7 +47,7 @@ class Camera {
                      0, 0, -1.0020020008087158, -1,
                      0, 0, -0.20020020008087158, 0
                     ]);
-            break;
+                break;
             case 'projection-identity':
                 this.#projectionMatrix = mat4.identity();
                 break;
@@ -60,10 +60,10 @@ class Camera {
                 const near = -size; 
                 const far = size;
                 this.#projectionMatrix = mat4.ortho(left, right, bottom, top, near, far);
-            break;
+                break;
             default:
                 throw '[camera] Unsupported projection type';
-            break;
+                break;
         }
 
         this.lookAtNaive(position, target, up);
