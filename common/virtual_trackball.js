@@ -96,10 +96,10 @@ class VirtualTrackball {
 
         // 4. Construct a quaternion corresponding to the rotation around
         //    the aforementioned axis
-        const q = quat4.create([n[0], n[1], n[2], theta]);
+        const quatRot = quat4.create([n[0], n[1], n[2], theta]);
 
         // 5. Convert the quaternion to the corresponding rotation matrix
-        const R = quat4.toMat4(q);
+        const R = quat4.toMat4(quatRot);
 
         return R;
     }
