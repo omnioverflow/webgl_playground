@@ -90,7 +90,66 @@ class Camera {
     } // get projectionMatrix
 
     rotateAroundPivot(quatRot) {
-        // FIXME: implementation
+        let eyeToTarget = vec3.create();
+        eyeToTarget = vec3.subtract(this.#target, this.#position, eyeToTarget);
+        const eyeToTargetDistance = vec3.length(eyeToTarget);
+
+        // Final transform matrix:
+        // T' * R * T
+        // where T - translation to the pivot,
+        // R - rotation 
+        // T' - inverse transform to T
+
+        // Get rotation matrix
+        let transform = quat4.toMat4(quatRot);
+
+        // R * T
+        let translateOrigin = mat4.identity();
+        translateOrigin = mat4.translate(translateOrigin, 
+            this.#pivot, 
+            translateOrigin);
+        transform = mat4.multiply(transform,
+            translateOrigin,
+            transform);
+
+        // Get T'
+        let inverseTranslation = vec3.create();
+        inverseTranslation = vec3.negate(this.#pivot, inverseTranslation);
+
+        translateOrigin = mat4.identity();
+        translateOrigin = mat4.translate(translateOrigin,
+            inverseTranslation, 
+            translateOrigin);
+
+        // T' * (R * T)
+        transform = mat4.multiply(translateOrigin, 
+            transform, 
+            transform);
+
+        let rotation = transform;
+
+        let newPosition = vec4.create();
+        newPosition[0] = this.#position[0];
+        newPosition[1] = this.#position[1];
+        newPosition[2] = this.#position[2];
+        newPosition[3] = 1.0;
+        
+        newPosition = mat4.multiplyVec4(rotation, newPosition, newPosition);
+
+        
+        const len1 = vec3.length(newPosition);
+
+        // Keep the eye to target distance
+        // TODO: investigate, why the computed rotation,
+        // obtained from quatRot, for some reason
+        // is not a pure rotation matrix
+        // (does not satisy R * R_T == R_T * R
+        newPosition = vec3.normalize(newPosition);
+        newPosition = vec3.scale(newPosition, eyeToTargetDistance, newPosition);
+
+        this.lookAtNaive(newPosition,
+                        this.#target,
+                        vec3.create(new Float32Array([0, 1, 0])));
     } // rotateAroundPivot
 
     lookAt(to) {
