@@ -539,6 +539,9 @@ class WebGLController {
                 );            
         });
 
+        // Mouse wheel
+        // FIXME: implement mouse wheel zoom
+
         // Toggle rotation
         const toggleRotationButton = document.getElementById(
             "toggle-rotation-button");
