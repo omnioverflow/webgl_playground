@@ -11,11 +11,13 @@ class Camera {
     #target
     #pivot
     #projectionMatrix
+    #throwOnError
     #viewMatrix
 
     // FIXME: get rid of canvas argument if possible
     constructor(position, target, pivot, up, canvas,
-        projectionType = "projection-hardcoded") 
+        projectionType = "projection-hardcoded",
+        throwOnError = false) 
     {
         this.#position = position;
         this.#target = target;
@@ -91,7 +93,8 @@ class Camera {
 
     rotateAroundPivot(quatRot) {
         let eyeToTarget = vec3.create();
-        eyeToTarget = vec3.subtract(this.#target, this.#position, eyeToTarget);
+        eyeToTarget = vec3.subtract(this.#target, this.#position, 
+            eyeToTarget);
         const eyeToTargetDistance = vec3.length(eyeToTarget);
 
         // Final transform matrix:
@@ -136,8 +139,16 @@ class Camera {
         
         newPosition = mat4.multiplyVec4(rotation, newPosition, newPosition);
 
-        
-        const len1 = vec3.length(newPosition);
+        if (this.#throwOnError)
+        {
+            let newEyeToTarget = vec3.create();
+            newEyeToTarget = vec3.subtract(this.#position, this.#target, 
+                newEyeToTarget);
+            const newEyeToTargetDistance = vec3.length(newEyeToTarget);
+
+            if (newEyeToTargetDistance != eyeToTargetDistance)
+                throw '[camera] Eye-to-target distance changed after rotation.';
+        }
 
         // Keep the eye to target distance
         // TODO: investigate, why the computed rotation,
