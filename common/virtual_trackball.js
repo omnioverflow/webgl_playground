@@ -98,28 +98,11 @@ class VirtualTrackball {
         //    the aforementioned axis
         const quatRot = quat4.create([n[0], n[1], n[2], theta]);
 
-        // 5. Convert the quaternion to the corresponding rotation matrix
-        const R = quat4.toMat4(quatRot);
-
-        return R;
+        return quatRot;
     }
 
-    rotate(rotation) {
-        // Rotate camera's position
-        let position = this.scene.camera.position;
-        let newPosition = vec4.create();
-        newPosition[0] = position[0];
-        newPosition[1] = position[1];
-        newPosition[2] = position[2];
-        newPosition[3] = 1.0;
-
-        const len0 = vec3.length(newPosition);
-        newPosition = mat4.multiplyVec4(rotation, newPosition, newPosition);
-        const len1 = vec3.length(newPosition);
-
-        this.scene.camera.lookAtNaive(newPosition,
-                                      this.scene.camera.target,
-                                      vec3.create(new Float32Array([0, 1, 0])));
+    rotate(quatRot) {
+        this.scene.camera.rotateAroundPivot(quatRot);
     } // rotate
 
     onMouseDown(pos) {
