@@ -525,15 +525,17 @@ class WebGLController {
 // =============================================================================
 
     registerListeners(gl) {
+        const canvas = gl.canvas;
+
         // Mouse down 
-        gl.canvas.addEventListener("mousedown", event => {            
+        canvas.addEventListener("mousedown", event => {            
             this.#virtualTrackball.onMouseDown(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );
         });
 
         // Mouse up
-        gl.canvas.addEventListener("mouseup", e => {
+        canvas.addEventListener("mouseup", event => {
             this.#virtualTrackball.onMouseUp(
                     vec2.create(new Float32Array([event.pageX, event.pageY]))
                 );            
