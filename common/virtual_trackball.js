@@ -15,17 +15,23 @@ class VirtualTrackball {
     #canvasHeight
     #drawEffectFlag
 
+    #currMousePos
+    #prevMousePos
+
+    #scene
+    #timestamp
+
     constructor(scene, canvasWidth, canvasHeight) {
         this.scene = scene;        
 
         this.#canvasWidth = canvasWidth;
         this.#canvasHeight = canvasHeight;
 
-        this.prevMousePos = vec2.create(new Float32Array([NaN, NaN]));
-        this.currMousePos = vec2.create(new Float32Array([NaN, NaN]));
+        this.#prevMousePos = vec2.create(new Float32Array([NaN, NaN]));
+        this.#currMousePos = vec2.create(new Float32Array([NaN, NaN]));
 
         this.#drawEffectFlag = false;
-        this.timestamp = NaN;
+        this.#timestamp = NaN;
     } // ctor
 
     get drawEffectFlag() {
