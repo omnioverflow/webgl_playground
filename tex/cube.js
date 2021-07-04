@@ -596,7 +596,7 @@ class WebGLController {
         
         const eye = vec3.create(new Float32Array([10.0, 10.0, -10.0]));
         this.setupScene(cubeData.cubeObject, eye, gl.canvas);
-        this.#scene.uniformScaleCube(1.0);
+        this.#scene.uniformScaleCube(2.0);
 
         const buffers = { "overlay" : overlayData.buffers,
                           "cube": cubeData.buffers };
