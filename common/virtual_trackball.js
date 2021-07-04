@@ -111,6 +111,12 @@ class VirtualTrackball {
         this.scene.camera.rotateAroundPivot(quatRot);
     } // rotate
 
+// =============================================================================
+//
+// Listeners
+//
+// =============================================================================
+
     onMouseDown(pos) {
         this.prevMousePos = this.convertToNDC(pos);
         this.#drawEffectFlag = false;
@@ -124,4 +130,8 @@ class VirtualTrackball {
         const rotation = this.computeRotation();        
         this.rotate(rotation);
     } // onMouseUp
+
+    onMouseWheel(event) {
+        // FIXME: implement mouse wheel zoom
+    } // onMouseWheel
 } // class Trackball

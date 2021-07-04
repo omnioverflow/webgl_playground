@@ -542,7 +542,9 @@ class WebGLController {
         });
 
         // Mouse wheel
-        // FIXME: implement mouse wheel zoom
+        canvas.addEventListener("wheel", event => {
+            this.#virtualTrackball.onMouseWheel(event)
+        });
 
         // Toggle rotation
         const toggleRotationButton = document.getElementById(
