@@ -132,6 +132,16 @@ class VirtualTrackball {
     } // onMouseUp
 
     onMouseWheel(event) {
-        // FIXME: implement mouse wheel zoom
+        // TODO: manage the constat scale chane value in a better way
+        // (e.g. make static constant)
+        const scaleChange = 0.1;
+        let upscale = 1.0 + scaleChange;
+        if (event.deltaY > 0)
+        {
+            // Scrolling down
+            upscale = 1.0 - scaleChange;
+        }
+        
+        this.scene.upscaleCubeUniformlyBy(upscale);
     } // onMouseWheel
 } // class Trackball
