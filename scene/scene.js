@@ -54,6 +54,16 @@ class Scene {
         this.#cubeModelMatrix[10] = uniformScale;
     } // uniformScaleCube
 
+    upscaleCubeUniformlyBy(uniformScale) {
+        let scale = mat4.identity();
+        scale[0] = uniformScale;
+        scale[5] = uniformScale;
+        scale[10] = uniformScale;
+
+        this.#cubeModelMatrix = mat4.multiply(scale, this.#cubeModelMatrix,
+            this.#cubeModelMatrix);
+    } // updateUniformScaleCubeBy
+
     setProperty(key, value) {
         this.#objects[key] = value;
     } // setProperty
