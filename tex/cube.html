@@ -16,7 +16,7 @@
         height: 200px;
       },
 
-/*      .debugColumn {
+      /* .debugColumn {
         float: left;
         width: 33.33%;
       },
@@ -25,123 +25,11 @@
         display: table;
       }*/
     </style>
-
-    <!-- =================================================================== -->
-    <!-- Shaders for cube rendering -->    
-    <script id="vertex-shader" type="x-shader/x-vertex">      
-      #version 100
-
-      attribute vec4 aPosition;
-      attribute vec2 aTextureCoord;
-
-      varying highp vec2 vTextureCoord;
-
-      // Model-View-Projection
-      uniform mat4 uMVP;
-
-      void main()
-      {
-        gl_Position = uMVP * aPosition;
-        vTextureCoord = aTextureCoord;
-      }
-    </script>
-    <script id="fragment-shader" type="x-shader/x-fragment">      
-      #version 100
-
-      precision mediump float;
-      
-      varying highp vec2 vTextureCoord;
-
-      uniform sampler2D uSampler;
-
-      void main()
-      {
-        gl_FragColor = texture2D(uSampler, vTextureCoord);
-      }
-    </script>
-    <!-- =================================================================== -->
-    <!-- Shaders for the trackball -->
-    <script id="vertex-shader-overlay" type="x-shader/x-vertex">      
-      #version 100
-
-      attribute vec4 aPosition;
-      // vCurrPosition will be interpolated inside 
-      // the fragment shader giving us a workaround
-      // for a pixel position in the scree-space NDC
-      varying vec2 vCurrPosition;
-      
-      void main()
-      {
-        gl_Position = aPosition;
-        vCurrPosition = vec2(aPosition.xy);
-      }
-    </script>
-    <script id="fragment-shader-overlay" type="x-shader/x-fragment">      
-      #version 100
-
-      precision mediump float;
-
-      varying vec2 vCurrPosition;
-
-      uniform bool uDrawEffectFlag;
-      uniform vec2 uPrevMousePos;
-      uniform vec2 uCurrMousePos;
-
-      bool isZero(float x) {
-        return abs(x) < 0.0000001;
-      }
-
-      void main()
-      {
-        float x = vCurrPosition.x;
-        float y = vCurrPosition.y;
-        float distFromCenter = sqrt(x * x + y * y);
-        if (distFromCenter < 1.0)
-          gl_FragColor = vec4(1.0, 1.0, 1.0, 0.1 + 0.2 * distFromCenter * distFromCenter);
-        else
-          gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
-
-        float x0 = uPrevMousePos.x;
-        float y0 = uPrevMousePos.y;
-        float x1 = uCurrMousePos.x;
-        float y1 = uCurrMousePos.y;
-      
-        float x_min = min(x0, x1);
-        float x_max = max(x0, x1);
-        float y_min = min(y0, y1);
-        float y_max = max(y0, y1);
-
-        // Compute slope and intersect coeffs for y = a * x + b
-        // line passing through uPrevMousePos and uCurrMousePos
-        // FIXME: corner case is division by zero
-        float a = (y1 - y0) / (x1 - x0); // slope
-        float b = y0 - a * x0; // intersect
-
-        float thickness = 0.05;
-        // Color associated to (x0, y0)
-        vec4 c0 = vec4(1.0, 0.0, 0.0, 1.0);
-        // Color associated to (x1, y1)
-        vec4 c1 = vec4(0.0, 0.0, 1.0, 1.0);
-        if (uDrawEffectFlag) {
-          if (x >= x_min && x <= x_max && abs(y - (a * x + b)) < thickness) {
-            float d0 = distance(vec2(x, y), vec2(x0, y0));
-            float d1 = distance(vec2(x, y), vec2(x1, y1));
-            if (isZero(d0))
-              gl_FragColor = c0;
-            else if (isZero(d1))
-              gl_FragColor = c1;
-            else {
-              float alpha = d0 / d1;
-              gl_FragColor = alpha * c1 + (1.0 - alpha) * c0;
-            }
-          }
-        }
-      }
-    </script>    
   </head>
   <body style="background-color:black">
-    <canvas id="gl-canvas" width="512" height="512">
-    </canvas>
+    <!-- Make sure canvas is defined before the scripts which 
+         depend on it (must be initialized) -->
+    <canvas id="gl-canvas" width="512" height="512"></canvas>
 
     <button id="toggle-rotation-button">Toggle rotation</button>
 
@@ -153,16 +41,128 @@
       <div class="debugColumn" style="float: left; width: 200px;" id="debugInfoMVPDiv">
       </div>
     </div>
-    
-    <script type="text/javascript" src="../common/init_shaders.js"></script>
-    <script type="text/javascript" src="../common/common_math.js"></script>
-    <script type="text/javascript" src="../common/load_tex.js"></script>
-    <script type="text/javascript" src="../common/matrix.js"></script>
-    <script type="text/javascript" src="../common/virtual_trackball.js"></script>
-    <script type="text/javascript" src="../common/webgl_utils.js"></script>
-    <script type="text/javascript" src="../procedural/procedural.js"></script>
-    <script type="text/javascript" src="../scene/camera.js"></script>
-    <script type="text/javascript" src="../scene/scene.js"></script>
-    <script type="text/javascript" src="cube.js"></script>
   </body>
+
+  <!-- =================================================================== -->
+  <!-- Shaders for cube rendering -->    
+  <script id="vertex-shader" type="x-shader/x-vertex">      
+    #version 100
+
+    attribute vec4 aPosition;
+    attribute vec2 aTextureCoord;
+
+    varying highp vec2 vTextureCoord;
+
+    // Model-View-Projection
+    uniform mat4 uMVP;
+
+    void main()
+    {
+      gl_Position = uMVP * aPosition;
+      vTextureCoord = aTextureCoord;
+    }
+  </script>
+  <script id="fragment-shader" type="x-shader/x-fragment">      
+    #version 100
+
+    precision mediump float;
+    
+    varying highp vec2 vTextureCoord;
+
+    uniform sampler2D uSampler;
+
+    void main()
+    {
+      gl_FragColor = texture2D(uSampler, vTextureCoord);
+    }
+  </script>
+  <!-- =================================================================== -->
+  <!-- Shaders for the trackball -->
+  <script id="vertex-shader-overlay" type="x-shader/x-vertex">      
+    #version 100
+
+    attribute vec4 aPosition;
+    // vCurrPosition will be interpolated inside 
+    // the fragment shader giving us a workaround
+    // for a pixel position in the scree-space NDC
+    varying vec2 vCurrPosition;
+    
+    void main()
+    {
+      gl_Position = aPosition;
+      vCurrPosition = vec2(aPosition.xy);
+    }
+  </script>
+  <script id="fragment-shader-overlay" type="x-shader/x-fragment">      
+    #version 100
+
+    precision mediump float;
+
+    varying vec2 vCurrPosition;
+
+    uniform bool uDrawEffectFlag;
+    uniform vec2 uPrevMousePos;
+    uniform vec2 uCurrMousePos;
+
+    bool isZero(float x) {
+      return abs(x) < 0.0000001;
+    }
+
+    void main()
+    {
+      float x = vCurrPosition.x;
+      float y = vCurrPosition.y;
+      float distFromCenter = sqrt(x * x + y * y);
+      if (distFromCenter < 1.0)
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.1 + 0.2 * distFromCenter * distFromCenter);
+      else
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
+
+      float x0 = uPrevMousePos.x;
+      float y0 = uPrevMousePos.y;
+      float x1 = uCurrMousePos.x;
+      float y1 = uCurrMousePos.y;
+    
+      float x_min = min(x0, x1);
+      float x_max = max(x0, x1);
+      float y_min = min(y0, y1);
+      float y_max = max(y0, y1);
+
+      // Compute slope and intersect coeffs for y = a * x + b
+      // line passing through uPrevMousePos and uCurrMousePos
+      // FIXME: corner case is division by zero
+      float a = (y1 - y0) / (x1 - x0); // slope
+      float b = y0 - a * x0; // intersect
+
+      float thickness = 0.05;
+      // Color associated to (x0, y0)
+      vec4 c0 = vec4(1.0, 0.0, 0.0, 1.0);
+      // Color associated to (x1, y1)
+      vec4 c1 = vec4(0.0, 0.0, 1.0, 1.0);
+      if (uDrawEffectFlag) {
+        if (x >= x_min && x <= x_max && abs(y - (a * x + b)) < thickness) {
+          float d0 = distance(vec2(x, y), vec2(x0, y0));
+          float d1 = distance(vec2(x, y), vec2(x1, y1));
+          if (isZero(d0))
+            gl_FragColor = c0;
+          else if (isZero(d1))
+            gl_FragColor = c1;
+          else {
+            float alpha = d0 / d1;
+            gl_FragColor = alpha * c1 + (1.0 - alpha) * c0;
+          }
+        }
+      }
+    }
+  </script>    
+  <script type="text/javascript" src="../common/init_shaders.js"></script>
+  <script type="text/javascript" src="../common/common_math.js"></script>
+  <script type="text/javascript" src="../common/load_tex.js"></script>
+  <script type="text/javascript" src="../common/matrix.js"></script>
+  <script type="text/javascript" src="../common/virtual_trackball.js"></script>
+  <script type="text/javascript" src="../common/webgl_utils.js"></script>
+  <script type="text/javascript" src="../procedural/procedural.js"></script>
+  <script type="text/javascript" src="../scene/camera.js"></script>
+  <script type="text/javascript" src="../scene/scene.js"></script>
+  <script type="text/javascript" src="cube.js"></script>
 </html>
