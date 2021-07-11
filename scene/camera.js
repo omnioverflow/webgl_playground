@@ -288,4 +288,16 @@ class Camera {
 
         this.setViewMatrix(viewMat);
     } // lookAt
+
+    moveAway(delta) {
+        // FIXME: provide impl
+    } // moveCloser
+
+    moveCloser(delta) {
+        // FIXME: provide impl
+    } // moveCloser
+
+    moveAlongViewingDirection(delta) {
+        // FIXME: provide impl
+    } // moveAlongViewingDirection
 };
