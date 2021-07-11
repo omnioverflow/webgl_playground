@@ -290,11 +290,18 @@ class Camera {
     } // lookAt
 
     moveAway(delta) {
-        // FIXME: provide impl
+        if (delta > 0.0)
+            throw '[camera] Invalid delta argument to moveAway method.';
+        else if (!isZero(delta))
+            moveAlongViewingDirection(delta);            
+
     } // moveCloser
 
     moveCloser(delta) {
-        // FIXME: provide impl
+        if (delta < 0.0)
+            throw '[camera] Invalid delta argument to moveClose method.';
+        else if (!isZero(delta))
+            moveAlongViewingDirection(delta);
     } // moveCloser
 
     moveAlongViewingDirection(delta) {
