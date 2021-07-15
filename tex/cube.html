@@ -24,14 +24,67 @@
       .debugInfoDiv.after {
         display: table;
       }*/
+
+      /* Create two unequal columns that floats next to each other */
+      .column {
+        float: left;
+      }
+
+      .left {
+        /*width: 50%;*/
+        width: 550px;
+      }
+
+      .right {
+        width: 256px;
+      }
+
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
     </style>
   </head>
   <body style="background-color:black">
-    <!-- Make sure canvas is defined before the scripts which 
-         depend on it (must be initialized) -->
-    <canvas id="gl-canvas" width="512" height="512"></canvas>
 
-    <button id="toggle-rotation-button">Toggle rotation</button>
+    <div class="row">
+
+      <!-- /!\ When debugging, use div with background-color. -->
+      <!-- <div class="column left" style="background-color:#aaa;"> -->
+      <div class="column left">
+
+        <!-- 
+        Make sure canvas is defined before the scripts which 
+        depend on it (must be initialized) 
+        -->
+        <canvas id="gl-canvas" width="512" height="512"></canvas>
+
+      </div>
+
+      <!--  /!\ When debugging, use div with background-color. -->
+      <!-- <div class="column right" style="background-color:#bbb;"> -->
+      <div class="column right">
+
+        <!-- Model selection -->
+        <label for="cars" style="color:tomato;font-size:smaller">Choose a 3d model:</label>
+        <select name="cars" id="models">
+          <optgroup label="Geometric objects">
+            <option value="cube">Cube</option>
+          </optgroup>
+          <optgroup label="Wavefront OBJ models">
+            <option value="teapot">Teapot</option>            
+          </optgroup>
+        </select>
+        <input type="submit" value="Submit">
+
+        <br><br>
+        <!-- Toggle modle rotation -->
+        <button id="toggle-rotation-button">Toggle rotation</button>
+
+      </div>
+    </div>    
 
     <div class="debugInfoDiv" id="debugInfoDiv">
       <div class="debugColumn" style="float: left; width: 200px;" id="debugInfoCameraDiv">
