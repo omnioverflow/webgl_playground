@@ -5,6 +5,7 @@
 // =============================================================================
 
 // Code based on https://webglfundamentals.org/webgl/lessons/webgl-load-obj.html
+
 async function loadOBJ(url) {
     const response = await fetch(url);
 
