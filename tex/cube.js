@@ -518,6 +518,9 @@ class WebGLController {
         this.#scene.toggleCubeRotation();
     } // toggleRotation
 
+	selectScene() {
+		// TODO: provide the impl
+	} // selectScene
 // =============================================================================
 //
 // Listeners
@@ -552,7 +555,10 @@ class WebGLController {
         toggleRotationButton.addEventListener("click", e => {
             this.toggleRotation();
         });
-    } // registerListeners
+
+		// Scene selection
+		document.getElementById("scenes").onchange = this.selectScene();	
+	} // registerListeners
 
 // =============================================================================
 //
