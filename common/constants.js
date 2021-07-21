@@ -1,0 +1,1 @@
+export const MY_PI = 3.14;
