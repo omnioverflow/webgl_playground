@@ -521,6 +521,7 @@ class WebGLController {
 	selectScene() {
 		// TODO: provide the impl
 	} // selectScene
+
 // =============================================================================
 //
 // Listeners
