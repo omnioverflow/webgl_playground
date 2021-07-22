@@ -519,6 +519,10 @@ class WebGLController {
     } // toggleRotation
 
 	selectScene() {
+        // const vertices = TeapotData.vertices;
+        // console.log(vertices);
+
+        // teapot = require('../common/teapot.js');
 		// TODO: provide the impl
 	} // selectScene
 
