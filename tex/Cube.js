@@ -572,6 +572,21 @@ class WebGLController {
 // =============================================================================
 
     init() {
+        // FIXME: refactoring high level idea
+        /*
+        const scene = new Scene();
+        const camera = new PerspectiveCamera();
+        const renderer = new Renderer();
+        renderer.setCamera(camera);
+
+        const cubeSize = 1.0;
+        const cubePosition = new vec3(0.0, 0.0, 0.0);
+        const cubeObj = new CubeObject(cubePosition, cubeSize);
+        scene.addObject(cubeObj);
+        */
+
+        const debugView = new DebugView();
+
         const gl = this.setupWebGL();
 
         this.registerListeners(gl);
