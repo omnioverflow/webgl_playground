@@ -583,9 +583,9 @@ class WebGLController {
         const cubePosition = new vec3(0.0, 0.0, 0.0);
         const cubeObj = new CubeObject(cubePosition, cubeSize);
         scene.addObject(cubeObj);
-        */
 
         const debugView = new DebugView();
+        */
 
         const gl = this.setupWebGL();
 
