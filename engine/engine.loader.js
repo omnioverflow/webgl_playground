@@ -52,9 +52,4 @@ class EngineLoader {
         }
     } // loadEngine
 
-    // Bind loader script to onload event of the window in which
-    // the script is running (for the lack of better knowledge of 
-    // how to do that  in other way).
-    // window.onload = engineLoader();
-
 } // EngineLoader
