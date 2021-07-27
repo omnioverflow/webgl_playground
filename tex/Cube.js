@@ -21,6 +21,12 @@ class WebGLController {
         this.#scene = null;
         this.#virtualTrackball = null;
         this.#mvpMatrix = null;
+
+        // Bind the context of the method's this
+        // in order to prevent errors when calling init as a callback function,
+        // from yet another function.
+        // See https://stackoverflow.com/questions/4011793/this-is-undefined-in-javascript-class-methods
+        this.init = this.init.bind(this);
     } // ctor
 
     set mvpMatrix(matrix) {
@@ -650,4 +656,4 @@ class WebGLController {
 // =============================================================================
 
 var controller = new WebGLController();
-window.onload = controller.init();
+document.body.onload = EngineLoader.loadEngine(controller.init);
