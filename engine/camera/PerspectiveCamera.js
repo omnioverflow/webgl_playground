@@ -7,7 +7,7 @@
 // TODO: provide impl
 
 class PerspectiveCamera {
-    constructor() {
+    constructor(eye, target, pivot, up) {
 
     } // ctor
 } // class PerspectiveCamera
