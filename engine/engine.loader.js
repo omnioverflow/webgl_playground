@@ -37,6 +37,7 @@ class EngineLoader {
             '../engine/loader/TexLoader.js',
             '../engine/math/Matrix.js',
             '../engine/math/MathCommon.js',
+            '../engine/objects/RenderableObject.js',
             '../engine/procedural/Procedural.js',
             '../engine/scene/Scene.js',
             '../engine/shader/InitShaders.js',
