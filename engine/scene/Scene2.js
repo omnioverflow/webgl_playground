@@ -12,6 +12,7 @@
 /* 
     ALREADY DONE:
     - Camera is not part of the scene any more;
+    - Accessor/mutator for the renderable objects;
 */
 
 class Scene {
@@ -73,11 +74,15 @@ class Scene {
             this.#cubeModelMatrix);
     } // updateUniformScaleCubeBy
 
-    setProperty(key, value) {
-        this.#objects[key] = value;
-    } // setProperty
 
-    getProperty(key) {
+// =============================================================================
+// Accessors and Mutators for objects.
+// =============================================================================
+    setObject(key, object) {
+        this.#objects[key] = object;
+    } // setObject
+
+    getObject(key) {
         return this.#objects[key];
-    } // getProperty
+    } // getObject
 };
