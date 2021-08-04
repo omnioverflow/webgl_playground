@@ -9,15 +9,18 @@
 // - Camera object should not be part of the scene.
 
 
+/* 
+    ALREADY DONE:
+    - Camera is not part of the scene any more;
+*/
+
 class Scene {
-    camera
     #objects
     #cubeModelMatrix
     #cubeRotation
     #enableCubeRotation
 
-    constructor(camera, args = {}) {
-        this.camera = camera;
+    constructor(args = {}) {
         this.#objects = args;
         this.#cubeModelMatrix = mat4.identity();
         this.#cubeRotation = 0.0;
