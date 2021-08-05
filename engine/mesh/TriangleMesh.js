@@ -6,5 +6,5 @@ class TriangleMesh {
 
     static createFromOBJ(filename) {
         // TODO: provide impl
-    }
-}
+    } // createFromOBJ
+} // class TriangleMesh
