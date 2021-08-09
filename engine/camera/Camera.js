@@ -7,12 +7,16 @@
 // FIXME: resolve all fixmes
 
 class Camera {
-    #position
-    #target
-    #pivot
-    #projectionMatrix
-    #throwOnError
-    #viewMatrix
+    // -------------------------------------------------------------------------
+    #position           // camera position;
+    #target             // where the camera looks at;
+    #pivot              // pivot point (anchor) around which camera can be rotated;
+    // -------------------------------------------------------------------------
+    #viewMatrix         // view matrix (to camera/eye space);
+    #projectionMatrix   // projection matrix (to clip space);
+    // -------------------------------------------------------------------------
+    #throwOnError       // throw if any error (no forgiveness);
+    // -------------------------------------------------------------------------
 
     // FIXME: get rid of canvas argument if possible
     constructor(position, target, pivot, up, canvas,
