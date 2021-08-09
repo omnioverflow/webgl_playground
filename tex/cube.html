@@ -124,15 +124,32 @@
 
     uniform sampler2D uSampler;
 
+    float linearDepth(float depth, float near, float far)
+    {
+      // Reverse non-linearity in depth buffer (make depth change linearly).
+      // Re-transform the depth values from the range [0,1] to NDC in [-1,1].
+      float z = depth * 2.0 - 1.0;
+      // Reverse the non-linear equation (the one done by projection matrix).
+      return (2.0 * near * far) / (far + near - z * (far - near));
+    } // linearDepth
+
     void main()
     {
       #ifdef BB_DEPTH_BUFFER
-        // Visualize depth buffer
+        // Visualize depth buffer.
         gl_FragColor = vec4(vec3(gl_FragCoord.z), 1.0);
+      #elif defined(BB_DEPTH_BUFFER_LINEAR)
+        // Visualize linear depth buffer.
+        float depth = gl_FragCoord.z;
+        // FIXME: fetch near, far from uniforms.
+        float near = 0.1;
+        float far = 1.0;
+        float ldepth = linearDepth(depth, near, far);
+        gl_FragColor = vec4(vec3(ldepth), 1.0);
       #else
         gl_FragColor = texture2D(uSampler, vTextureCoord);
-      #endif
-    }
+      #endif      
+    } // main
   </script>
   <!-- =================================================================== -->
   <!-- Shaders for the trackball -->
