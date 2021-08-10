@@ -19,9 +19,10 @@ class ArcballCamera {
     // -------------------------------------------------------------------------
 
     // FIXME: get rid of canvas argument if possible
+
     constructor(position, target, pivot, up, canvas,
-        projectionType = "projection-hardcoded",
-        throwOnError = false) 
+                projectionType = "projection-hardcoded",
+                throwOnError = false) 
     {
         this.#position = position;
         this.#target = target;
@@ -77,6 +78,9 @@ class ArcballCamera {
 
     // -------------------------------------------------------------------------
 
+    /**
+     * Rotates camera around the pivot point.
+     */
     rotateAroundPivot(quatRot) {
         let eyeToTarget = vec3.create();
         eyeToTarget = vec3.subtract(this.#target, this.#position, 
@@ -149,12 +153,18 @@ class ArcballCamera {
                    vec3.create(new Float32Array([0, 1, 0])));
     } // rotateAroundPivot
 
+    /**
+     * Point camera at the specified poiont.
+     */
     lookAt(to) {
         this.#target = to;
         lookAt(to, this.#position);
     } // lookAt
 
-    // Unoptimized implementation of camera "lookAt" method
+    /**
+     * Point camera at specified point, given camera position and the up vector
+     * (unoptimized implementation).
+     */
     lookAt(eye, target, up) {
         this.#position = eye;
         this.#target = target;
@@ -217,14 +227,21 @@ class ArcballCamera {
         this.setViewMatrix(viewMat);
     } // lookAt
 
+
+    /**
+     * Move camera delta units away along the camera view direction.
+     */
     moveAway(delta) {
         if (delta > 0.0)
             throw '[camera] Invalid delta argument to moveAway method.';
         else if (!isZero(delta))
             moveAlongViewingDirection(delta);            
 
-    } // moveCloser
+    } // moveAway
 
+    /**
+     * Move camera delta units closer along the camera view direction.
+     */
     moveCloser(delta) {
         if (delta < 0.0)
             throw '[camera] Invalid delta argument to moveClose method.';
@@ -232,6 +249,9 @@ class ArcballCamera {
             moveAlongViewingDirection(delta);
     } // moveCloser
 
+    /**
+     * Move camera away or closer along the camera view direction.
+     */
     moveAlongViewingDirection(delta) {
         // FIXME: provide impl
     } // moveAlongViewingDirection
