@@ -1,12 +1,12 @@
 // =============================================================================
 //
-// Camera
+// Implementation of ArcballCamera
 //
 // =============================================================================
 
 // FIXME: resolve all fixmes
 
-class Camera {
+class ArcballCamera {
     // -------------------------------------------------------------------------
     #position           // camera position;
     #target             // where the camera looks at;
@@ -172,7 +172,6 @@ class Camera {
         lookAt(to, this.#position);
     } // lookAt
 
-
     // Unoptimized implementation of camera "lookAt" method
     lookAt(eye, target, up) {
         this.#position = eye;
@@ -254,4 +253,4 @@ class Camera {
     moveAlongViewingDirection(delta) {
         // FIXME: provide impl
     } // moveAlongViewingDirection
-};
+}; // class ArcballCamera
