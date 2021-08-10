@@ -527,13 +527,6 @@ class WebGLController {
         this.#scene.toggleCubeRotation();
     } // toggleRotation
 
-	selectScene() {
-        // const vertices = TeapotData.vertices;
-        // console.log(vertices);
-
-        // teapot = require('../common/teapot.js');
-		// TODO: provide the impl
-	} // selectScene
 
 // =============================================================================
 //
@@ -569,9 +562,6 @@ class WebGLController {
         toggleRotationButton.addEventListener("click", e => {
             this.toggleRotation();
         });
-
-		// Scene selection
-		document.getElementById("scenes").onchange = this.selectScene();	
 	} // registerListeners
 
 // =============================================================================
