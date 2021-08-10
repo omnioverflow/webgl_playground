@@ -108,13 +108,13 @@ class WebGLController {
     } // update
 
     setupScene(cube, eye, canvas) {
-        // Create a scene with a camera
+        // Create a scene with an ArcballCamera
         {
             const target = cube.center;
             const pivot = cube.center;
             const up = vec3.create(new Float32Array([0.0, 1.0, 0.0]));
             this.#scene = new Scene(
-                new Camera(eye, target, pivot, up, canvas)
+                new ArcballCamera(eye, target, pivot, up, canvas)
                 );
         }
         // Create virtual trackball

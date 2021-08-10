@@ -30,7 +30,7 @@ class EngineLoader {
 
     static loadEngine(finalCallback) {
         let scripts = [
-            '../engine/camera/Camera.js',
+            '../engine/camera/ArcballCamera.js',
             '../engine/controls/Trackball.js',
             '../engine/data/teapot.js',
             '../engine/loader/ObjLoader.js',
