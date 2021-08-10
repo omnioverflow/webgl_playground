@@ -9,14 +9,15 @@
 //
 // =============================================================================
 class WebGLController {
-    #scene
-    #virtualTrackball
+    // -------------------------------------------------------------------------
+    #scene              // scene object
+    #virtualTrackball   // virtual trackball controller
 
-    // Cache model-view and mvp matrices
-    #modelViewMatrix
-    #mvpMatrix
+    // FIXME: do we really need to cache those?
+    #modelViewMatrix    // cache model-view matrix
+    #mvpMatrix          // cache mvp matrix
+    // -------------------------------------------------------------------------
 
-    // noop ctor
     constructor() {
         this.#scene = null;
         this.#virtualTrackball = null;
@@ -29,20 +30,21 @@ class WebGLController {
         this.init = this.init.bind(this);
     } // ctor
 
-    set mvpMatrix(matrix) {
-        this.#mvpMatrix = matrix;
-    } // set mvpMatrix
-
+    /**
+     * Sets up webgl.
+     */
     setupWebGL() {
         const canvas = document.getElementById("gl-canvas");
         const gl = WebGLUtils.setupWebGL(canvas);
         if (!gl) 
-        {
             alert("WebGL isn't available");
-        }
+        
         return gl;
     } // setupWebGL
 
+    /**
+     * Sets up the overlay.
+     */
     setupOverlay(gl) {
         const shaderProgram = initShaders(gl, "vertex-shader-overlay",
                                           "fragment-shader-overlay");
@@ -63,6 +65,9 @@ class WebGLController {
         return { "buffers" : buffers, "programInfo" : programInfo }
     } // setupOverlay
 
+    /**
+     * Loads cube geometry.
+     */
     loadCube(cubeCenter, cubeSize) {
         // FIXME: temporarily fall back to hardCodedCube version
         // let cube = new ProceduralCube(cubeCenter, cubeSize);
@@ -72,6 +77,9 @@ class WebGLController {
         return cube;
     } // loadCube
 
+    /**
+     * Does the GPU resources setup.
+     */
     setupCube(gl, render, cubeCenter, cubeSize) {
         // Load shaders and initialize attribute buffers
         const shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -103,10 +111,16 @@ class WebGLController {
             };
     } // setupCube
 
+    /**
+     * Updates the scene being rendered.
+     */
     update(deltaTime) {
         this.#scene.update(deltaTime);
     } // update
 
+    /**
+     * Sets up the scene.
+     */
     setupScene(cube, eye, canvas) {
         // Create a scene with an ArcballCamera
         {
@@ -126,6 +140,9 @@ class WebGLController {
         }
     } // setupScene
 
+    /**
+     * Init GPU buffers for the overlay.
+     */
     initOverlayBuffers(gl, progarmInfo) {
         const overlay = new FullScreenQuad();
 
@@ -144,6 +161,9 @@ class WebGLController {
         }
     } // initOverlayBuffers
 
+    /**
+     * Init GPU beffers for the cube object.
+     */
     initCubeBuffers(gl, programInfo, cubeObject) {
         // Load the vertex position data into the GPU
         const positionBuffer = gl.createBuffer();
@@ -178,6 +198,9 @@ class WebGLController {
         }
     } // initCubeBuffers
 
+    /**
+     * Renders the scene.
+     */
     drawScene(gl, renderData, deltaTime) {
         // Clear to black, fully opaque
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -203,6 +226,9 @@ class WebGLController {
         this.update(deltaTime);
     } // drawScene
 
+    /**
+     * Renders the cube.
+     */
     drawCube(gl, renderData, deltaTime) {
         const programInfo = renderData.shaders.cube;
         const buffers = renderData.buffers.cube;
@@ -285,6 +311,9 @@ class WebGLController {
         }
     } // drawCube
 
+    /**
+     * Render the overlay.
+     */
     drawOverlay(gl, renderData, deltaTime) {
         const programInfo = renderData.shaders.overlay;
         const buffers = renderData.buffers.overlay;
@@ -337,12 +366,15 @@ class WebGLController {
         }
     } // drawOverlay
 
-// =============================================================================
-//
-// DisplayDebugInfo
-//
-// =============================================================================
+    // -------------------------------------------------------------------------
+    //
+    // DisplayDebugInfo
+    //
+    // -------------------------------------------------------------------------
 
+    /**
+     * Display camera position.
+     */
     displayDebugInfoCamPos(debugInfoDiv, debugSubDiv) {
         debugInfoDiv.innerHTML += "<b>Camera: position</b><br/>";
 
@@ -356,6 +388,9 @@ class WebGLController {
         });
     } // displayDebugInfoCamPos
 
+    /**
+     * Display camera tartget.
+     */
     displayDebugInfoCamTarget(debugInfoDiv, debugSubDiv) {
         debugInfoDiv.innerHTML += "<b>Camera: target</b><br/>";
 
@@ -369,6 +404,9 @@ class WebGLController {
         });
     } // displayDebugInfoCamTarget
 
+    /**
+     * Display camera view matrix.
+     */
     displayDebugInfoCamViewMat(debugInfoDiv, debugSubDiv) {
         debugInfoDiv.innerHTML += "<b>View Matrix</b><br/>";
 
@@ -384,6 +422,9 @@ class WebGLController {
         }
     } // displayDebugInfoCamViewMat
 
+    /**
+     * Display model matrix.
+     */
     displayDebugInfoModelMat(debugInfoDiv) {
         debugInfoDiv.innerHTML += "<b>Model matrix</b><br/>";
 
@@ -398,6 +439,9 @@ class WebGLController {
         }
     } // displayDebugInfoModelMat
 
+    /**
+     * Display projection matrix.
+     */
     displayDebugInfoProjMat(debugInfoDiv) {
         debugInfoDiv.innerHTML += "<b>Projection matrix</b><br/>";
 
@@ -412,6 +456,9 @@ class WebGLController {
         }
     } // displayDebugInfoProjMat
 
+    /**
+     * Display Model-View matrix.
+     */
     displayDebugInfoMVMat(debugInfoDiv) {
         const modelViewMatrix = this.#modelViewMatrix;
         if (modelViewMatrix == null)
@@ -429,6 +476,9 @@ class WebGLController {
         }
     } // displayDebugInfoMVMat
 
+    /**
+     * Display MVP matrix.
+     */
     displayDebugInfoMVPMat(debugInfoDiv) {
         const mvpMatrix = this.#mvpMatrix;
         if (mvpMatrix == null)
@@ -446,6 +496,9 @@ class WebGLController {
         }
     } // displayDebugInfoMVPMat
 
+    /**
+     * Dispatches the debug callbacks.
+     */
     displayDebugInfoDispatch(debugInfoDiv, debugSubDiv) {
         debugInfoDiv.innerHTML += '<div id="' + debugSubDiv + '">';
 
@@ -489,6 +542,9 @@ class WebGLController {
         debugInfoDiv.innerHTML += '</div>';
     } // displayDebugInfoDispatch
 
+    /**
+     * Display all the debug info.
+     */
     displayDebugInfo() {
         // Camera
         {
@@ -517,23 +573,26 @@ class WebGLController {
         }
     } // displayDebugInfo
 
-// =============================================================================
-//
-// Controls
-//
-// =============================================================================
+    // -------------------------------------------------------------------------
+    //
+    // Controls
+    //
+    // -------------------------------------------------------------------------
 
-    toggleRotation() {
-        this.#scene.toggleCubeRotation();
-    } // toggleRotation
+    /**
+     * Toggles cube rotation.
+     */
+    toggleRotation() { this.#scene.toggleCubeRotation(); }
 
+    // -------------------------------------------------------------------------
+    //
+    // Listeners
+    //
+    // -------------------------------------------------------------------------
 
-// =============================================================================
-//
-// Listeners
-//
-// =============================================================================
-
+    /**
+     * Registers listeners.
+     */
     registerListeners(gl) {
         const canvas = gl.canvas;
 
@@ -564,11 +623,11 @@ class WebGLController {
         });
 	} // registerListeners
 
-// =============================================================================
-//
-// init
-//
-// =============================================================================
+    // -------------------------------------------------------------------------
+    //
+    // init
+    //
+    // -------------------------------------------------------------------------
 
     init() {
         // FIXME: refactoring high level idea
@@ -639,6 +698,12 @@ class WebGLController {
         
         requestAnimationFrame(renderFn);
     } // init
+
+    // -------------------------------------------------------------------------
+
+    set mvpMatrix(matrix) { this.#mvpMatrix = matrix; }
+
+    // -------------------------------------------------------------------------
     
 } // class WebGLController
 
