@@ -75,25 +75,7 @@ class ArcballCamera {
         this.lookAt(position, target, up);
     } // ctor
 
-    get position() {
-        return this.#position;
-    } // get position
-
-    get target() {
-        return this.#target;
-    } // get target
-
-    get viewMatrix() {
-        return this.#viewMatrix;
-    } // get viewMatrix
-
-    setViewMatrix(value) {
-        this.#viewMatrix = value;
-    } // set viewMatrix
-
-    get projectionMatrix() {
-        return this.#projectionMatrix;
-    } // get projectionMatrix
+    // -------------------------------------------------------------------------
 
     rotateAroundPivot(quatRot) {
         let eyeToTarget = vec3.create();
@@ -253,4 +235,14 @@ class ArcballCamera {
     moveAlongViewingDirection(delta) {
         // FIXME: provide impl
     } // moveAlongViewingDirection
+
+    // -------------------------------------------------------------------------
+
+    get position() { return this.#position; }
+    get target() { return this.#target; }
+    get viewMatrix() { return this.#viewMatrix; }
+    get projectionMatrix() { return this.#projectionMatrix; }
+    setViewMatrix(value) { this.#viewMatrix = value; }
+
+    // -------------------------------------------------------------------------
 }; // class ArcballCamera
