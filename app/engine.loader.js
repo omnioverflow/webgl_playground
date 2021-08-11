@@ -41,6 +41,7 @@ class EngineLoader {
             '../../engine/mesh/TriangleMesh.js',
             '../../engine/objects/RenderableObject.js',
             '../../engine/procedural/Procedural.js',
+            '../../engine/renderer/Renderer.js',
             '../../engine/scene/Scene.js',
             '../../engine/shader/InitShaders.js',
             '../../engine/utils/WebGLUtils.js'
