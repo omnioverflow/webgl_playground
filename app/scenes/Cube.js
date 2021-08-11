@@ -632,8 +632,8 @@ class WebGLController {
     init() {
         // FIXME: refactoring high level idea
         /*
-        const scene = new Scene();
-        const camera = new PerspectiveCamera();
+        const scene = new Scene2();
+        const camera = new ArcballCamera();
         const renderer = new Renderer();
         renderer.setCamera(camera);
 
