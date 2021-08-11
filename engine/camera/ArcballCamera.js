@@ -18,9 +18,7 @@ class ArcballCamera {
     #throwOnError       // throw if any error (no forgiveness);
     // -------------------------------------------------------------------------
 
-    // FIXME: get rid of canvas argument if possible
-
-    constructor(position, target, pivot, up, canvas,
+    constructor(position, target, pivot, up, aspect,
                 projectionType = "projection-hardcoded",
                 throwOnError = false) 
     {
@@ -35,13 +33,12 @@ class ArcballCamera {
                 // Create a perspective matrix, a special matrix that is
                 // used to simulate the distortion of perspective in a camera.
                 // Our field of view is 45 degrees, with a width/height
-                // ratio that matches the display size of the canvas
-                // and we only want to see objects between 0.1 units
-                // and 100 units away from the camera.
+                // ratio that matches the display size of the canvas 
+                // (given aspect ratio), and we only want to see objects 
+                // between 0.1 units and 100 units away from the camera.
 
                 // vertical field-of-view
                 const fovy = 60 * Math.PI / 180;   // in radians
-                const aspect = canvas.clientWidth / canvas.clientHeight;
                 const z_near = -0.01;
                 const z_far = 100.0;
 

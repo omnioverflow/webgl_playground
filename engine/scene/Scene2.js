@@ -8,26 +8,21 @@
 // - Refactor the scene to accomodate for multiple obejcts;
 // - Camera object should not be part of the scene.
 
-
-/* 
-    ALREADY DONE:
-    - Camera is not part of the scene any more;
-    - Accessor/mutator for the renderable objects;
-*/
-
-class Scene {
+class Scene2 {
+    // -------------------------------------------------------------------------
     #objects
-    #cubeModelMatrix
-    #cubeRotation
-    #enableCubeRotation
+    // -------------------------------------------------------------------------
 
     constructor(args = {}) {
         this.#objects = args;
-        this.#cubeModelMatrix = mat4.identity();
-        this.#cubeRotation = 0.0;
-        this.#enableCubeRotation = false;
     } // ctor
 
+    // -------------------------------------------------------------------------
+    getObject(key) { return this.#objects[key]; }
+    setObject(key, object) { this.#objects[key] = object; }
+    // -------------------------------------------------------------------------
+
+    /*
     get cubeModelMatrix() {
         return this.#cubeModelMatrix;
     } // get cubeModelMatrix
@@ -73,16 +68,5 @@ class Scene {
         this.#cubeModelMatrix = mat4.multiply(scale, this.#cubeModelMatrix,
             this.#cubeModelMatrix);
     } // updateUniformScaleCubeBy
-
-
-// =============================================================================
-// Accessors and Mutators for objects.
-// =============================================================================
-    setObject(key, object) {
-        this.#objects[key] = object;
-    } // setObject
-
-    getObject(key) {
-        return this.#objects[key];
-    } // getObject
-};
+    */
+}; // Scene2

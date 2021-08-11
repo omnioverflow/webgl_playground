@@ -127,8 +127,9 @@ class WebGLController {
             const target = cube.center;
             const pivot = cube.center;
             const up = vec3.create(new Float32Array([0.0, 1.0, 0.0]));
+            const aspectRatio = canvas.clientWidth / canvas.clientHeight;
             this.#scene = new Scene(
-                new ArcballCamera(eye, target, pivot, up, canvas)
+                new ArcballCamera(eye, target, pivot, up, aspectRatio)
                 );
         }
         // Create virtual trackball
@@ -630,22 +631,37 @@ class WebGLController {
     // -------------------------------------------------------------------------
 
     init() {
-        // FIXME: refactoring high level idea
-        /*
-        const scene = new Scene2();
-        const camera = new ArcballCamera();
-        const renderer = new Renderer();
-        renderer.setCamera(camera);
-
-        const cubeSize = 1.0;
-        const cubePosition = new vec3(0.0, 0.0, 0.0);
-        const cubeObj = new CubeObject(cubePosition, cubeSize);
-        scene.addObject(cubeObj);
-
-        const debugView = new DebugView();
-        */
-
         const gl = this.setupWebGL();
+
+        //----------------------------------------------------------------------
+
+        // FIXME: refactoring high level idea
+        {
+            const scene = new Scene2();
+
+            const eye = vec3.create(new Float32Array([10.0, 10.0, -10.0]));
+            const target = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
+            const pivot = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
+            const up = vec3.create(new Float32Array([0.0, 1.0, 0.0]));
+            const aspectRatio = gl.canvas.clientWidth / gl.canvas.clientHeight;
+
+            const arcballCamera = 
+                    new ArcballCamera(eye, target, pivot, up, aspectRatio);
+
+            const renderer = new Renderer();
+            /*
+                renderer.setCamera(camera);
+
+                const cubeSize = 1.0;
+                const cubePosition = new vec3(0.0, 0.0, 0.0);
+                const cubeObj = new CubeObject(cubePosition, cubeSize);
+                scene.addObject(cubeObj);
+
+                const debugView = new DebugView();
+            */
+        }        
+
+        //----------------------------------------------------------------------     
 
         this.registerListeners(gl);
 

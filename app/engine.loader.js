@@ -44,7 +44,9 @@ class EngineLoader {
             '../../engine/renderer/Renderer.js',
             '../../engine/scene/Scene.js',
             '../../engine/shader/InitShaders.js',
-            '../../engine/utils/WebGLUtils.js'
+            '../../engine/utils/WebGLUtils.js',
+            // Scripts under refactoring
+            '../../engine/scene/Scene2.js'  
         ];
 
         const nbScripts = scripts.length;
