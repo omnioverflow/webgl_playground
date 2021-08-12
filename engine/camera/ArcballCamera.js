@@ -18,6 +18,12 @@ class ArcballCamera {
     #throwOnError       // throw if any error (no forgiveness);
     // -------------------------------------------------------------------------
 
+    /**
+     * @param camera position (aka eye position);
+     * @param 'look at' position;
+     * @param up vector of the camera;
+     * @param aspect ratio of a rendering canvas;
+     */
     constructor(position, target, pivot, up, aspect,
                 projectionType = "projection-hardcoded",
                 throwOnError = false) 
