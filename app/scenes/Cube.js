@@ -649,9 +649,8 @@ class WebGLController {
                     new ArcballCamera(eye, target, pivot, up, aspectRatio);
 
             const renderer = new Renderer();
+            renderer.setCamera(arcballCamera);
             /*
-                renderer.setCamera(camera);
-
                 const cubeSize = 1.0;
                 const cubePosition = new vec3(0.0, 0.0, 0.0);
                 const cubeObj = new CubeObject(cubePosition, cubeSize);
