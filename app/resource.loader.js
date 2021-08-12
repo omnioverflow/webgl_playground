@@ -71,8 +71,10 @@ class ResourceLoader {
     /**
      * Load assets (e.g. 3d models).
      */
-    static loadAssets(dir, finalCallback) {
-        const assetScripts = [dir + '/Teapot.js']; 
+    static loadAssets(dir, assetScripts, finalCallback) {
+        assetScripts.forEach((element, index) => {
+            assetScripts[index] = dir + '/' + element;
+        });
         ResourceLoader.loadScripts(assetScripts, finalCallback);
     } // loadAssets
 } // ResourceLoader

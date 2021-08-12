@@ -728,5 +728,5 @@ class WebGLController {
 // =============================================================================
 
 var controller = new WebGLController();
-document.body.onload = ResourceLoader.loadAssets('../assets');
+document.body.onload = ResourceLoader.loadAssets('../assets', ['Teapot.js']);
 document.body.onload = ResourceLoader.loadEngine(controller.init);
