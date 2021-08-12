@@ -1,4 +1,4 @@
-class EngineLoader {
+class ResourceLoader {
 
     //
     // Dynamically load a script
@@ -28,11 +28,27 @@ class EngineLoader {
         };
     } // dynamicallyLoadScript
 
+    /**
+     * Load scripts on-demand.
+     */
+    static loadScripts(scripts, finalCallback) {
+        const nbScripts = scripts.length;
+        let nbLoaded = {};
+        nbLoaded.number = 0;
+        for (const script of scripts) {
+            ResourceLoader.dynamicallyLoadScript(script, document.body,
+                nbScripts, nbLoaded, finalCallback);   
+        }
+    } // loadScripts
+
+    /**
+     * Load engine files.
+     */
     static loadEngine(finalCallback) {
-        let scripts = [
+        const scripts = [
+            // engine files
             '../../engine/camera/ArcballCamera.js',
             '../../engine/controls/Trackball.js',
-            '../../engine/data/teapot.js',
             '../../engine/loader/ObjLoader.js',
             '../../engine/loader/TexLoader.js',
             '../../engine/math/Matrix.js',
@@ -49,13 +65,14 @@ class EngineLoader {
             '../../engine/scene/Scene2.js'  
         ];
 
-        const nbScripts = scripts.length;
-        let nbLoaded = {};
-        nbLoaded.number = 0;
-        for (const script of scripts) {
-            EngineLoader.dynamicallyLoadScript(script, document.body,
-                nbScripts, nbLoaded, finalCallback);   
-        }
+        ResourceLoader.loadScripts(scripts, finalCallback);
     } // loadEngine
 
-} // EngineLoader
+    /**
+     * Load assets (e.g. 3d models).
+     */
+    static loadAssets(dir, finalCallback) {
+        const assetScripts = [dir + '/Teapot.js']; 
+        ResourceLoader.loadScripts(assetScripts, finalCallback);
+    } // loadAssets
+} // ResourceLoader

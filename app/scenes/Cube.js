@@ -728,4 +728,5 @@ class WebGLController {
 // =============================================================================
 
 var controller = new WebGLController();
-document.body.onload = EngineLoader.loadEngine(controller.init);
+document.body.onload = ResourceLoader.loadAssets('../assets');
+document.body.onload = ResourceLoader.loadEngine(controller.init);
