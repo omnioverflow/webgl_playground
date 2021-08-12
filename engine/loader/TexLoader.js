@@ -6,8 +6,7 @@
 // Initialize a texture and load an image.
 // When the image finished loading copy it into the texture.
 //
-function loadTexture(gl, url, drawCallback, programInfo, 
-                     buffers, params = {}) {
+function loadTexture(gl, url, programInfo, buffers, params = {}) {
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
@@ -48,15 +47,10 @@ function loadTexture(gl, url, drawCallback, programInfo,
        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     }
-
-    if (drawCallback != null)
-      drawCallback(gl, programInfo, buffers, texture, params);
   };
   image.src = url;
 
   return texture;
-}
+} // loadTexture
 
-function isPowerOf2(value) {
-  return (value & (value - 1)) == 0;
-}
+function isPowerOf2(value) { return (value & (value - 1)) == 0; } 

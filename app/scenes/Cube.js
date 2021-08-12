@@ -80,7 +80,7 @@ class WebGLController {
     /**
      * Does the GPU resources setup.
      */
-    setupCube(gl, render, cubeCenter, cubeSize) {
+    setupCube(gl, cubeCenter, cubeSize) {
         // Load shaders and initialize attribute buffers
         const shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
         const programInfo = {
@@ -100,8 +100,7 @@ class WebGLController {
 
         const textureUrl = 'https://www.babylonjs-playground.com/textures/bloc.jpg';
 
-        const texture = loadTexture(gl, textureUrl, render,
-                                    shaderProgram, buffers);
+        const texture = loadTexture(gl, textureUrl, shaderProgram, buffers);
 
         return { 
             "cubeObject" : cubeObject,
@@ -691,7 +690,7 @@ class WebGLController {
         const overlayData = this.setupOverlay(gl);
         const cubeCenter = [0.0, 0.0, 0.0];
         const cubeSize = 1.0;
-        const cubeData = this.setupCube(gl, renderFn, cubeCenter, cubeSize);
+        const cubeData = this.setupCube(gl, cubeCenter, cubeSize);
         
         const eye = vec3.create(new Float32Array([10.0, 10.0, -10.0]));
         this.setupScene(cubeData.cubeObject, eye, gl.canvas);
