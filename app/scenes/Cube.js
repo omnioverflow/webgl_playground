@@ -639,10 +639,10 @@ class WebGLController {
         {
             const scene = new Scene2();
 
-            const eye = vec3.create(new Float32Array([10.0, 10.0, -10.0]));
-            const target = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
-            const pivot = vec3.create(new Float32Array([0.0, 0.0, 0.0]));
-            const up = vec3.create(new Float32Array([0.0, 1.0, 0.0]));
+            const eye = vec3.create([10.0, 10.0, -10.0]);
+            const target = vec3.create([0.0, 0.0, 0.0]);
+            const pivot = vec3.create([0.0, 0.0, 0.0]);
+            const up = vec3.create([0.0, 1.0, 0.0]);
             const aspectRatio = gl.canvas.clientWidth / gl.canvas.clientHeight;
 
             const arcballCamera = 
