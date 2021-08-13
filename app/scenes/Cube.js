@@ -649,6 +649,12 @@ class WebGLController {
 
             const renderer = new Renderer();
             renderer.setCamera(arcballCamera);
+
+            const mesh = new RenderableTriangleMesh(new TriangleMesh(
+                AssetsData['UnitCube'].vertices, 
+                AssetsData['UnitCube'].faces)
+            );
+            
             /*
                 const cubeSize = 1.0;
                 const cubePosition = new vec3(0.0, 0.0, 0.0);
