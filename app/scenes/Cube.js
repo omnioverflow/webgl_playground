@@ -728,5 +728,12 @@ class WebGLController {
 // =============================================================================
 
 var controller = new WebGLController();
-document.body.onload = ResourceLoader.loadAssets('../assets', ['Teapot.js']);
-document.body.onload = ResourceLoader.loadEngine(controller.init);
+// Load assets and follow by engine loading;
+// (these are essentially async operations, and the following way of loading
+// is not the most elegant, therefore could be improved).
+document.body.onload = ResourceLoader.loadAssets('../assets', ['Teapot.js', 'UnitCube.js'],
+    // Asset loading takes time, 
+    // afterwards the following lambda will be called.
+    () => { 
+        document.body.onload = ResourceLoader.loadEngine(controller.init);
+    });
