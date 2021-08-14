@@ -647,7 +647,7 @@ class WebGLController {
             const arcballCamera = 
                     new ArcballCamera(eye, target, pivot, up, aspectRatio);
 
-            const renderer = new Renderer();
+            const renderer = new Renderer(gl);
             renderer.setCamera(arcballCamera);
 
             const mesh = new RenderableTriangleMesh(new TriangleMesh(
@@ -685,6 +685,9 @@ class WebGLController {
             // FIXME: deltaTime = now - then;
             const deltaTime = 0.005;
             then = now;
+
+            // Refactoring in progress
+            renderer.draw(scene, deltaTime);
 
             self.drawScene(gl, renderData, deltaTime);
 
