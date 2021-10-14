@@ -26,17 +26,17 @@ class WebGLController {
     registerListeners() {
         // register mouse event listeners for the canvas
         this.#canvas.addEventListener("mousedown", e => {
-            fromPos[0] = event.pageX;
-            fromPos[1] = event.pageY; 
+            this.#fromPos[0] = event.pageX;
+            this.#fromPos[1] = event.pageY; 
         });
         
         this.#canvas.addEventListener("mouseup", e => {
-            toPos[0] = event.pageX;
-            toPos[1] = event.pageY;
-            const deltaX = (toPos[0] - fromPos[0]) / canvas.width;
-            const deltaY = (toPos[1] - fromPos[1]) / canvas.height;
-            translation[0] = translation[0] - deltaX;
-            translation[1] = translation[1] + deltaY;
+            this.#toPos[0] = event.pageX;
+            this.#toPos[1] = event.pageY;
+            const deltaX = (this.#toPos[0] - this.#fromPos[0]) / this.#canvas.width;
+            const deltaY = (this.#toPos[1] - this.#fromPos[1]) / this.#canvas.height;
+            this.#translation[0] = this.#translation[0] - deltaX;
+            this.#translation[1] = this.#translation[1] + deltaY;
             this.initTranslation(this.#translation);
         });
         this.#canvas.addEventListener("wheel", this.onMouseWheel);
