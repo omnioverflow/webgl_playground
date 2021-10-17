@@ -4,13 +4,17 @@
 //
 // =============================================================================
 
+// Could not manage to keep scale a private attrib inside WebGLcontroller
+// since we had register wheel event listener to the canvas, and canvas could
+// not access and change the scale property from WebGLController.
+var scale = 2.0;
+
 class WebGLController {
     #canvas
     #gl
     #program
     #vao
 
-    #scale
     #translation
     #fromPos
     #toPos
@@ -23,6 +27,18 @@ class WebGLController {
         }
     } // initGL
 
+    render() {
+        this.#gl.useProgram(this.#program);
+        this.#gl.bindVertexArray(this.#vao);
+        this.#gl.clear(this.#gl.COLOR_BUFFER_BIT);
+        {
+            const vertexCount = 6;
+            const type = this.#gl.UNSIGNED_SHORT;
+            const offset = 0;
+            this.#gl.drawElements(this.#gl.TRIANGLES, vertexCount, type, offset);
+        }
+    } // render
+
     registerListeners() {
         // register mouse event listeners for the canvas
         this.#canvas.addEventListener("mousedown", e => {
@@ -31,15 +47,49 @@ class WebGLController {
         });
         
         this.#canvas.addEventListener("mouseup", e => {
+            const slowDownCoefficient = 0.5 * scale;
             this.#toPos[0] = event.pageX;
             this.#toPos[1] = event.pageY;
-            const deltaX = (this.#toPos[0] - this.#fromPos[0]) / this.#canvas.width;
-            const deltaY = (this.#toPos[1] - this.#fromPos[1]) / this.#canvas.height;
+
+            const deltaX = slowDownCoefficient * (this.#toPos[0] - this.#fromPos[0])
+                / this.#canvas.width;            
+            const deltaY = slowDownCoefficient * (this.#toPos[1] - this.#fromPos[1])
+                / this.#canvas.height;
+
             this.#translation[0] = this.#translation[0] - deltaX;
             this.#translation[1] = this.#translation[1] + deltaY;
             this.initTranslation(this.#translation);
         });
-        this.#canvas.addEventListener("wheel", this.onMouseWheel);
+        this.#canvas.addEventListener("wheel", e => {
+            // FIXME: get rid of magic numbers here.
+            const minScale = 0.2;
+            const maxScale = 3.0;
+            const scaleChange = 1.05;
+
+            if (event.deltaY > 0)
+            {
+                console.log("scrolling down!");
+                scale /= scaleChange;
+            }
+            else if (event.deltaY < 0)
+            {
+                console.log("scrolling up!");
+                scale *= scaleChange;
+            }
+
+            if (scale < minScale)
+                scale = minScale;
+            else if (scale > maxScale)
+                scale = maxScale;
+
+            {
+                const location = this.#gl.getUniformLocation(this.#program, "uScale");
+                this.#gl.uniform1f(location, scale);
+            }
+
+            // re-render
+            this.render(); 
+        });
     } // registerListeners
 
     init() {
@@ -50,8 +100,7 @@ class WebGLController {
 
         // View-related stuff
         // TODO: needs refactoring
-        this.#scale = 1.0;
-        this.#translation = new Float32Array([0.0, 0.0]);
+        this.#translation = new Float32Array([-1.5, -1.0]);
         this.#fromPos = new Float32Array([0.0, 0.0]);
         this.#toPos = new Float32Array([0.0, 0.0]);
         this.#isMouseMoved = false;
@@ -122,7 +171,7 @@ class WebGLController {
 
         {
             const location = this.#gl.getUniformLocation(this.#program, "uScale");
-            this.#gl.uniform1f(location, this.#scale);
+            this.#gl.uniform1f(location, scale);
         }
 
         this.initTranslation(this.#translation);
@@ -134,45 +183,7 @@ class WebGLController {
         }
 
         this.#gl.bindVertexArray(null);
-    } // initBuffers
-
-    render() {
-        this.#gl.useProgram(this.#program);
-        this.#gl.bindVertexArray(this.#vao);
-        this.#gl.clear(this.#gl.COLOR_BUFFER_BIT);
-        {
-            const vertexCount = 6;
-            const type = this.#gl.UNSIGNED_SHORT;
-            const offset = 0;
-            this.#gl.drawElements(this.#gl.TRIANGLES, vertexCount, type, offset);
-        }
-    } // render
-
-    onMouseDown() {
-        alert("Mouse down!");
-    } // onMouseDown
-
-    onMouseWheel() {
-        const scaleChange = 0.2;
-        if (event.deltaY > 0)
-        {
-            console.log("scrolling down!");
-            scale -= scaleChange;
-        }
-        else if (event.deltaY < 0)
-        {
-            console.log("scrolling up!");
-            scale += scaleChange;
-        }
-
-        {
-            const location = this.#gl.getUniformLocation(this.#program, "uScale");
-            this.#gl.uniform1f(location, scale);
-        }
-
-        // re-render
-        render();
-    } // onMouseWheel
+    } // initBuffers    
 } // class WebGLController
 
 // =============================================================================
