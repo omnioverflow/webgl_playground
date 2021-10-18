@@ -3,15 +3,23 @@
   <head>
     <title>Digit recognition</title>
     <style type='text/css'>
-        #sheet {
+        #sheet {        
             background-color: #222;
             border:1px solid black;
     </style>
   </head>
   <body>
-    <div style="width:100%;height:1000px;background-color:#404040">
+    <div class="wrapper" 
+        style="width:100%;height:1000px;background-color:#404040;
+        position: relative;color:#ffffff;">
 
     <canvas id="sheet" width="400" height="400"></canvas>
+    <div class="controls" style="position: relative; top:-400px; right: -410px;">
+        <button onclick="clearCanvas()">clear</button>
+        </br></br>
+        Recognition result:</br>
+        <input type="recognition-textbox" value="" readonly="readonly"/>        
+    </div>
 
     <script type='text/javascript'>
         /* Basic drawing based on https://stackoverflow.com/questions/22891827/how-do-i-hand-draw-on-canvas-with-javascript */
