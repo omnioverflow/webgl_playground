@@ -165,8 +165,14 @@
             canvas.removeEventListener('touchstart', touchWins);
         }
 
+        function clearCanvas() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Register listeners
         canvas.addEventListener('mousedown', mouseWins);
         canvas.addEventListener('touchstart', touchWins);
+        document.getElementById("clear-button").addEventListener("click", clearCanvas);
     </script>
   </body>
 </html>
