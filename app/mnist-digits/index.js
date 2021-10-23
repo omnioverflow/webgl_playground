@@ -86,26 +86,23 @@ function drawNew(strokeStyle) {
     }
 }
 
+function getRandomStyle() {
+    const r = Math.floor(Math.random() * 155) + 100;
+    const g = Math.floor(Math.random() * 155) + 100;
+    const b = Math.floor(Math.random() * 155) + 100;
+    
+    return rgbToHex(r, g, b);
+}
+
 function mouseDownEventHandler(e) {
     paint = true;
     var x = e.pageX - canvas.offsetLeft;
     var y = e.pageY - canvas.offsetTop;
 
-    // Change strokeStyle depending on the
-    // location on the canvas
-    const w = canvas.width;
-    const h = canvas.height;
-    if (w == 0.0 || h == 0.0)
-        return;
-
-    const r = Math.floor(255 * x / w);
-    const g = Math.floor(255 * y / w);
-    const b = 0;
-    const strokeStyle = rgbToHex(r, g, b);
-
     if (paint) {
         addClick(x, y, false);
-        drawNew(strokeStyle);
+        const randomStyle = getRandomStyle();
+        drawNew(randomStyle);
     }
 }
 
