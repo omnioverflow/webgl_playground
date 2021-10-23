@@ -5,7 +5,7 @@
 var context = document.getElementById('sheet').getContext("2d");
 var canvas = document.getElementById('sheet');
 context = canvas.getContext("2d");
-context.strokeStyle = "#ff0000";
+// context.strokeStyle = "#ff0000";
 context.lineJoin = "round";
 context.lineWidth = 5;
 
@@ -64,7 +64,9 @@ function redraw() {
  * Draw the newly added point.
  * @return {void}
  */
-function drawNew() {
+function drawNew(strokeStyle) {
+    context.strokeStyle = strokeStyle;
+
     var i = clickX.length - 1
     if (!clickDrag[i]) {
         if (clickX.length == 0) {
@@ -88,9 +90,22 @@ function mouseDownEventHandler(e) {
     paint = true;
     var x = e.pageX - canvas.offsetLeft;
     var y = e.pageY - canvas.offsetTop;
+
+    // Change strokeStyle depending on the
+    // location on the canvas
+    const w = canvas.width;
+    const h = canvas.height;
+    if (w == 0.0 || h == 0.0)
+        return;
+
+    const r = Math.floor(255 * x / w);
+    const g = Math.floor(255 * y / w);
+    const b = 0;
+    const strokeStyle = rgbToHex(r, g, b);
+
     if (paint) {
         addClick(x, y, false);
-        drawNew();
+        drawNew(strokeStyle);
     }
 }
 
