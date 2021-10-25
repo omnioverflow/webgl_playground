@@ -167,6 +167,10 @@ function clearCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function serializeCanvas() {
+    alert(canvas.toDataURL());
+}
+
 // Register listeners
 canvas.addEventListener('mousedown', mouseWins);
 canvas.addEventListener('touchstart', touchWins);
