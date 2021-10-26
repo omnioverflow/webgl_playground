@@ -1,5 +1,8 @@
 /* Basic drawing based on https://stackoverflow.com/questions/22891827/how-do-i-hand-draw-on-canvas-with-javascript */
 
+const tf_version = tf.version;
+console.log('tvjs: ' + tf_version.tfjs);
+
 /*jslint browser:true */        
 "use strict";
 var context = document.getElementById('sheet').getContext("2d");
