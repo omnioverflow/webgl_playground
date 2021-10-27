@@ -19,6 +19,12 @@ var paint;
 
 // =============================================================================
 
+async function loadModel(path, model) {
+    // FIXME: missing impl.
+}
+
+// =============================================================================
+
 function componentToHex(c) {
   var hex = c.toString(16);
   return hex.length == 1 ? "0" + hex : hex;
@@ -197,3 +203,6 @@ document.getElementById("deserialize-button").addEventListener("click", deserial
 
 // Deserialize handwritten digit in the canvas from data URL.
 deserializeCanvas();
+
+// Load ML model
+loadModel('models', 'mnist_cnn_36.json');
