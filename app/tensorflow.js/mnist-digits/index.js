@@ -1,5 +1,12 @@
 /* Basic drawing based on https://stackoverflow.com/questions/22891827/how-do-i-hand-draw-on-canvas-with-javascript */
 
+/**
+ * TEMP TODOs & FIXMEs
+ * 
+ * Take a look at:
+ * https://towardsdatascience.com/handwritten-digit-recognition-with-tensorflow-js-6ddb22ae195f
+ */
+
 const tf_version = tf.version;
 console.log('tvjs: ' + tf_version.tfjs);
 
