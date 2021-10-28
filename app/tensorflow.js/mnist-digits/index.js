@@ -3,6 +3,9 @@
 const tf_version = tf.version;
 console.log('tvjs: ' + tf_version.tfjs);
 
+// ML model
+var model;
+
 /*jslint browser:true */        
 "use strict";
 var context = document.getElementById('sheet').getContext("2d");
@@ -223,4 +226,4 @@ document.getElementById("deserialize-button").addEventListener("click", deserial
 deserializeCanvas();
 
 // Load ML model
-loadModel('models', 'mnist_cnn_36.json');
+loadGraphModel('https://iirthw.github.io/downloads/models/tfjs_mnist_cnn_36/model.json');
