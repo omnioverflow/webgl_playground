@@ -19,12 +19,6 @@ var paint;
 
 // =============================================================================
 
-async function loadModel(path, model) {
-    // FIXME: missing impl.
-}
-
-// =============================================================================
-
 function componentToHex(c) {
   var hex = c.toString(16);
   return hex.length == 1 ? "0" + hex : hex;
@@ -32,6 +26,30 @@ function componentToHex(c) {
 
 function rgbToHex(r, g, b) {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+// =============================================================================
+
+//The main differences between LayersModel and GraphModels are:
+// 1. LayersModel can only be imported from tf.keras or keras HDF5 format model
+//    types. GraphModels can be imported from either the aforementioned model
+//    types, or TensorFlow SavedModels.
+// 2. LayersModels support further training in JavaScript (through its fit() 
+//    method). GraphModel supports only inference.
+// 3. GraphModel usually gives you higher inference speed (10-20%) than 
+//    LayersModel, due to its graph optimization, which is possible thanks to
+//    the inference-only support.
+
+// Load layers model.
+async function loadLayersModel(url) {
+    model = undefined;
+    model = await tf.loadLayersModel(url);
+}
+
+// Load graph model.
+async function loadGraphModel(url) {
+    model = undefined;
+    model = await tf.loadGraphModel(url);
 }
 
 // =============================================================================
