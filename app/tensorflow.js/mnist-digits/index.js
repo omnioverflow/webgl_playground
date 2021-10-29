@@ -66,6 +66,27 @@ async function loadGraphModel(url) {
 
 // =============================================================================
 
+function runPrediction() {
+    // See example: 
+    // https://blog.pragmatists.com/machine-learning-in-the-browser-with-tensorflow-js-2f941a8130f5
+    const imageData = context.getImageData(0, 0, 28, 28);
+    const inputTensor = tf.browser.fromPixels(imageData, 1)
+        .reshape([1, 28, 28, 1])
+        .cast('float32')
+        .div(255);
+
+    console.log('Running prediction...');
+
+    const predictionResult =  model.predict(inputTensor).dataSync();
+    const recognizedDigit = predictionResult.indexOf(Math.max(...predictionResult));
+
+    console.log('Predicted digit: ' + recognizedDigit);
+
+    // const prediction = await runPrediction(model, imgPath); 
+}
+
+// =============================================================================
+
 /**
  * Add information where the user clicked at.
  * @param {number} x
