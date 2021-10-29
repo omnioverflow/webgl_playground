@@ -52,12 +52,14 @@ function rgbToHex(r, g, b) {
 
 // Load layers model.
 async function loadLayersModel(url) {
+    console.log('Loading Layers model...');
     model = undefined;
     model = await tf.loadLayersModel(url);
 }
 
 // Load graph model.
 async function loadGraphModel(url) {
+    console.log('Loading Graph Model...');
     model = undefined;
     model = await tf.loadGraphModel(url);
 }
