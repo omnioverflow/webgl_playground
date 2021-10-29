@@ -66,21 +66,51 @@ async function loadGraphModel(url) {
 
 // =============================================================================
 
-function runPrediction() {
+async function runPrediction() {
     // See example: 
     // https://blog.pragmatists.com/machine-learning-in-the-browser-with-tensorflow-js-2f941a8130f5
-    const imageData = context.getImageData(0, 0, 28, 28);
-    const inputTensor = tf.browser.fromPixels(imageData, 1)
-        .reshape([1, 28, 28, 1])
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+    const t0 = tf.browser.fromPixels(imageData, 1);
+    const a0 = await t0.array();
+    const b0 = await t0.buffer();
+
+    const t1 = tf.browser.fromPixels(imageData, 1)
+        .resizeBilinear([28, 28]);
+    const a1 = await t1.array();
+
+
+    for(var i = 0; i < 28; i++) {
+        for(var j = 0; j < 28; j++) {
+            console.log(a1[i][j][0]);
+        }
+    }
+
+    var inputTensor = tf.browser.fromPixels(imageData, 1)
+        .resizeBilinear([28, 28])
+        // .reshape([1, 28, 28, 1])
         .cast('float32')
         .div(255);
 
+    const a2 = await inputTensor.array();
+    for(var i = 0; i < 28; i++) {
+        for(var j = 0; j < 28; j++) {
+            console.log(a2[i][j][0]);
+        }
+    }
+
+    inputTensor = inputTensor.reshape([1, 28, 28, 1]);
+
     console.log('Running prediction...');
 
-    const predictionResult =  model.predict(inputTensor).dataSync();
-    const recognizedDigit = predictionResult.indexOf(Math.max(...predictionResult));
+    // const predictionResult =  model.predict(inputTensor).dataSync();
+    const predictionResult =  model.predict(inputTensor).argMax(-1);
+    // const recognizedDigit = predictionResult.indexOf(Math.max(...predictionResult));
 
-    console.log('Predicted digit: ' + recognizedDigit);
+    // console.log('Predicted digit: ' + recognizedDigit);
+
+    const r = await predictionResult.array();
+    const lolify = 1;
 
     // const prediction = await runPrediction(model, imgPath); 
 }
