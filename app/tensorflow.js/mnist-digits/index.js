@@ -227,6 +227,7 @@ function deserializeCanvas() {
 canvas.addEventListener('mousedown', mouseWins);
 canvas.addEventListener('touchstart', touchWins);
 document.getElementById("clear-button").addEventListener("click", clearCanvas);
+document.getElementById('reco-button').addEventListener('click', runPrediction);
 document.getElementById("serialize-button").addEventListener("click", serializeCanvas);
 document.getElementById("deserialize-button").addEventListener("click", deserializeCanvas);
 
