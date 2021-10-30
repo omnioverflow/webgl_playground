@@ -87,25 +87,12 @@ function plotHisto(histData) {
     Plotly.newPlot('histo', data);
 }
 
+// =============================================================================
+
 async function runPrediction() {
     // See example: 
     // https://blog.pragmatists.com/machine-learning-in-the-browser-with-tensorflow-js-2f941a8130f5
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-    const t0 = tf.browser.fromPixels(imageData, 1);
-    const a0 = await t0.array();
-    const b0 = await t0.buffer();
-
-    const t1 = tf.browser.fromPixels(imageData, 1)
-        .resizeBilinear([28, 28]);
-    const a1 = await t1.array();
-
-
-    for(var i = 0; i < 28; i++) {
-        for(var j = 0; j < 28; j++) {
-            console.log(a1[i][j][0]);
-        }
-    }
 
     var inputTensor = tf.browser.fromPixels(imageData, 1)
         .resizeBilinear([28, 28])
@@ -113,27 +100,32 @@ async function runPrediction() {
         .cast('float32')
         .div(255);
 
-    const a2 = await inputTensor.array();
-    for(var i = 0; i < 28; i++) {
-        for(var j = 0; j < 28; j++) {
-            console.log(a2[i][j][0]);
-        }
-    }
-
     inputTensor = inputTensor.reshape([1, 28, 28, 1]);
 
-    console.log('Running prediction...');
+    const classificationResult =  model.predict(inputTensor);
+    classificationResult.print();
 
-    // const predictionResult =  model.predict(inputTensor).dataSync();
-    const predictionResult =  model.predict(inputTensor).argMax(-1);
-    // const recognizedDigit = predictionResult.indexOf(Math.max(...predictionResult));
+    // Do debug plotting of the input 
+    imgTemp = tf.squeeze(inputTensor);
+    // Flix y-axis to point up, instead of down direction which is default in
+    // the canvas.
+    imgTemp = tf.reverse(imgTemp, 0);
+    plotHisto(imgTemp.arraySync());
 
-    // console.log('Predicted digit: ' + recognizedDigit);
+    const classificationData = await classificationResult.data();
+    const classScore = classificationData[0];
+    updateDocumentWithRecoResult(classScore);
+}
 
-    const r = await predictionResult.array();
-    const lolify = 1;
+function updateDocumentWithRecoResult(score) {
+    var recoResult = document.getElementById('reco-result');
+    var classifiedRes = '';
+    if (score > 0.0)
+        classifiedRes = '3';
+    else 
+        classifiedRes = '6';
 
-    // const prediction = await runPrediction(model, imgPath); 
+    recoResult.value = classifiedRes;
 }
 
 // =============================================================================
@@ -303,6 +295,8 @@ document.getElementById('reco-button').addEventListener('click', runPrediction);
 document.getElementById("serialize-button").addEventListener("click", serializeCanvas);
 document.getElementById("deserialize-button").addEventListener("click", deserializeCanvas);
 
+
+// =============================================================================
 
 // Deserialize handwritten digit in the canvas from data URL.
 deserializeCanvas();
