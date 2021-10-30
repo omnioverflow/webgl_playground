@@ -9,11 +9,20 @@
 
  /**
   * Important parameters:
-  * - LINE_WIDTH (when line width is too thin, donwnscaling bitmap for the input
+  * - LINE_WIDTH: when line width is too thin, donwnscaling bitmap for the input
   *   to the CNN might result in disconnected strokes, which will result in 
-  *   drastic degradation of classification results).
+  *   drastic degradation of classification results;
+  * - FONT: font to show classification result over the canvas;
+  * - X_POS_RESULT: x-coordinate to put the classification label over the canvas;
+  * - Y_POS_RESULT: y-coordinate to put the classification label over the canvas;
   */
 LINE_WIDTH = 16;
+FONT = '100px Arial';
+X_POS_RESULT = 10;
+Y_POS_RESULT = 80;
+
+
+// =============================================================================
 
 const tf_version = tf.version;
 console.log('tvjs: ' + tf_version.tfjs);
@@ -29,6 +38,8 @@ context = canvas.getContext("2d");
 // context.strokeStyle = "#ff0000";
 context.lineJoin = "round";
 context.lineWidth = LINE_WIDTH;
+context.font = FONT;
+context.fillStyle = 'white';
 
 var clickX = [];
 var clickY = [];
@@ -126,6 +137,8 @@ function updateDocumentWithRecoResult(score) {
         classifiedRes = '6';
 
     recoResult.value = classifiedRes;
+
+    context.fillText(classifiedRes, X_POS_RESULT, Y_POS_RESULT);
 }
 
 // =============================================================================
