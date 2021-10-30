@@ -73,6 +73,19 @@ async function loadGraphModel(url) {
 }
 
 // =============================================================================
+// Debug Plotting.
+//
+
+function plotHisto(histData) {
+    const data = [
+        {
+            z: histData,
+            type: 'heatmap'
+        }
+    ];
+
+    Plotly.newPlot('histo', data);
+}
 
 async function runPrediction() {
     // See example: 
