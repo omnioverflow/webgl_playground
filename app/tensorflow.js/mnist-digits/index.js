@@ -7,6 +7,14 @@
  * https://towardsdatascience.com/handwritten-digit-recognition-with-tensorflow-js-6ddb22ae195f
  */
 
+ /**
+  * Important parameters:
+  * - LINE_WIDTH (when line width is too thin, donwnscaling bitmap for the input
+  *   to the CNN might result in disconnected strokes, which will result in 
+  *   drastic degradation of classification results).
+  */
+LINE_WIDTH = 16;
+
 const tf_version = tf.version;
 console.log('tvjs: ' + tf_version.tfjs);
 
@@ -20,7 +28,7 @@ var canvas = document.getElementById('sheet');
 context = canvas.getContext("2d");
 // context.strokeStyle = "#ff0000";
 context.lineJoin = "round";
-context.lineWidth = 5;
+context.lineWidth = LINE_WIDTH;
 
 var clickX = [];
 var clickY = [];
