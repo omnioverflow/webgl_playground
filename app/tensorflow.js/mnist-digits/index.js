@@ -16,6 +16,8 @@
   * - X_POS_RESULT: x-coordinate to put the classification label over the canvas;
   * - Y_POS_RESULT: y-coordinate to put the classification label over the canvas;
   * - DEBUG: turn on/off debug mode such as additional data logging and plots.
+  * - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
+  *                         spinner;
   */
 LINE_WIDTH = 16;
 FONT = '100px Arial';
@@ -152,7 +154,10 @@ async function runPrediction() {
     const classificationData = await classificationResult.data();
     const classScore = classificationData[0];
 
-    removeSpinner();
+    setTimeout(function() {
+        removeSpinner();
+    }, RECO_SPINNER_TIMEOUT);
+
     showRecoResult(classScore);
 }
 
