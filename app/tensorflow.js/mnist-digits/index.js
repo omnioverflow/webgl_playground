@@ -167,6 +167,18 @@ function showRecoResult(score) {
     context.fillText(classifiedRes, X_POS_RESULT, Y_POS_RESULT);
 }
 
+function initCanvas() {
+    context.beginPath();
+    context.rect(0, 0, 80, 90);
+    context.fillStyle = 'rgb(10, 10, 10, 1.0)';
+    context.fill();
+}
+
+function clearCanvas() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    initCanvas();
+}
+
 // =============================================================================
 
 /**
@@ -185,8 +197,7 @@ function addClick(x, y, dragging) {
  * Redraw the complete canvas.
  */
 function redraw() {
-    // Clears the canvas
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    clearCanvas();
 
     for (var i = 0; i < clickX.length; i += 1) {
         if (!clickDrag[i] && i == 0) {
@@ -307,18 +318,6 @@ function touchWins(e) {
 function removeRaceHandlers() {
     canvas.removeEventListener('mousedown', mouseWins);
     canvas.removeEventListener('touchstart', touchWins);
-}
-
-function initCanvas() {
-    context.beginPath();
-    context.rect(0, 0, 80, 90);
-    context.fillStyle = 'rgb(10, 10, 10, 1.0)';
-    context.fill();
-}
-
-function clearCanvas() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    initCanvas();
 }
 
 function serializeCanvas() {
