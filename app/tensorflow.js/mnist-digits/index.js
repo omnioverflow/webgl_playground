@@ -15,11 +15,13 @@
   * - FONT: font to show classification result over the canvas;
   * - X_POS_RESULT: x-coordinate to put the classification label over the canvas;
   * - Y_POS_RESULT: y-coordinate to put the classification label over the canvas;
+  * - DEBUG: turn on/off debug mode such as additional data logging and plots.
   */
 LINE_WIDTH = 16;
 FONT = '100px Arial';
 X_POS_RESULT = 10;
 Y_POS_RESULT = 80;
+DEBUG = false;
 
 
 // =============================================================================
@@ -98,6 +100,14 @@ function plotHisto(histData) {
     Plotly.newPlot('histo', data);
 }
 
+function debugPlotTensor2D(tensor) {
+    imgTemp = tf.squeeze(tensor);
+    // Flix y-axis to point up, instead of down direction which is default in
+    // the canvas.
+    imgTemp = tf.reverse(imgTemp, 0);
+    plotHisto(imgTemp.arraySync());
+}
+
 // =============================================================================
 
 async function runPrediction() {
@@ -116,12 +126,9 @@ async function runPrediction() {
     const classificationResult =  model.predict(inputTensor);
     classificationResult.print();
 
-    // Do debug plotting of the input 
-    imgTemp = tf.squeeze(inputTensor);
-    // Flix y-axis to point up, instead of down direction which is default in
-    // the canvas.
-    imgTemp = tf.reverse(imgTemp, 0);
-    plotHisto(imgTemp.arraySync());
+    // Optional debug plotting
+    if (DEBUG)
+        debugPlotTensor2D(inputTensor);    
 
     const classificationData = await classificationResult.data();
     const classScore = classificationData[0];
