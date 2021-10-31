@@ -163,6 +163,7 @@ function showRecoResult(score) {
     else 
         classifiedRes = '6';
 
+    context.fillStyle = 'rgb(255, 255, 255, 1.0)';
     context.fillText(classifiedRes, X_POS_RESULT, Y_POS_RESULT);
 }
 
