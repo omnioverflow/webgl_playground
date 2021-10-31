@@ -156,15 +156,12 @@ async function runPrediction() {
     showRecoResult(classScore);
 }
 
-function showRecoResult(score) {
-    var recoResult = document.getElementById('reco-result');
+function showRecoResult(score) {    
     var classifiedRes = '';
     if (score > 0.0)
         classifiedRes = '3';
     else 
         classifiedRes = '6';
-
-    recoResult.value = classifiedRes;
 
     context.fillText(classifiedRes, X_POS_RESULT, Y_POS_RESULT);
 }
