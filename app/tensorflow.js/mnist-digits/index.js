@@ -308,8 +308,16 @@ function removeRaceHandlers() {
     canvas.removeEventListener('touchstart', touchWins);
 }
 
+function initCanvas() {
+    context.beginPath();
+    context.rect(0, 0, 80, 90);
+    context.fillStyle = 'rgb(10, 10, 10, 1.0)';
+    context.fill();
+}
+
 function clearCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+    initCanvas();
 }
 
 function serializeCanvas() {
@@ -333,7 +341,6 @@ document.getElementById('reco-button').addEventListener('click', runPrediction);
 document.getElementById("serialize-button").addEventListener("click", serializeCanvas);
 document.getElementById("deserialize-button").addEventListener("click", deserializeCanvas);
 
-
 // =============================================================================
 
 // Deserialize handwritten digit in the canvas from data URL.
@@ -341,3 +348,4 @@ deserializeCanvas();
 
 // Load ML model
 loadGraphModel('https://iirthw.github.io/downloads/models/tfjs_mnist_cnn_36/model.json');
+initCanvas();
