@@ -125,10 +125,10 @@ async function runPrediction() {
 
     const classificationData = await classificationResult.data();
     const classScore = classificationData[0];
-    updateDocumentWithRecoResult(classScore);
+    showRecoResult(classScore);
 }
 
-function updateDocumentWithRecoResult(score) {
+function showRecoResult(score) {
     var recoResult = document.getElementById('reco-result');
     var classifiedRes = '';
     if (score > 0.0)
