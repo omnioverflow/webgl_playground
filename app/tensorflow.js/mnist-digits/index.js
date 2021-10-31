@@ -34,8 +34,8 @@ var model;
 
 /*jslint browser:true */        
 "use strict";
-var context = document.getElementById('sheet').getContext("2d");
-var canvas = document.getElementById('sheet');
+var context = document.getElementById('drawing-canvas').getContext("2d");
+var canvas = document.getElementById('drawing-canvas');
 context = canvas.getContext("2d");
 // context.strokeStyle = "#ff0000";
 context.lineJoin = "round";
@@ -110,8 +110,26 @@ function debugPlotTensor2D(tensor) {
 
 // =============================================================================
 
+function addSpinner() {
+    var newDiv = document.createElement("div");
+    newDiv.setAttribute('class', 'loader');
+    newDiv.setAttribute('id', 'reco-spinner');
+    newDiv.innerHTML = '<svg class="circular" viewBox="25 25 50 50"> <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg>';
+
+    var parent = document.getElementById('wrapper');
+    parent.appendChild(newDiv);
+}
+
+function removeSpinner() {
+    const spinner = document.getElementById('reco-spinner');
+    var parent = document.getElementById('wrapper');
+    parent.removeChild(spinner);
+}
+
 async function runPrediction() {
-    // See example: 
+    addSpinner();
+
+    // For more in tfjs inference, see example: 
     // https://blog.pragmatists.com/machine-learning-in-the-browser-with-tensorflow-js-2f941a8130f5
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
@@ -130,8 +148,11 @@ async function runPrediction() {
     if (DEBUG)
         debugPlotTensor2D(inputTensor);    
 
+
     const classificationData = await classificationResult.data();
     const classScore = classificationData[0];
+
+    removeSpinner();
     showRecoResult(classScore);
 }
 

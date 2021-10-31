@@ -5,32 +5,33 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div class="wrapper" 
+    <div class="wrapper" id="wrapper"
         style="width:100%;height:1000px;background-color:#404040;
         position: relative;color:#ffffff;">
 
-    <canvas id="sheet" width="400" height="400"></canvas>
-    <div class="controls" style="position: relative; top:-400px; right: -410px;">
-        <button id="clear-button">Clear canvas</button>
-        </br></br>
-        <button id="reco-button">Classify digit</button>
-        </br></br>
-        Classification result:</br>
-        <input id="reco-result" value="" readonly="readonly"/>
-        </br></br>
-        <button id="serialize-button">Serialize canvas</button>
-        </br></br>
-        <button id="deserialize-button">Deserialize canvas</button>
-    </div> 
+        <canvas id="drawing-canvas" width="400" height="400"></canvas>
+        <div class="controls" style="position: relative; top:-400px; right: -410px;">
+            <button id="clear-button">Clear canvas</button>
+            </br></br>
+            <button id="reco-button">Classify digit</button>
+            </br></br>
+            Classification result:</br>
+            <input id="reco-result" value="" readonly="readonly"/>
+            </br></br>
+            <button id="serialize-button">Serialize canvas</button>
+            </br></br>
+            <button id="deserialize-button">Deserialize canvas</button>
+        </div> 
 
-    <div id='histo'></div>
+        <div id='histo'></div>
 
-    <!-- Import TensorFlow.js from CDN (content delivery network) -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>>
+        <!-- Import TensorFlow.js from CDN (content delivery network) -->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>>
 
-    <!-- Ploty Library -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <!-- Ploty Library -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-    <script src='./index.js'></script>
+        <script src='./index.js'></script>
+    </div>
   </body>
 </html>
