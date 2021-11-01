@@ -176,7 +176,7 @@ function removeSpinner() {
 }
 
 async function runPrediction() {
-    initCanvas();
+    initRecoArea();
     addSpinner();
 
     // For more in tfjs inference, see example: 
@@ -235,7 +235,7 @@ function setupRecoArea() {
 }
 
 function showRecoResult(score) {
-    initCanvas();
+    initRecoArea();
 
     var classifiedRes = '';
     if (score > 0.0)
@@ -247,14 +247,14 @@ function showRecoResult(score) {
     context.fillText(classifiedRes, X_POS_RESULT, Y_POS_RESULT);
 }
 
-function initCanvas() {
+function initRecoArea() {
     clearRecoArea();
     setupRecoArea();
 }
 
 function clearCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    initCanvas();
+    initRecoArea();
 }
 
 // =============================================================================
@@ -470,4 +470,4 @@ deserializeCanvas();
 
 // Load ML model
 loadGraphModel('https://iirthw.github.io/downloads/models/tfjs_mnist_cnn_36/model.json');
-initCanvas();
+initRecoArea();
