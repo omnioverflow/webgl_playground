@@ -327,11 +327,24 @@ function mouseDownEventHandler(e) {
         if (GRADIENT_STROKES) {
             var gradient = context.createLinearGradient(0, 0, 
                 canvas.width, canvas.height);
-            gradient.addColorStop("0", "magenta");
-            gradient.addColorStop("0.25" ,"blue");
-            gradient.addColorStop("0.5" ,"DarkTurquoise");
-            gradient.addColorStop("0.75" ,"purple");
-            gradient.addColorStop("1.0", "red");
+
+            // Shuffle color stops.
+            var colorStops = [0.0, 0.25, 0.5, 0.75, 1.0];
+            var colorIds = [0, 1, 2, 3, 4];
+            var colors = ['magenta', 'blue', 'darkturquoise', 'purple', 'red'];        
+
+            for (var i = 0; i < Math.floor(colors.length / 2); ++i) {
+                const swapId = Math.floor(Math.random() * (colorIds.length - i))
+                    + i;
+                const temp = colors[i];
+                colors[i] = colors[swapId];
+                colors[swapId] = temp;
+            }
+
+            for (var i = 0; i < colors.length; ++i) {
+                gradient.addColorStop(colorStops[i].toString(), colors[i]);
+            }
+
             style = gradient;
         }
 
