@@ -50,13 +50,13 @@ class Rect {
   * - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
   *                         spinner;
   */
-LINE_WIDTH = 16;
-FONT = '100px Arial';
-X_POS_RESULT = 10;
-Y_POS_RESULT = 80;
-RESULT_RECT = new Rect(0, 0, 80, 90);
-DEBUG = false;
-RECO_SPINNER_TIMEOUT = 0;
+const LINE_WIDTH = 16;
+const FONT = '100px Arial';
+const X_POS_RESULT = 10;
+const Y_POS_RESULT = 80;
+const RESULT_RECT = new Rect(0, 0, 80, 90);
+const DEBUG = false;
+const RECO_SPINNER_TIMEOUT = 0;
 
 // =============================================================================
 
