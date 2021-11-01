@@ -61,10 +61,13 @@ const FONT = '100px Arial';
 const X_POS_RESULT = 10;
 const Y_POS_RESULT = 80;
 const RESULT_RECT = new Rect(0, 0, 80, 90);
+const RESULT_RECT_COLOR_R = 10;
+const RESULT_RECT_COLOR_G = 10;
+const RESULT_RECT_COLOR_B = 10;
 const ALLOW_DRAW_RESULT_RECT = false;
 const CANCEL_DRAW_OUTSIDE_CANVAS = true;
 const GRADIENT_STROKES = true;
-const DEBUG = false;
+const DEBUG = true;
 const RECO_SPINNER_TIMEOUT = 0;
 
 // =============================================================================
@@ -90,7 +93,9 @@ var clickX = [];
 var clickY = [];
 var clickDrag = [];
 var paint;
-var strokeId = 0;
+
+var colorThreshold = (RESULT_RECT_COLOR_R + RESULT_RECT_COLOR_G
+    + RESULT_RECT_COLOR_B) / 3;
 
 // =============================================================================
 
@@ -171,13 +176,26 @@ function removeSpinner() {
 }
 
 async function runPrediction() {
+    initCanvas();
     addSpinner();
 
     // For more in tfjs inference, see example: 
     // https://blog.pragmatists.com/machine-learning-in-the-browser-with-tensorflow-js-2f941a8130f5
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    let grayscale = imageData;
+    for (var i = 0; i < grayscale.data.length; i += 4) {
+        let pixel = parseInt((grayscale.data[i] + grayscale.data[i + 1] + grayscale.data[i + 2]) / 3);
+        if (pixel > colorThreshold)
+            pixel = 255;
+        else
+            pixel = 0;
 
-    var inputTensor = tf.browser.fromPixels(imageData, 1)
+        grayscale.data[i] = pixel;
+        grayscale.data[i + 1] = pixel;
+        grayscale.data[i + 2] = pixel;
+    }
+
+    var inputTensor = tf.browser.fromPixels(grayscale, 1)
         .resizeBilinear([28, 28])
         // .reshape([1, 28, 28, 1])
         .cast('float32')
@@ -210,7 +228,9 @@ function clearRecoArea() {
 function setupRecoArea() {
     context.beginPath();
     context.rect(RESULT_RECT.x, RESULT_RECT.y, RESULT_RECT.width, RESULT_RECT.height);
-    context.fillStyle = 'rgb(10, 10, 10, 1.0)';
+    context.fillStyle = 'rgb(' + RESULT_RECT_COLOR_R.toString()
+        + ', ' + RESULT_RECT_COLOR_G.toString() + ', '
+        + RESULT_RECT_COLOR_B.toString() + ', 1.0)';
     context.fill();
 }
 
@@ -297,11 +317,7 @@ function redraw() {
  * Draw the newly added point.
  * @return {void}
  */
-function drawNew(strokeStyle) {
-    strokeId = strokeId + 1;
-    if (strokeId < 100) {
-        context.lineWidth = strokeId * 0.01 * LINE_WIDTH;        
-    }
+function drawNew(strokeStyle) {    
     context.strokeStyle = strokeStyle;
 
     var i = clickX.length - 1
@@ -333,7 +349,6 @@ function getRandomStyle() {
 
 function mouseDownEventHandler(e) {
     paint = true;
-    strokeId = 0;
     var x = e.pageX - canvas.offsetLeft;
     var y = e.pageY - canvas.offsetTop;
 
@@ -381,7 +396,6 @@ function touchstartEventHandler(e) {
 function mouseUpEventHandler(e) {
     // context.closePath();
     paint = false;
-    strokeId = 0;
 }
 
 function mouseMoveEventHandler(e) {
