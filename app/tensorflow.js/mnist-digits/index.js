@@ -36,7 +36,7 @@ class Point {
 }
 
 class Rect {
-    constructor(x, y, height, width) {
+    constructor(x, y, width, height) {
         if (height <= 0)
             throw 'Rectangle height is negative.';
         if (width <= 0)
