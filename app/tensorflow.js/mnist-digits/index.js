@@ -7,25 +7,6 @@
  * https://towardsdatascience.com/handwritten-digit-recognition-with-tensorflow-js-6ddb22ae195f
  */
 
- /**
-  * Important parameters:
-  * - LINE_WIDTH: when line width is too thin, donwnscaling bitmap for the input
-  *   to the CNN might result in disconnected strokes, which will result in 
-  *   drastic degradation of classification results;
-  * - FONT: font to show classification result over the canvas;
-  * - X_POS_RESULT: x-coordinate to put the classification label over the canvas;
-  * - Y_POS_RESULT: y-coordinate to put the classification label over the canvas;
-  * - DEBUG: turn on/off debug mode such as additional data logging and plots.
-  * - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
-  *                         spinner;
-  */
-LINE_WIDTH = 16;
-FONT = '100px Arial';
-X_POS_RESULT = 10;
-Y_POS_RESULT = 80;
-DEBUG = false;
-RECO_SPINNER_TIMEOUT = 0;
-
 // =============================================================================
 
 class Point {
@@ -54,6 +35,28 @@ class Rect {
             && (point.y >= this.y) && (point.y <= (this.y + height));
     }
 };
+
+// =============================================================================
+
+ /**
+  * Important parameters:
+  * - LINE_WIDTH: when line width is too thin, donwnscaling bitmap for the input
+  *   to the CNN might result in disconnected strokes, which will result in 
+  *   drastic degradation of classification results;
+  * - FONT: font to show classification result over the canvas;
+  * - X_POS_RESULT: x-coordinate to put the classification label over the canvas;
+  * - Y_POS_RESULT: y-coordinate to put the classification label over the canvas;
+  * - DEBUG: turn on/off debug mode such as additional data logging and plots.
+  * - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
+  *                         spinner;
+  */
+LINE_WIDTH = 16;
+FONT = '100px Arial';
+X_POS_RESULT = 10;
+Y_POS_RESULT = 80;
+RESULT_RECT = new Rect(0, 0, 80, 90);
+DEBUG = false;
+RECO_SPINNER_TIMEOUT = 0;
 
 // =============================================================================
 
@@ -203,7 +206,7 @@ function showRecoResult(score) {
 
 function initCanvas() {
     context.beginPath();
-    context.rect(0, 0, 80, 90);
+    context.rect(RESULT_RECT.x, RESULT_RECT.y, RESULT_RECT.width, RESULT_RECT.height);
     context.fillStyle = 'rgb(10, 10, 10, 1.0)';
     context.fill();
 }
