@@ -31,8 +31,8 @@ class Rect {
 
     // Check if the input point is inside the rectangle.
     inside(point) {
-        return (point.x >= this.x) && (point.x <= (this.x + height))
-            && (point.y >= this.y) && (point.y <= (this.y + height));
+        return (point.x >= this.x) && (point.x <= (this.x + this.width))
+            && (point.y >= this.y) && (point.y <= (this.y + this.height));
     }
 };
 
