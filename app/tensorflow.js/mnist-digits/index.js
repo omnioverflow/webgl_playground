@@ -26,6 +26,34 @@ Y_POS_RESULT = 80;
 DEBUG = false;
 RECO_SPINNER_TIMEOUT = 0;
 
+// =============================================================================
+
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+class Rect {
+    constructor(x, y, height, width) {
+        if (height <= 0)
+            throw 'Rectangle height is negative.';
+        if (width <= 0)
+            throw 'Rectagnel width is negative.';
+
+        this.x = x;
+        this.y = y;
+        this.height = height;
+        this.width = width;
+    }
+
+    // Check if the input point is inside the rectangle.
+    inside(point) {
+        return (point.x >= this.x) && (point.x <= (this.x + height))
+            && (point.y >= this.y) && (point.y <= (this.y + height));
+    }
+};
 
 // =============================================================================
 
