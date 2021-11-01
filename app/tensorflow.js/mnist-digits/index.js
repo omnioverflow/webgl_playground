@@ -203,7 +203,20 @@ async function runPrediction() {
     showRecoResult(classScore);
 }
 
-function showRecoResult(score) {    
+function clearRecoArea() {
+    context.clearRect(RESULT_RECT.x, RESULT_RECT.y, RESULT_RECT.width, RESULT_RECT.height);
+}
+
+function setupRecoArea() {
+    context.beginPath();
+    context.rect(RESULT_RECT.x, RESULT_RECT.y, RESULT_RECT.width, RESULT_RECT.height);
+    context.fillStyle = 'rgb(10, 10, 10, 1.0)';
+    context.fill();
+}
+
+function showRecoResult(score) {
+    initCanvas();
+
     var classifiedRes = '';
     if (score > 0.0)
         classifiedRes = '3';
@@ -215,10 +228,8 @@ function showRecoResult(score) {
 }
 
 function initCanvas() {
-    context.beginPath();
-    context.rect(RESULT_RECT.x, RESULT_RECT.y, RESULT_RECT.width, RESULT_RECT.height);
-    context.fillStyle = 'rgb(10, 10, 10, 1.0)';
-    context.fill();
+    clearRecoArea();
+    setupRecoArea();
 }
 
 function clearCanvas() {
