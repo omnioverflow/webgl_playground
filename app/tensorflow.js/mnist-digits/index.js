@@ -247,6 +247,10 @@ function showRecoResult(score) {
     context.fillText(classifiedRes, X_POS_RESULT, Y_POS_RESULT);
 }
 
+function initContext() {
+    context.lineCap = 'round';
+}
+
 function initRecoArea() {
     clearRecoArea();
     setupRecoArea();
@@ -471,3 +475,4 @@ deserializeCanvas();
 // Load ML model
 loadGraphModel('https://iirthw.github.io/downloads/models/tfjs_mnist_cnn_36/model.json');
 initRecoArea();
+initContext();
