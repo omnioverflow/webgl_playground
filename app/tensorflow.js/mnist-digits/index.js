@@ -24,6 +24,7 @@ FONT = '100px Arial';
 X_POS_RESULT = 10;
 Y_POS_RESULT = 80;
 DEBUG = false;
+RECO_SPINNER_TIMEOUT = 0;
 
 
 // =============================================================================
