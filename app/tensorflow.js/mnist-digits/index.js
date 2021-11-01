@@ -46,7 +46,9 @@ class Rect {
   * - FONT: font to show classification result over the canvas;
   * - X_POS_RESULT: x-coordinate to put the classification label over the canvas;
   * - Y_POS_RESULT: y-coordinate to put the classification label over the canvas;
-  * - DEBUG: turn on/off debug mode such as additional data logging and plots.
+  * - RESULT_RECT: ractangular area where the recognition result must be shown;
+  * - ALLOW_DRAW_RESULT_RECT: flag to turn on/off drawing on RESULT_RECT area;
+  * - DEBUG: turn on/off debug mode such as additional data logging and plots;
   * - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
   *                         spinner;
   */
@@ -55,6 +57,7 @@ const FONT = '100px Arial';
 const X_POS_RESULT = 10;
 const Y_POS_RESULT = 80;
 const RESULT_RECT = new Rect(0, 0, 80, 90);
+const ALLOW_DRAW_RESULT_RECT = false;
 const DEBUG = false;
 const RECO_SPINNER_TIMEOUT = 0;
 
@@ -225,6 +228,14 @@ function clearCanvas() {
  * @return {boolean} dragging
  */
 function addClick(x, y, dragging) {
+    const withinResultRect = RESULT_RECT.inside(new Point(x, y));
+    if (!ALLOW_DRAW_RESULT_RECT && withinResultRect) {        
+        clickX = [];
+        clickY = [];
+        clickDrag = [];
+        return;
+    }
+
     clickX.push(x);
     clickY.push(y);
     clickDrag.push(dragging);
