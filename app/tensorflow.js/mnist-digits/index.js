@@ -90,6 +90,7 @@ var clickX = [];
 var clickY = [];
 var clickDrag = [];
 var paint;
+var strokeId = 0;
 
 // =============================================================================
 
@@ -238,7 +239,7 @@ function insideCanvas(p) {
  * @param {number} y
  * @return {boolean} dragging
  */
-function addClick(x, y, dragging) {
+function addClick(x, y, dragging) {    
     const withinResultRect = RESULT_RECT.inside(new Point(x, y));
     const strokeInsideCanvas = insideCanvas(new Point(x, y));
     if (!ALLOW_DRAW_RESULT_RECT && withinResultRect || !strokeInsideCanvas) {        
@@ -250,7 +251,7 @@ function addClick(x, y, dragging) {
             paint = false;
 
         return;
-    }    
+    }
 
     clickX.push(x);
     clickY.push(y);
@@ -286,6 +287,10 @@ function redraw() {
  * @return {void}
  */
 function drawNew(strokeStyle) {
+    strokeId = strokeId + 1;
+    if (strokeId < 100) {
+        context.lineWidth = strokeId * 0.01 * LINE_WIDTH;        
+    }
     context.strokeStyle = strokeStyle;
 
     var i = clickX.length - 1
@@ -317,6 +322,7 @@ function getRandomStyle() {
 
 function mouseDownEventHandler(e) {
     paint = true;
+    strokeId = 0;
     var x = e.pageX - canvas.offsetLeft;
     var y = e.pageY - canvas.offsetTop;
 
@@ -362,8 +368,9 @@ function touchstartEventHandler(e) {
 }
 
 function mouseUpEventHandler(e) {
-    context.closePath();
+    // context.closePath();
     paint = false;
+    strokeId = 0;
 }
 
 function mouseMoveEventHandler(e) {
