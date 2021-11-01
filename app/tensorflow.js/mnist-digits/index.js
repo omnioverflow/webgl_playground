@@ -329,9 +329,10 @@ function mouseDownEventHandler(e) {
                 canvas.width, canvas.height);
 
             // Shuffle color stops.
-            var colorStops = [0.0, 0.25, 0.5, 0.75, 1.0];
-            var colorIds = [0, 1, 2, 3, 4];
-            var colors = ['magenta', 'blue', 'darkturquoise', 'purple', 'red'];        
+            var colorStops = [0.0, 0.125, 0.25, 0.325, 0.45, 0.575, 0.7, 0.825];
+            var colorIds = [0, 1, 2, 3, 4, 5, 6, 7];
+            var colors = ['magenta', 'blue', 'darkturquoise', 'purple', 'red',
+                'cyan', 'darkblue', 'orange'];        
 
             for (var i = 0; i < Math.floor(colors.length / 2); ++i) {
                 const swapId = Math.floor(Math.random() * (colorIds.length - i))
