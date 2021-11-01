@@ -48,6 +48,8 @@ class Rect {
   * - Y_POS_RESULT: y-coordinate to put the classification label over the canvas;
   * - RESULT_RECT: ractangular area where the recognition result must be shown;
   * - ALLOW_DRAW_RESULT_RECT: flag to turn on/off drawing on RESULT_RECT area;
+  * - CANCEL_DRAW_OUTSIDE_CANVAS: cancel the adding new strokes, when input
+  *     position leaves the canvas area;
   * - DEBUG: turn on/off debug mode such as additional data logging and plots;
   * - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
   *                         spinner;
@@ -58,6 +60,7 @@ const X_POS_RESULT = 10;
 const Y_POS_RESULT = 80;
 const RESULT_RECT = new Rect(0, 0, 80, 90);
 const ALLOW_DRAW_RESULT_RECT = false;
+const CANCEL_DRAW_OUTSIDE_CANVAS = true;
 const DEBUG = false;
 const RECO_SPINNER_TIMEOUT = 0;
 
@@ -221,6 +224,11 @@ function clearCanvas() {
 
 // =============================================================================
 
+function insideCanvas(p) {
+    const canvasRect = new Rect(0, 0, canvas.width, canvas.height);
+    return canvasRect.inside(p);
+}
+
 /**
  * Add information where the user clicked at.
  * @param {number} x
@@ -229,12 +237,17 @@ function clearCanvas() {
  */
 function addClick(x, y, dragging) {
     const withinResultRect = RESULT_RECT.inside(new Point(x, y));
-    if (!ALLOW_DRAW_RESULT_RECT && withinResultRect) {        
+    const strokeInsideCanvas = insideCanvas(new Point(x, y));
+    if (!ALLOW_DRAW_RESULT_RECT && withinResultRect || !strokeInsideCanvas) {        
         clickX = [];
         clickY = [];
         clickDrag = [];
+
+        if (!strokeInsideCanvas)
+            paint = false;
+
         return;
-    }
+    }    
 
     clickX.push(x);
     clickY.push(y);
