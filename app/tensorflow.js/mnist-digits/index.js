@@ -50,6 +50,8 @@ class Rect {
   * - ALLOW_DRAW_RESULT_RECT: flag to turn on/off drawing on RESULT_RECT area;
   * - CANCEL_DRAW_OUTSIDE_CANVAS: cancel the adding new strokes, when input
   *     position leaves the canvas area;
+  * - GRADIENT_STROKES: use color gradients for the strokes, if set to false
+  *                     solid random color will be used instead;
   * - DEBUG: turn on/off debug mode such as additional data logging and plots;
   * - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
   *                         spinner;
@@ -61,6 +63,7 @@ const Y_POS_RESULT = 80;
 const RESULT_RECT = new Rect(0, 0, 80, 90);
 const ALLOW_DRAW_RESULT_RECT = false;
 const CANCEL_DRAW_OUTSIDE_CANVAS = true;
+const GRADIENT_STROKES = true;
 const DEBUG = false;
 const RECO_SPINNER_TIMEOUT = 0;
 
@@ -319,8 +322,20 @@ function mouseDownEventHandler(e) {
 
     if (paint) {
         addClick(x, y, false);
-        const randomStyle = getRandomStyle();
-        drawNew(randomStyle);
+
+        var style = getRandomStyle();
+        if (GRADIENT_STROKES) {
+            var gradient = context.createLinearGradient(0, 0, 
+                canvas.width, canvas.height);
+            gradient.addColorStop("0", "magenta");
+            gradient.addColorStop("0.25" ,"blue");
+            gradient.addColorStop("0.5" ,"DarkTurquoise");
+            gradient.addColorStop("0.75" ,"purple");
+            gradient.addColorStop("1.0", "red");
+            style = gradient;
+        }
+
+        drawNew(style);
     }
 }
 
