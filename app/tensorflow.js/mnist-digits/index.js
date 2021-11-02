@@ -38,37 +38,49 @@ class Rect {
 
 // =============================================================================
 
- /**
-  * Important parameters:
-  * - LINE_WIDTH: when line width is too thin, donwnscaling bitmap for the input
-  *   to the CNN might result in disconnected strokes, which will result in 
-  *   drastic degradation of classification results;
-  * - FONT: font to show classification result over the canvas;
-  * - X_POS_RESULT: x-coordinate to put the classification label over the canvas;
-  * - Y_POS_RESULT: y-coordinate to put the classification label over the canvas;
-  * - RESULT_RECT: ractangular area where the recognition result must be shown;
-  * - ALLOW_DRAW_RESULT_RECT: flag to turn on/off drawing on RESULT_RECT area;
-  * - CANCEL_DRAW_OUTSIDE_CANVAS: cancel the adding new strokes, when input
-  *     position leaves the canvas area;
-  * - GRADIENT_STROKES: use color gradients for the strokes, if set to false
-  *                     solid random color will be used instead;
-  * - DEBUG: turn on/off debug mode such as additional data logging and plots;
-  * - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
-  *                         spinner;
-  */
+/**
+* Important parameters:
+* - LINE_WIDTH: when line width is too thin, donwnscaling bitmap for the input
+*               to the CNN might result in disconnected strokes, which will 
+*               result in drastic degradation of classification results;
+* - FONT: font to show classification result over the canvas;
+* ----------------------------------------------------------------------------
+* - RESULT_X_POS: x-coordinate to put the classification label over the canvas;
+* - RESULT_Y_POS: y-coordinate to put the classification label over the canvas;
+* - RESULT_RECT: ractangular area where the recognition result must be shown;
+* - RESULT_RECT_COLOR_R: red component for result rectangle background color; 
+* - RESULT_RECT_COLOR_G: green component for result rectangle background color;
+* - RESULT_RECT_COLOR_B: blue component for result rectangle background color;
+* ----------------------------------------------------------------------------
+* - ALLOW_DRAW_RESULT_RECT: flag to turn on/off drawing on RESULT_RECT area;
+* - CANCEL_DRAW_OUTSIDE_CANVAS: cancel the adding new strokes, when input
+*                               position leaves the canvas area;
+* - GRADIENT_STROKES: use color gradients for the strokes, if set to false
+*                     solid random color will be used instead;
+* ----------------------------------------------------------------------------
+* - DEBUG: turn on/off debug mode such as additional data logging and plots;
+* - RECO_SPINNER_TIMEOUT: minimum number of milliseconds to show recognition 
+*                         spinner;
+* ----------------------------------------------------------------------------
+*/
+// -----------------------------------------------------------------------------
 const LINE_WIDTH = 16;
 const FONT = '100px Arial';
-const X_POS_RESULT = 10;
-const Y_POS_RESULT = 80;
+// -----------------------------------------------------------------------------
+const RESULT_X_POS = 10;
+const RESULT_Y_POS = 80;
 const RESULT_RECT = new Rect(0, 0, 80, 90);
 const RESULT_RECT_COLOR_R = 10;
 const RESULT_RECT_COLOR_G = 10;
 const RESULT_RECT_COLOR_B = 10;
+// -----------------------------------------------------------------------------
 const ALLOW_DRAW_RESULT_RECT = false;
 const CANCEL_DRAW_OUTSIDE_CANVAS = true;
 const GRADIENT_STROKES = true;
-const DEBUG = true;
+// -----------------------------------------------------------------------------
+const DEBUG = false;
 const RECO_SPINNER_TIMEOUT = 0;
+// -----------------------------------------------------------------------------
 
 // =============================================================================
 
@@ -244,7 +256,7 @@ function showRecoResult(score) {
         classifiedRes = '6';
 
     context.fillStyle = 'rgb(255, 255, 255, 1.0)';
-    context.fillText(classifiedRes, X_POS_RESULT, Y_POS_RESULT);
+    context.fillText(classifiedRes, RESULT_X_POS, RESULT_Y_POS);
 }
 
 function initContext() {
