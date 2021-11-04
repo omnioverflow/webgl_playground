@@ -144,6 +144,7 @@ async function loadGraphModel(url) {
     console.log('Loading Graph Model...');
     model = undefined;
     model = await tf.loadGraphModel(url);
+    const lol = 0;
 }
 
 // =============================================================================
@@ -215,22 +216,27 @@ async function runPrediction() {
 
     inputTensor = inputTensor.reshape([1, 28, 28, 1]);
 
-    const classificationResult =  model.predict(inputTensor);
+    const classificationResult =  model.predict(inputTensor).argMax(-1);
     classificationResult.print();
 
     // Optional debug plotting
     if (DEBUG)
         debugPlotTensor2D(inputTensor);    
 
-
     const classificationData = await classificationResult.data();
-    const classScore = classificationData[0];
+    const topScoreIndex = classificationData[0];
+
+    // var imax = 0;
+    // var x = 0;
+    // const reducer = (imax, x, i, arr) =>
+    //      x > arr[imax] ? i : imax;
+    // const topScoreIndex = classificationData.reduce(reducer, 0);
 
     setTimeout(function() {
         removeSpinner();
     }, RECO_SPINNER_TIMEOUT);
 
-    showRecoResult(classScore);
+    showRecoResult(topScoreIndex);
 }
 
 function clearRecoArea() {
@@ -249,12 +255,7 @@ function setupRecoArea() {
 function showRecoResult(score) {
     initRecoArea();
 
-    var classifiedRes = '';
-    if (score > 0.0)
-        classifiedRes = '3';
-    else 
-        classifiedRes = '6';
-
+    const classifiedRes = score.toString();
     context.fillStyle = 'rgb(255, 255, 255, 1.0)';
     context.fillText(classifiedRes, RESULT_X_POS, RESULT_Y_POS);
 }
@@ -485,6 +486,7 @@ document.getElementById("deserialize-button").addEventListener("click", deserial
 deserializeCanvas();
 
 // Load ML model
-loadGraphModel('https://iirthw.github.io/downloads/models/tfjs_mnist_cnn_36/model.json');
+// loadGraphModel('https://iirthw.github.io/downloads/models/tfjs_mnist_cnn_36/model.json');
+loadLayersModel('https://iirthw.github.io/downloads/models/tfjs_mnist_full_0.9/model.json');
 initRecoArea();
 initContext();
