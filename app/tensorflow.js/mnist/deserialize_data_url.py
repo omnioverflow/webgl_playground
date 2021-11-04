@@ -16,10 +16,13 @@ def deserialize(data_url):
     img = np.array(img)
     print('Vector image shape ' + str(img.shape))
 
-    img = cv2.resize(img, dim, interpolation = cv2.INTER_LINEAR)
+    # convert to gragyscale
+    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    gray_img = cv2.resize(gray_img, dim, interpolation = cv2.INTER_LINEAR)
     print('Vector image shape after resize ' + str(img.shape))
 
-    cv2.imshow('lol', img)
+    cv2.imshow('lol', gray_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
