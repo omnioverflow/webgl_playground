@@ -2,6 +2,7 @@ import base64
 import cv2
 import math
 import numpy as np
+import pickle
 from io import BytesIO
 from PIL import Image
 
@@ -32,7 +33,12 @@ def deserializeBitmaps(bitmaps):
     images = []
     for bitmap in bitmaps:
         images.append(deserialize(bitmap))
+
     print('Deserialized images: ' + str(len(images)))
+    print('Pickle images')
+
+    pickleFile = open('test_img_data_col.pickle', 'wb')
+    pickle.dump(images, pickleFile, pickle.HIGHEST_PROTOCOL)
 
 # byte64 binary image
 # Old-8
