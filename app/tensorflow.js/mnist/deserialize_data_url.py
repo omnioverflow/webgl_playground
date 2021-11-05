@@ -38,7 +38,7 @@ def deserializeBitmaps(bitmaps):
     print('Pickle images')
 
     pickleFile = open('test_img_data_col.pickle', 'wb')
-    pickle.dump(images, pickleFile, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(images, pickleFile, pickle.DEFAULT_PROTOCOL)
 
 # byte64 binary image
 # Old-8
