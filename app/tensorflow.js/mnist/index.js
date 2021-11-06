@@ -195,17 +195,28 @@ async function runPrediction() {
     // For more in tfjs inference, see example: 
     // https://blog.pragmatists.com/machine-learning-in-the-browser-with-tensorflow-js-2f941a8130f5
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    // Image that we obtained from the html5 canvas is rgb,
+    // we need to convert it to grayscale though as required 
+    // by trained tf model.
     let grayscale = imageData;
     for (var i = 0; i < grayscale.data.length; i += 4) {
-        let pixel = parseInt((grayscale.data[i] + grayscale.data[i + 1] + grayscale.data[i + 2]) / 3);
+        const rgbWeights = [0.2989, 0.5870, 0.1140];
+        let grayPixel = 0;
+        for (var j = 0; j < 3; ++j)
+            grayPixel += rgbWeights[j] * imageData.data[i + j];
+            // grayPixel = parseInt((grayscale.data[i] + grayscale.data[i + 1] + grayscale.data[i + 2]) / 3);
         // if (pixel > colorThreshold)
         //     pixel = 255;
         // else
         //     pixel = 0;
 
-        grayscale.data[i] = pixel;
-        grayscale.data[i + 1] = pixel;
-        grayscale.data[i + 2] = pixel;
+        for (var j = 0; j < 3; ++j) {
+            const gray = Math.floor(grayPixel);
+            if (gray < colorThreshold)
+                grayscale.data[i + j] = 0;
+            else
+                grayscale.data[i + j] = Math.floor(grayPixel);
+        }
     }
 
     var inputTensor = tf.browser.fromPixels(grayscale, 1)
