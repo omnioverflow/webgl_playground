@@ -543,7 +543,8 @@ document.getElementById("deserialize-button").addEventListener("click", deserial
 // Load ML model
 // loadGraphModel('https://iirthw.github.io/downloads/models/tfjs_mnist_cnn_36/model.json');
 // loadLayersModel('https://iirthw.github.io/downloads/models/tfjs_mnist_full_0.9/model.json');
-loadLayersModel('https://iirthw.github.io/downloads/models/mnist/012/model/model.json');
+// loadLayersModel('https://iirthw.github.io/downloads/models/mnist/012/model/model.json');
+loadLayersModel('https://iirthw.github.io/downloads/models/mnist/zero_centered/0-9/model_2epo/model.json');
 
 initRecoArea();
 initContext();
