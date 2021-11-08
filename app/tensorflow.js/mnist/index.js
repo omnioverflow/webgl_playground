@@ -188,6 +188,13 @@ function removeSpinner() {
     parent.removeChild(spinner);
 }
 
+function toMatrix(arr, width) {
+  return arr.reduce(function (rows, key, index) { 
+    return (index % width == 0 ? rows.push([key]) 
+      : rows[rows.length-1].push(key)) && rows;
+  }, []);
+}
+
 async function runPrediction() {
     initRecoArea();
     addSpinner();
@@ -199,7 +206,9 @@ async function runPrediction() {
     // we need to convert it to grayscale though as required 
     // by trained tf model.
     let grayscale = imageData;
-    for (var i = 0; i < grayscale.data.length; i += 4) {
+    // image data is in RGBA format, so step is 4
+    const step = 4;
+    for (var i = 0; i < grayscale.data.length; i += step) {
         const rgbWeights = [0.2989, 0.5870, 0.1140];
         let grayPixel = 0;
         for (var j = 0; j < 3; ++j)
@@ -217,16 +226,50 @@ async function runPrediction() {
             else
                 grayscale.data[i + j] = Math.floor(grayPixel);
         }
+
+        // // Zero-center the bitmap image pixel values
+        // const PIXEL_DEPTH = 255;
+        // for (var j = 0; j < step; ++j) {
+        //     const centered = (grayscale.data[i + j] - PIXEL_DEPTH / 2.0) / PIXEL_DEPTH;
+        //     grayscale.data[i + j] = centered;
+        // }
     }
 
-    var inputTensor = tf.browser.fromPixels(grayscale, 1)
+    const numChannels = 4;
+    const pixelDepth = 255;
+    var inputTensor = tf.browser.fromPixels(grayscale, 4)
         .resizeBilinear([28, 28])
         // .reshape([1, 28, 28, 1])
         .cast('float32')
+        .sub(pixelDepth / 2.0)
         .div(255);
+
+    console.clear();
+    console.log(inputTensor.shape);
+    inputTensor = tf.slice(inputTensor, [0, 0, 0], [28, 28, 1]);
+    console.log(inputTensor.shape)
+    const tt = tf.squeeze(inputTensor);
+    let tnp = tt.dataSync();
+
+    tnp = tnp.map(tnp => tnp.toFixed(1));
+
+    const m = toMatrix(tnp, 28);
+    for (var k = 0; k < 28; ++k) {
+        let row = m[k];
+        // row = row.map(row => row.toFixed(3));
+        console.log(row);
+    }
 
     inputTensor = inputTensor.reshape([1, 28, 28, 1]);
 
+    // const inputTensor = tf.zeros([1, 28, 28, 1], dtype='float32');
+    // const inputTensor = tf.ones([1, 28, 28, 1], dtype='float32');
+    // var inputTensor = tf.eye(28);
+    // inputTensor = inputTensor.reshape([1, 28, 28, 1]);
+
+    model.getWeights()[0].print();
+    const logits = model.predict(inputTensor).dataSync();
+    const probs = tf.argMax(tf.softmax(logits)).dataSync();
     const classificationResult =  model.predict(inputTensor).argMax(-1);
     classificationResult.print();
 
@@ -495,10 +538,12 @@ document.getElementById("deserialize-button").addEventListener("click", deserial
 // =============================================================================
 
 // Deserialize handwritten digit in the canvas from data URL.
-deserializeCanvas();
+// deserializeCanvas();
 
 // Load ML model
 // loadGraphModel('https://iirthw.github.io/downloads/models/tfjs_mnist_cnn_36/model.json');
-loadLayersModel('https://iirthw.github.io/downloads/models/tfjs_mnist_full_0.9/model.json');
+// loadLayersModel('https://iirthw.github.io/downloads/models/tfjs_mnist_full_0.9/model.json');
+loadLayersModel('https://iirthw.github.io/downloads/models/mnist/012/model/model.json');
+
 initRecoArea();
 initContext();
