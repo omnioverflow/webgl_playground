@@ -268,20 +268,18 @@ async function runPrediction() {
         .sub(pixelDepth / 2.0)
         .div(255);
 
-        console.clear();
-        console.log(inputTensor.shape);
+        
         inputTensor = tf.slice(inputTensor, [0, 0, 0], [28, 28, 1]);
-        console.log(inputTensor.shape)
-        const tt = tf.squeeze(inputTensor);
-        let tnp = tt.dataSync();
+        
 
-        tnp = tnp.map(tnp => tnp.toFixed(1));
+        if (DEBUG) {
+            const tt = tf.squeeze(inputTensor);
+            let tnp = tt.dataSync();
 
-        const m = toMatrix(tnp, 28);
-        for (var k = 0; k < 28; ++k) {
-            let row = m[k];
-            // row = row.map(row => row.toFixed(3));
-            console.log(row);
+            tnp = tnp.map(tnp => tnp.toFixed(1));
+
+            const m = toMatrix(tnp, 28);
+            console.log(m);
         }
     }
 
